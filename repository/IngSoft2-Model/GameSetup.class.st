@@ -42,39 +42,27 @@ GameSetup >> board [
 ]
 
 { #category : 'creation' }
-GameSetup >> createBoardInstanceWith: aDices andWith: aSpaceShips andWith: aWinnerSystem [
+GameSetup >> buildGameWithDices: aDices spaceShips: aSpaceShips rules: aWinnerSystem [
 
 	| aBoard aCopyOfSpaceships aGame |
-	boardSizeInParsec ifNil: [ boardSizeInParsec := boardSize ].
-	rewardDistribution ifNil: [
-		rewardDistribution := RewardDistribution new.
-		rewardDistribution forDecreaseFuel: 0.
-		rewardDistribution forRestartFuel: 0 ].
+	self initializeDefaults.
 
 	aBoard := Board
 		          withNumberOfSquares: boardSize
-		          withSizeInParsec: boardSizeInParsec
-		          andA: deckOfCards.
-
-	tiles ifNil: [ tiles := OrderedCollection new ].
-
-	deckOfCards ifNil: [ deckOfCards := OrderedCollection new ].
-	aGame := Game
-		         withBoard: aBoard
-		         andTurnManager: turnManager
-		         andRewardDistribution: rewardDistribution.
-
-	aGame withDices: aDices.
-	aCopyOfSpaceships := OrderedCollection new.
+		          sizeInParsec: boardSizeInParsec
+		          deck: deckOfCards
+		          tiles: tiles.
 
 	aCopyOfSpaceships := aSpaceShips collect: [ :each | each copy ].
 
-	aGame has: aCopyOfSpaceships.
-	aGame follows: aWinnerSystem.
+	aGame := Game
+		         onBoard: aBoard
+		         withDices: aDices
+		         spaceships: aCopyOfSpaceships
+		         rules: aWinnerSystem
+		         turnManager: turnManager
+		         rewards: rewardDistribution.
 
-	self fillEmptyPositionsWithNoEffectTile.
-
-	aBoard contains: tiles.
 
 	^ aGame
 ]
@@ -87,9 +75,9 @@ GameSetup >> createGameInstance [
 	aWinnerSystem := WinnerSystem withMaximunLaps: lapsToWin.
 
 	aBoard := self
-		          createBoardInstanceWith: dices
-		          andWith: spaceShips
-		          andWith: aWinnerSystem.
+		          buildGameWithDices: dices
+		          spaceShips: spaceShips
+		          rules: aWinnerSystem.
 	board := aBoard.
 	winnerSystem := aWinnerSystem.
 	self validateSpecialTileCreation
@@ -129,6 +117,20 @@ GameSetup >> fillEmptyPositionsWithNoEffectTile [
 	0 to: boardSize do: [ :pos |
 		(occupiedPositions includes: pos) ifFalse: [
 			tiles add: (NoEffect in: pos) ] ]
+]
+
+{ #category : 'initialization' }
+GameSetup >> initializeDefaults [
+	
+    boardSizeInParsec ifNil: [ boardSizeInParsec := boardSize ].
+    tiles ifNil: [ tiles := OrderedCollection new ].
+    deckOfCards ifNil: [ deckOfCards := OrderedCollection new ].
+    rewardDistribution ifNil: [
+        rewardDistribution := RewardDistribution new.
+        rewardDistribution forDecreaseFuel: 0.
+        rewardDistribution forRestartFuel: 0 ].
+	self fillEmptyPositionsWithNoEffectTile.
+
 ]
 
 { #category : 'accessing' }

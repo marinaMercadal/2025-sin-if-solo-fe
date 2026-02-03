@@ -475,8 +475,8 @@ GameBoardTest >> test1WhenTheGameBeginsTheBoardKnowsTheSpaceShipsInitialPosition
 	fuel := 100.
 	aBoard := Board
 		          withNumberOfSquares: 60
-		          withSizeInParsec: 10
-		          andA: nil.
+		          sizeInParsec: 10
+		          deck: nil tiles:nil.
 
 	self assert: aPlayer1 currentPosition equals: 0
 ]

@@ -21,16 +21,6 @@ Board class >> hasTheMinimumAmountOfSquares: aNumber [
 	aNumber < 3 ifTrue: [ Error signal: 'Should have at least 3 squares' ]
 ]
 
-{ #category : 'initialization' }
-Board class >> withNumberOfSquares: aNumberOfSquares withSizeInParsec: aSizeInParsec andA: aDeck [
-
-	self hasTheMinimumAmountOfSquares: aNumberOfSquares.
-	^ self new
-		  initializeWithNumberOfSquares: aNumberOfSquares
-		  andSizeInParsec: aSizeInParsec
-		  andADeckOfCards: aDeck
-]
-
 { #category : 'action' }
 Board >> applyEffectOfLastTileTo: spaceShip on: game [
 
@@ -45,12 +35,6 @@ Board >> applySpecialTiletoA: spaceShip ofAll: spaceShips [
 	lastSpecialTileEffect
 		applyConsequenceTo: spaceShips
 		onBoardOfSize: self
-]
-
-{ #category : 'comparing' }
-Board >> contains: aSpecialTiles [
-
-	specialTiles := aSpecialTiles
 ]
 
 { #category : 'action' }
@@ -69,13 +53,13 @@ Board >> givesACardTo: aSpaceShip [
 ]
 
 { #category : 'initialization' }
-Board >> initializeWithNumberOfSquares: aNumberOfSquares andSizeInParsec: aSizeInParsec andADeckOfCards: aDeck [
-
+Board >> initializeWithNumberOfSquares: aNumberOfSquares sizeInParsec: aSizeInParsec deck: aDeck tiles: someSpecialTiles [ 
 	maximumSquares := aNumberOfSquares.
 	sizeInParsec := aSizeInParsec.
 	deckOfCards := aDeck.
 	specialTiles := OrderedCollection new.
-	lastSpecialTileEffect := NoEffect new
+	lastSpecialTileEffect := NoEffect new.
+	specialTiles := someSpecialTiles
 ]
 
 { #category : 'accessing' }

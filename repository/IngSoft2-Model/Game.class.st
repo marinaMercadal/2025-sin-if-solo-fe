@@ -19,15 +19,6 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'initialization' }
-Game class >> withBoard: aBoard andTurnManager: aTurnManager andRewardDistribution: rewardDistribution [
-
-	^ self new
-		  initializationGameWithBoard: aBoard
-		  andTurnManager: aTurnManager
-		  andRewardDistribution: rewardDistribution
-]
-
 { #category : 'action' }
 Game >> applyRepeatEffectWith: aSpaceship [
 
@@ -65,19 +56,6 @@ Game >> currentFuleOf: aSpaceShip [
 	^ (self spaceShipMatching: aSpaceShip) currentFule
 ]
 
-{ #category : 'accessing' }
-Game >> follows: aWinnerSystem [
-
-	winnerSystem := aWinnerSystem.
-	winnerSystem withPotentialWinner: spaceShips
-]
-
-{ #category : 'testing' }
-Game >> has: players [
-
-	spaceShips := players
-]
-
 { #category : 'testing' }
 Game >> hasAnAlianceFrom: spaceShip and: anotherSpaceShip [
 
@@ -88,13 +66,15 @@ Game >> hasAnAlianceFrom: spaceShip and: anotherSpaceShip [
 ]
 
 { #category : 'initialization' }
-Game >> initializationGameWithBoard: aBoard andTurnManager: aTurnManager andRewardDistribution: rewardDistribution [
-
+Game >> initializeWithBoard: aBoard dices: someDices spaceships: someSpaceShips rules: aWinnerSystem turnManager: aTurnManager rewards: aRewardDistribution [ 
 	board := aBoard.
 	turnManager := aTurnManager.
-
+	dicesInGameBoard := someDices.
 	cardsInGame := OrderedCollection new.
-	rewardAsignation := rewardDistribution
+	rewardAsignation := aRewardDistribution.
+	spaceShips := someSpaceShips.
+	winnerSystem := aWinnerSystem.
+	winnerSystem withPotentialWinner: spaceShips
 ]
 
 { #category : 'action' }
@@ -227,10 +207,4 @@ Game >> with: aSpaceship throws: aCard [
 		^ self ].
 	(self playsInstantaneousCard: aCard for: spaceShip) ifTrue: [ ^ self ].
 	self playsRepeatCard: aCard for: spaceShip
-]
-
-{ #category : 'accessing' }
-Game >> withDices: dices [
-
-	dicesInGameBoard := dices
 ]
