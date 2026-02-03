@@ -57,7 +57,7 @@ GameSetup >> buildGameWithDices: aDices spaceShips: aSpaceShips rules: aWinnerSy
 
 	aGame := Game
 		         onBoard: aBoard
-		         withDices: aDices
+		         dices: aDices
 		         spaceships: aCopyOfSpaceships
 		         rules: aWinnerSystem
 		         turnManager: turnManager

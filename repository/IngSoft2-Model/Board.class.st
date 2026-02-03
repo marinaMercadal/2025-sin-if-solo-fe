@@ -21,6 +21,22 @@ Board class >> hasTheMinimumAmountOfSquares: aNumber [
 	aNumber < 3 ifTrue: [ Error signal: 'Should have at least 3 squares' ]
 ]
 
+{ #category : 'creation' }
+Board class >> withNumberOfSquares: aNumberOfSquares
+sizeInParsec: aSizeInParsec
+deck: aDeck
+tiles: someTiles [
+
+    self hasTheMinimumAmountOfSquares: aNumberOfSquares.
+
+    ^ self new
+        initializeWithNumberOfSquares: aNumberOfSquares
+        sizeInParsec: aSizeInParsec
+        deck: aDeck
+        tiles: someTiles
+
+]
+
 { #category : 'action' }
 Board >> applyEffectOfLastTileTo: spaceShip on: game [
 

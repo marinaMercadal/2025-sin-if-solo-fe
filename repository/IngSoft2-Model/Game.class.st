@@ -19,6 +19,24 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'creation' }
+Game class >> onBoard: aBoard
+dices: someDices
+spaceships: someSpaceShips
+rules: aWinnerSystem
+turnManager: aTurnManager
+rewards: aRewardDistribution [
+
+    ^ self new
+        initializeWithBoard: aBoard
+        dices: someDices
+        spaceships: someSpaceShips
+        rules: aWinnerSystem
+        turnManager: aTurnManager
+        rewards: aRewardDistribution
+
+]
+
 { #category : 'action' }
 Game >> applyRepeatEffectWith: aSpaceship [
 
@@ -207,4 +225,10 @@ Game >> with: aSpaceship throws: aCard [
 		^ self ].
 	(self playsInstantaneousCard: aCard for: spaceShip) ifTrue: [ ^ self ].
 	self playsRepeatCard: aCard for: spaceShip
+	"| currentSpaceship |
+    
+    currentSpaceship := turnManager spaceShipWhoseTurnItIsFrom: spaceShips.
+    spaceShipMoving := currentSpaceship.
+    
+    aCard playedBy: aSpaceship on: self"
 ]
