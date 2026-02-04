@@ -4,7 +4,7 @@ OverLoad Card
 "
 Class {
 	#name : 'CardOverLoad',
-	#superclass : 'Object',
+	#superclass : 'Card',
 	#instVars : [
 		'spaceShipToOverLoad'
 	],
@@ -19,16 +19,16 @@ CardOverLoad class >> for: aSpaceShip [
 ]
 
 { #category : 'action' }
-CardOverLoad >> applyEffectTo: spaceShip with: dicesInGameBoard inGame: game onABoard: aBoard [
-
-	| rolledNumberAdjust |
-	rolledNumberAdjust := 0.
+CardOverLoad >> appliedTo: targetSpaceship in: aGame [
 
 
-	spaceShip = spaceShipToOverLoad ifTrue: [
-		spaceShip goBack: 2 onBoardOfSize: aBoard numberOfSquares ].
+     aGame playsPermanentCard: self
 
-	game upDateLastCardPlayed: self
+]
+
+{ #category : 'action' }
+CardOverLoad >> applyInstantaneousEffectIn:aGame [
+
 ]
 
 { #category : 'action' }
@@ -43,14 +43,9 @@ CardOverLoad >> initializeOverLoadFor: aSpaceShip [
 	spaceShipToOverLoad := aSpaceShip
 ]
 
-{ #category : 'testing' }
-CardOverLoad >> isLastBeingPlayedIn: aBoard [
-
-	aBoard upDateLastCardPlayed: self
-]
-
-{ #category : 'testing' }
-CardOverLoad >> isPermanent [
-
-	^ true
+{ #category : 'action' }
+CardOverLoad >> rollAdjustmentFor: aSpaceship [
+^ aSpaceship = spaceShipToOverLoad
+        ifTrue: [ -2 ]
+        ifFalse: [ 0 ]
 ]

@@ -5,6 +5,17 @@ Class {
 	#package : 'IngSoft2-Tests'
 }
 
+{ #category : 'asserting' }
+InstantCardTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessage [
+
+	self
+		should: anErrorBlock
+		raise: anErrorClass
+		withExceptionDo: [ :error |
+			self assert: (error messageText) equals:
+				errorMessage ]
+]
+
 { #category : 'tests' }
 InstantCardTest >> test0WhenItsNotTheSpaceShipTurnitCanStillThrowAInatantaniousCard [
 
@@ -18,7 +29,7 @@ InstantCardTest >> test0WhenItsNotTheSpaceShipTurnitCanStillThrowAInatantaniousC
 	aPlayer2 := SpaceShip named: 'Martin'.
 
 
-	anAccelerationCard := CardAcceleration withIncrement: 1.
+	anAccelerationCard := CardAcceleration new.
 	aGameSetUp equip: aPlayer1 with: anAccelerationCard.
 	aRedoCard := CardRedo for: anAccelerationCard.
 	aCancellationCard := CancellationCard for: anAccelerationCard.
@@ -79,7 +90,7 @@ InstantCardTest >> test12WhenACancellationCardIsUsedThenItCancelsTheEffectOfAPre
 	aPlayer1 := SpaceShip named: 'Juan'.
 	aPlayer2 := SpaceShip named: 'Martin'.
 
-	anAccelerationCard := CardAcceleration withIncrement: 1.
+	anAccelerationCard := CardAcceleration new.
 	aCancellationCard := CancellationCard for: anAccelerationCard.
 
 	aDeckOfCards := {
@@ -130,7 +141,7 @@ InstantCardTest >> test13WhenThePermanentCardIWhichWantsToGetCancelledIsntBeingP
 	aPlayer1 := SpaceShip named: 'Juan'.
 	aPlayer2 := SpaceShip named: 'Martin'.
 
-	anAccelerationCard := CardAcceleration withIncrement: 1.
+	anAccelerationCard := CardAcceleration new.
 	aCancellationCard := CancellationCard for: anAccelerationCard.
 
 	aDeckOfCards := {
@@ -159,10 +170,15 @@ InstantCardTest >> test13WhenThePermanentCardIWhichWantsToGetCancelledIsntBeingP
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer1) equals: 1.
 
-	aBoard with: aPlayer2 throws: aCancellationCard.
-	aBoard playNextTurn.
+	
+	
+	self
+		should: [ aBoard with: aPlayer2 throws: aCancellationCard. ]
+		raise: Error
+		withMessageText: 'That card is not being played'
+	"aBoard playNextTurn.
 
-	self assert: (aBoard positionOf: aPlayer2) equals: 1
+	self assert: (aBoard positionOf: aPlayer2) equals: 1"
 ]
 
 { #category : 'tests' }
@@ -178,7 +194,7 @@ InstantCardTest >> test1ARepeatCardIsUsedAfterFallinginABonusTileThenTheAssigned
 	aPlayer2 := SpaceShip named: 'Martin'.
 
 
-	anAccelerationCard := CardAcceleration withIncrement: 1.
+	anAccelerationCard := CardAcceleration new.
 
 	aRepeat := CardRepeat for: aPlayer2.
 	aCancellationCard := CancellationCard for: anAccelerationCard.
@@ -241,7 +257,7 @@ InstantCardTest >> test2ARepeatCardIsUsedAfterFallinginAAtomicBombTheTheSpaeShip
 	aPlayer1 := SpaceShip named: 'Juan'.
 	aPlayer2 := SpaceShip named: 'Martin'.
 
-	anAccelerationCard := CardAcceleration withIncrement: 1.
+	anAccelerationCard := CardAcceleration new.
 
 	aRepeat := CardRepeat for: aPlayer2.
 	aCancellationCard := CancellationCard for: anAccelerationCard.

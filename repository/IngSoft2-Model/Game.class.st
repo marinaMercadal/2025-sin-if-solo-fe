@@ -46,14 +46,11 @@ Game >> applyRepeatEffectWith: aSpaceship [
 ]
 
 { #category : 'action' }
-Game >> cardEffectIsPlayed [
+Game >> cardsEffectsArePlayed [
 
+		
 	cardsInGame do: [ :card |
-		card
-			applyEffectTo: spaceShipMoving
-			with: dicesInGameBoard
-			inGame: self
-			onABoard: board ]
+		card applyInstantaneousEffectIn:self ]
 ]
 
 { #category : 'accessing' }
@@ -75,12 +72,19 @@ Game >> currentFuleOf: aSpaceShip [
 ]
 
 { #category : 'testing' }
-Game >> hasAnAlianceFrom: spaceShip and: anotherSpaceShip [
+Game >> formsAlianceWith:anotherSpaceShip [
 
 	| spaceShipToTeamUp |
 	spaceShipToTeamUp := self spaceShipMatching: anotherSpaceShip.
-	spaceShip sharesFuleWith: spaceShipToTeamUp.
-	spaceShipToTeamUp sharesFuleWith: spaceShip
+	spaceShipMoving sharesFuleWith: spaceShipToTeamUp.
+	spaceShipToTeamUp sharesFuleWith: spaceShipMoving
+]
+
+{ #category : 'testing' }
+Game >> hasActiveCard: cardToCancel [
+
+(cardsInGame includes:cardToCancel )ifFalse: [ 
+        Error signal: 'That card is not being played'].
 ]
 
 { #category : 'initialization' }
@@ -112,13 +116,18 @@ Game >> move: aSpaceShip with: dices [
 
 	| rolledNumber |
 	winnerSystem thereIsAWinner ifTrue: [ ^ self ].
-	rolledNumber := self rolledNumberSumOf: dices.
+
+	
+	rolledNumber := (self rolledNumberSumOf: dices ).
 	spaceShipMoving := aSpaceShip.
 	(aSpaceShip canMoveWith: rolledNumber) ifFalse: [ ^ self ].
-	self move: aSpaceShip forwardBy: rolledNumber.
+	self move: aSpaceShip forwardBy: (rolledNumber + (self rollAdjustmentFor: aSpaceShip)).
 	board applySpecialTiletoA: aSpaceShip ofAll: spaceShips.
-	self cardEffectIsPlayed.
+	self cardsEffectsArePlayed.
 	rewardAsignation for: aSpaceShip with: dices
+
+   
+
 ]
 
 { #category : 'action' }
@@ -136,40 +145,27 @@ Game >> playNextTurn [
 ]
 
 { #category : 'action' }
-Game >> playsInstantaneousCard: aCard for: aSpaceship [
-    (aCard isInstantaneous and: [ aCard chosenOnIsIn: cardsInGame ])
-        ifTrue: [
-            aCard isLastBeingPlayedIn: self.
-            aCard applyEffectTo: aSpaceship
-                 with: dicesInGameBoard
-                 inGame: self
-                 onABoard: board.
-            ^ true
-        ].
-    ^ false
+Game >> playsInstantaneousCard: aCard [
+
+
+	aCard canBePlayedIn:self.
+	aCard applyInstantaneousEffectIn:self.
+
+	lastCardPlayed := aCard
+
+	
+
+  
 
 ]
 
 { #category : 'action' }
-Game >> playsPermanentCard: aCard for: aSpaceship [
-    (aCard isPermanent and: [ turnManager isAboutToPlay: aSpaceship ])
-        ifTrue: [
-            cardsInGame add: aCard.
-            aSpaceship removeCard: aCard.
-            aCard isLastBeingPlayedIn: self.
-            ^ true
-        ].
-    ^ false
+Game >> playsPermanentCard: aCard [ 
 
-]
+	turnManager isAboutToPlay: spaceShipMoving .
+	cardsInGame add: aCard.
+	lastCardPlayed := aCard
 
-{ #category : 'action' }
-Game >> playsRepeatCard: aCard for: aSpaceship [
-
-	(aCard isInstantaneous not and: [ aCard isPermanent not ]) ifFalse: [
-		^ self ].
-	aCard addEffectRepetedTo: self by: aSpaceship the: lastCardPlayed.
-	aSpaceship removeCard: aCard
 ]
 
 { #category : 'accessing' }
@@ -178,10 +174,28 @@ Game >> positionOf: aSpaceShip [
 	^ (self spaceShipMatching: aSpaceShip) currentPosition
 ]
 
+{ #category : 'action' }
+Game >> redoLastCardWith:anInicialization targeting:targetSpaceship [
+
+|newCardToRedo|
+newCardToRedo:= lastCardPlayed changeTo: anInicialization.
+
+
+newCardToRedo appliedTo: targetSpaceship in: self
+]
+
 { #category : 'removing' }
 Game >> remove: cardToCancel [
 
 	cardsInGame remove: cardToCancel
+]
+
+{ #category : 'action' }
+Game >> rollAdjustmentFor: aSpaceship [
+  ^ cardsInGame sum: [ :card |
+        card rollAdjustmentFor: aSpaceship
+    ]
+
 ]
 
 { #category : 'accessing' }
@@ -207,28 +221,15 @@ Game >> spaceShipMatching: aSpaceShip [
 ]
 
 { #category : 'action' }
-Game >> upDateLastCardPlayed: aCard [
-
-	lastCardPlayed := aCard
-]
-
-{ #category : 'action' }
 Game >> with: aSpaceship throws: aCard [
 
-	| spaceShip aSpaceshipToThrowCard |
-	aSpaceshipToThrowCard := spaceShips detect: [ :each |
-		                         each = aSpaceship ].
-	spaceShip := turnManager spaceShipWhoseTurnItIsFrom: spaceShips.
-	spaceShipMoving := spaceShip.
 
-	(self playsPermanentCard: aCard for: aSpaceshipToThrowCard) ifTrue: [
-		^ self ].
-	(self playsInstantaneousCard: aCard for: spaceShip) ifTrue: [ ^ self ].
-	self playsRepeatCard: aCard for: spaceShip
-	"| currentSpaceship |
-    
+    | currentSpaceship targetSpaceship |
+
+    targetSpaceship := spaceShips detect: [ :each | each = aSpaceship ].
     currentSpaceship := turnManager spaceShipWhoseTurnItIsFrom: spaceShips.
     spaceShipMoving := currentSpaceship.
-    
-    aCard playedBy: aSpaceship on: self"
+
+	aCard appliedTo: targetSpaceship in: self.
+
 ]

@@ -3,7 +3,7 @@ ccccancellationnn
 "
 Class {
 	#name : 'CancellationCard',
-	#superclass : 'Object',
+	#superclass : 'Card',
 	#instVars : [
 		'cardToCancel'
 	],
@@ -18,43 +18,30 @@ CancellationCard class >> for: aCard [
 ]
 
 { #category : 'action' }
-CancellationCard >> applyEffectTo: spaceShipMoving with: dicesInGameBoard inGame: game onABoard: aBoard [
+CancellationCard >> appliedTo: targetSpaceship in: aGame [
 
-	game remove: cardToCancel
+aGame playsInstantaneousCard: self
+]
+
+{ #category : 'action' }
+CancellationCard >> applyInstantaneousEffectIn:aGame [
+
+	aGame remove: cardToCancel
+]
+
+{ #category : 'testing' }
+CancellationCard >> canBePlayedIn:aGame [
+^(aGame hasActiveCard: cardToCancel)
 ]
 
 { #category : 'action' }
 CancellationCard >> changeTo: anImplementation [
 
-	^ self class for: anImplementation
-]
-
-{ #category : 'verification' }
-CancellationCard >> chosenOnIsIn: cardsInGame [
-
-	^ cardsInGame includes: cardToCancel
+	^ self class for: anImplementation  
 ]
 
 { #category : 'initialization' }
 CancellationCard >> initializationFor: aCard [
 
 	cardToCancel := aCard
-]
-
-{ #category : 'testing' }
-CancellationCard >> isInstantaneous [
-
-	^ true
-]
-
-{ #category : 'testing' }
-CancellationCard >> isLastBeingPlayedIn: aBoard [
-
-	aBoard upDateLastCardPlayed: self
-]
-
-{ #category : 'testing' }
-CancellationCard >> isPermanent [
-
-	^ false
 ]

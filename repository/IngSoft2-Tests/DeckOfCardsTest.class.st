@@ -27,7 +27,7 @@ DeckOfCardsTest >> test01WhenItsNotTheSpaceShipTurnThenItCantThrowAPermanentCard
 	aPlayer1 := SpaceShip named: 'Juan'.
 	aPlayer2 := SpaceShip named: 'Martin'.
 
-	anAccelerationCard := CardAcceleration withIncrement: 1.
+	anAccelerationCard := CardAcceleration new.
 	aGameSetUp equip: aPlayer1 with: anAccelerationCard.
 	aRedoCard := CardRedo for: anAccelerationCard.
 	aCancellationCard := CancellationCard for: anAccelerationCard.
@@ -88,7 +88,7 @@ DeckOfCardsTest >> test0WhenASpaceShipGetsCreatedItHasAnInitialAmountOfCards [
 	aPlayer1 := SpaceShip named: 'Juan'.
 	aPlayer2 := SpaceShip named: 'Martin'.
 
-	anAccelerationCard := CardAcceleration withIncrement: 1.
+	anAccelerationCard := CardAcceleration new.
 
 	aDeckOfCards := {
 		                anAccelerationCard.
@@ -188,7 +188,7 @@ DeckOfCardsTest >> test11WhenTestingADeterministicMethodForCardsIsUsed [
 	aPlayer1 := SpaceShip named: 'Juan'.
 	aPlayer2 := SpaceShip named: 'Martin'.
 
-	anAccelerationCard := CardAcceleration withIncrement: 1.
+	anAccelerationCard := CardAcceleration new.
 
 	aDeckOfCards := {
 		                anAccelerationCard.
@@ -296,7 +296,7 @@ DeckOfCardsTest >> test3WhenAcceleratorCardIsUsedThenItRemainsOnGameUntilRemoved
 	aPlayer1 := SpaceShip named: 'Juan'.
 	aPlayer2 := SpaceShip named: 'Martin'.
 
-	anAccelerationCard := CardAcceleration withIncrement: 1.
+	anAccelerationCard := CardAcceleration new.
 
 	aDeckOfCards := {
 		                anAccelerationCard.
@@ -343,7 +343,7 @@ DeckOfCardsTest >> test4WhenAAceleratorCardIsUsedThenItAffectsTheFinalRolledNumb
 	aPlayer1 := SpaceShip named: 'Juan'.
 
 
-	anAccelerationCard := CardAcceleration withIncrement: 1.
+	anAccelerationCard := CardAcceleration new.
 
 	aDeckOfCards := {
 		                anAccelerationCard.
@@ -672,25 +672,4 @@ DeckOfCardsTest >> testF1WhenTheBonusCardPositionIsNegativeThenTheCreationFails 
 		should: [ aGameSetUp withTiles: { (BonusCard in: -6) } ]
 		raise: Error
 		withMessageText: 'A BonusCard has to be in a positive position'
-]
-
-{ #category : 'tests' }
-DeckOfCardsTest >> testF2WhenTheCardAccelerationHasANegativeIncrementThenTheCreationFails [
-
-	| aGameSetUp aDice aPlayer1 aPlayer2 anAccelerationCard |
-	aGameSetUp := GameSetup new.
-
-	aDice := RiggedDice withNumberOfFaces: 6.
-	aDice setNumbersProvider: { 6. 3. 3. 4 }.
-
-	aPlayer1 := SpaceShip named: 'Juan'.
-	aPlayer2 := SpaceShip named: 'Martin'.
-
-
-
-	self
-		should: [ anAccelerationCard := CardAcceleration withIncrement: -1 ]
-		raise: Error
-		withMessageText:
-		'A CardAcceleration has to have a positive increment'
 ]

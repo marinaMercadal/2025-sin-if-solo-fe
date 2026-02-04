@@ -3,10 +3,7 @@ A
 "
 Class {
 	#name : 'CardAcceleration',
-	#superclass : 'Object',
-	#instVars : [
-		'accelerationIncrement'
-	],
+	#superclass : 'Card',
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
@@ -18,40 +15,31 @@ CardAcceleration class >> isPositive: aNumber [
 		Error signal: 'A CardAcceleration has to have a positive increment' ]
 ]
 
-{ #category : 'initialization' }
-CardAcceleration class >> withIncrement: aNumber [
+{ #category : 'action' }
+CardAcceleration >> appliedTo: targetSpaceship in: aGame [
 
-	self isPositive: aNumber.
 
-	^ self new initializeAccelerationCard: aNumber
+     aGame playsPermanentCard: self
+
 ]
 
 { #category : 'action' }
-CardAcceleration >> applyEffectTo: spaceShip with: dicesInGameBoard inGame: game onABoard: aBoard [
+CardAcceleration >> applyInstantaneousEffectIn:aGame [
 
-	game move: spaceShip forwardBy: accelerationIncrement
+	
+
 ]
 
 { #category : 'action' }
 CardAcceleration >> changeTo: anImplementation [
 
-	^ self class withIncrement: anImplementation
+	^ self
+
 ]
 
-{ #category : 'initialization' }
-CardAcceleration >> initializeAccelerationCard: aNumber [
+{ #category : 'action' }
+CardAcceleration >> rollAdjustmentFor: aSpaceship [
+    ^ 1
 
-	accelerationIncrement := aNumber
-]
 
-{ #category : 'testing' }
-CardAcceleration >> isLastBeingPlayedIn: aBoard [
-
-	aBoard upDateLastCardPlayed: self 
-]
-
-{ #category : 'testing' }
-CardAcceleration >> isPermanent [
-
-	^ true
 ]

@@ -3,7 +3,7 @@ RedoCard
 "
 Class {
 	#name : 'CardRedo',
-	#superclass : 'Object',
+	#superclass : 'Card',
 	#instVars : [
 		'anInicialization'
 	],
@@ -27,20 +27,15 @@ CardRedo >> addEffectRepetedTo: aBoard by: spaceShip the: lastCardPlay [
 	aBoard with: spaceShip throws: aCard
 ]
 
+{ #category : 'adding' }
+CardRedo >> appliedTo: targetSpaceship in: aGame [
+
+aGame redoLastCardWith:anInicialization targeting:targetSpaceship.
+
+]
+
 { #category : 'initialization' }
 CardRedo >> initializationFor: aSpaceShip [
 
 	anInicialization := aSpaceShip
-]
-
-{ #category : 'testing' }
-CardRedo >> isInstantaneous [
-
-	^ false
-]
-
-{ #category : 'testing' }
-CardRedo >> isPermanent [
-
-	^ false
 ]
