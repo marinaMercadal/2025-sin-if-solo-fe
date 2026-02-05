@@ -31,6 +31,12 @@ TileDistribution >> build: aSize [
 
 ]
 
+{ #category : 'accessing' }
+TileDistribution >> elementFor: aRandomProbability [
+    ^ self tileFor: aRandomProbability
+
+]
+
 { #category : 'initialization' }
 TileDistribution >> forAtomicBomb: aProbability [
 

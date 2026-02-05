@@ -12,6 +12,12 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'accessing' }
+RewardDistribution >> elementFor: aRandomProbability [
+    ^ self rewardFor: aRandomProbability
+
+]
+
 { #category : 'instance creation' }
 RewardDistribution >> for: aSpaceShip with: dices [
 
