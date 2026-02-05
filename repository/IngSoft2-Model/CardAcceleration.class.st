@@ -8,21 +8,6 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'testing' }
-CardAcceleration class >> isPositive: aNumber [
-
-	aNumber < 0 ifTrue: [
-		Error signal: 'A CardAcceleration has to have a positive increment' ]
-]
-
-{ #category : 'action' }
-CardAcceleration >> appliedTo: targetSpaceship in: aGame [
-
-
-     aGame playsPermanentCard: self
-
-]
-
 { #category : 'action' }
 CardAcceleration >> applyInstantaneousEffectIn:aGame [
 
@@ -34,6 +19,14 @@ CardAcceleration >> applyInstantaneousEffectIn:aGame [
 CardAcceleration >> changeTo: anImplementation [
 
 	^ self
+
+]
+
+{ #category : 'action' }
+CardAcceleration >> playedBy:aSpaceShip targeting: aCard in: aGame [
+
+
+     aGame playsPermanentCard: self
 
 ]
 

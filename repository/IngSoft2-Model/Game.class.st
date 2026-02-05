@@ -76,8 +76,13 @@ Game >> formsAlianceWith:anotherSpaceShip [
 
 	| spaceShipToTeamUp |
 	spaceShipToTeamUp := self spaceShipMatching: anotherSpaceShip.
+	spaceShipMoving formAllyWith: spaceShipToTeamUp.
+	spaceShipMoving sharesFuelWithAlly.
+	
+	"spaceShipMoving formsAllyWith:spaceShipToTeamUp."
+	"
 	spaceShipMoving sharesFuleWith: spaceShipToTeamUp.
-	spaceShipToTeamUp sharesFuleWith: spaceShipMoving
+	spaceShipToTeamUp sharesFuleWith: spaceShipMoving"
 ]
 
 { #category : 'testing' }
@@ -131,6 +136,16 @@ Game >> move: aSpaceShip with: dices [
 ]
 
 { #category : 'action' }
+Game >> playCard: aCard targeting: aTarget [
+
+    
+   spaceShipMoving := turnManager spaceShipWhoseTurnItIsFrom: spaceShips.
+ 
+	aCard playedBy:spaceShipMoving targeting: aTarget in: self.
+
+]
+
+{ #category : 'action' }
 Game >> playNextTurn [
 
 	| spaceShip |
@@ -168,20 +183,23 @@ Game >> playsPermanentCard: aCard [
 
 ]
 
+{ #category : 'action' }
+Game >> playsRedoCard:anInicialization targeting:targetSpaceship [
+
+|newCardToRedo|
+
+newCardToRedo:=  (lastCardPlayed copy).
+
+
+
+newCardToRedo playedBy: anInicialization targeting: targetSpaceship in: self
+
+]
+
 { #category : 'accessing' }
 Game >> positionOf: aSpaceShip [
 
 	^ (self spaceShipMatching: aSpaceShip) currentPosition
-]
-
-{ #category : 'action' }
-Game >> redoLastCardWith:anInicialization targeting:targetSpaceship [
-
-|newCardToRedo|
-newCardToRedo:= lastCardPlayed changeTo: anInicialization.
-
-
-newCardToRedo appliedTo: targetSpaceship in: self
 ]
 
 { #category : 'removing' }
@@ -218,18 +236,4 @@ Game >> skipNextTurn [
 Game >> spaceShipMatching: aSpaceShip [
 
 	^ spaceShips detect: [ :each | each = aSpaceShip ]
-]
-
-{ #category : 'action' }
-Game >> with: aSpaceship throws: aCard [
-
-
-    | currentSpaceship targetSpaceship |
-
-    targetSpaceship := spaceShips detect: [ :each | each = aSpaceship ].
-    currentSpaceship := turnManager spaceShipWhoseTurnItIsFrom: spaceShips.
-    spaceShipMoving := currentSpaceship.
-
-	aCard appliedTo: targetSpaceship in: self.
-
 ]

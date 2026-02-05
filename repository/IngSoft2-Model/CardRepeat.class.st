@@ -12,18 +12,6 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'instance creation' }
-CardRepeat class >> for: aSpaceShip [
-
-	^ self new initializationFor: aSpaceShip
-]
-
-{ #category : 'action' }
-CardRepeat >> appliedTo: targetSpaceship in: aGame [
-
-aGame playsInstantaneousCard: self 
-]
-
 { #category : 'action' }
 CardRepeat >> applyInstantaneousEffectIn:aGame [
 
@@ -38,8 +26,9 @@ CardRepeat >> canBePlayedIn:aGame [
 ^true
 ]
 
-{ #category : 'initialization' }
-CardRepeat >> initializationFor: aSpaceship [
+{ #category : 'action' }
+CardRepeat >> playedBy:aSpaceShip targeting: aTargetSpaceShip in: aGame [
+spaceship := aSpaceShip.
 
-	spaceship := aSpaceship
+aGame playsInstantaneousCard: self 
 ]

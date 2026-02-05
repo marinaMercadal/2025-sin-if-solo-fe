@@ -12,35 +12,15 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'instance creation' }
-CardOverLoad class >> for: aSpaceShip [
-
-	^ self new initializeOverLoadFor: aSpaceShip
-]
-
-{ #category : 'action' }
-CardOverLoad >> appliedTo: targetSpaceship in: aGame [
-
-
-     aGame playsPermanentCard: self
-
-]
-
 { #category : 'action' }
 CardOverLoad >> applyInstantaneousEffectIn:aGame [
 
 ]
 
 { #category : 'action' }
-CardOverLoad >> changeTo: anImplementation [
-
-	^ self class for: anImplementation
-]
-
-{ #category : 'initialization' }
-CardOverLoad >> initializeOverLoadFor: aSpaceShip [
-
-	spaceShipToOverLoad := aSpaceShip
+CardOverLoad >> playedBy:aSpaceShip targeting: targetSpaceship in: aGame [
+spaceShipToOverLoad:=targetSpaceship.
+aGame playsPermanentCard: self
 ]
 
 { #category : 'action' }

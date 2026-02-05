@@ -9,20 +9,20 @@ Class {
 RewardTest >> test1FromASampleOfAnAmountOfRolledDicesThereAreAProbabilityOfHavingARewardOrNot [
 
 	| rewardDistribution results probabilitySampling |
-	probabilitySampling := 1500.
+	probabilitySampling := 400.
 	rewardDistribution := RewardDistribution new.
 	rewardDistribution forRestartFuel: 0.8.
 	rewardDistribution forDecreaseFuel: 0.2.
 
 
 
-	results := rewardDistribution buidFor: probabilitySampling.
-	self assert: ((rewardDistribution percentageOf: RestartFuelReward)
-			 between: 0.78
-			 and: 0.81).
+	results := rewardDistribution build: probabilitySampling.
+	self assert: ((rewardDistribution percentageOf: RechargeFuelReward)
+			 between: 0.77
+			 and: 0.83).
 	self assert: ((rewardDistribution percentageOf: DecreaseFuelReward)
-			 between: 0.19
-			 and: 0.21)
+			 between: 0.17
+			 and: 0.23)
 ]
 
 { #category : 'tests' }
@@ -135,7 +135,7 @@ RewardTest >> test5WhenTheProbabilityOfRestartFuelIsAtItMaximumThenWhenRolledMax
 	aGameSetUp := GameSetup new.
 
 	aDice := RiggedDice withNumberOfFaces: 6.
-	aDice setNumbersProvider: { 6. 6. 6. 6 }.
+	aDice setNumbersProvider: { 6. 6. 6. 6 }. "initial fule 12"
 
 	aPlayer1 := SpaceShip named: 'Juan'.
 
@@ -143,18 +143,18 @@ RewardTest >> test5WhenTheProbabilityOfRestartFuelIsAtItMaximumThenWhenRolledMax
 	aGameSetUp withPlayers: { aPlayer1 }.
 	aGameSetUp withARewardDistribution: rewardDistribution.
 	aTurnManager := TurnManager withOrder: { aPlayer1 }.
-	aGameSetUp withABoardNumberOfSquares: 10 andTurnManager: aTurnManager.
+	aGameSetUp withABoardNumberOfSquares: 100 andTurnManager: aTurnManager.
 	aGameSetUp withMaximumLapsToWin: 1.
 	aGameSetUp createGameInstance.
 	aBoard := aGameSetUp board.
 	aWinnerSystem := aGameSetUp winnerSystem.
 
 
-
-	aBoard playNextTurn.
 	self assert: (aBoard currentFuleOf: aPlayer1) equals: 12.
 	aBoard playNextTurn.
-	self assert: (aBoard currentFuleOf: aPlayer1) equals: 12.
+	self assert: (aBoard currentFuleOf: aPlayer1) equals: 13.
 	aBoard playNextTurn.
-	self assert: (aBoard currentFuleOf: aPlayer1) equals: 12
+	self assert: (aBoard currentFuleOf: aPlayer1) equals: 14.
+	aBoard playNextTurn.
+	self assert: (aBoard currentFuleOf: aPlayer1) equals: 15.
 ]

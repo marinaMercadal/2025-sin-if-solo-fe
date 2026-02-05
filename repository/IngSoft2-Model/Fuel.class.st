@@ -21,6 +21,15 @@ Fuel class >> withAnAmount: aFuelAmount [
 ]
 
 { #category : 'action' }
+Fuel >> breakFuelPartner [
+
+ 
+        fuelPartner sharesFule: EmptyFule new.  
+        fuelPartner := EmptyFule new.              
+    
+]
+
+{ #category : 'action' }
 Fuel >> consume: aDistance [
 
 	| fuelNeeded |
@@ -50,6 +59,13 @@ Fuel >> hasFuelToPlay [
 	^ self isBiggerThanCero or: fuelPartner isBiggerThanCero
 ]
 
+{ #category : 'action' }
+Fuel >> increaseFuelCapacityBy:anAmount [
+
+	initialFuel :=initialFuel+anAmount.
+	self recharge 
+]
+
 { #category : 'initialization' }
 Fuel >> initializeWithAnAmount: aFuelAmount [
 
@@ -71,9 +87,17 @@ Fuel >> recharge [
 ]
 
 { #category : 'action' }
-Fuel >> sharesFuleWith: anotherSystem [
+Fuel >> sharesFule:aFuleSystem [
 
-	fuelPartner := anotherSystem
+	fuelPartner := aFuleSystem.
+	
+]
+
+{ #category : 'action' }
+Fuel >> sharesFuleWith: anotherSystem [
+	"self breakFuelPartner."
+	fuelPartner := anotherSystem.
+	anotherSystem sharesFule:self.
 ]
 
 { #category : 'validating' }

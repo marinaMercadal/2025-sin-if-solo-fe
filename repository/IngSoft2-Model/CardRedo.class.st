@@ -11,31 +11,11 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'instance creation' }
-CardRedo class >> for: aSpaceShip [
-
-	^ self new initializationFor: aSpaceShip
-]
-
 { #category : 'adding' }
-CardRedo >> addEffectRepetedTo: aBoard by: spaceShip the: lastCardPlay [
+CardRedo >> playedBy:aSpaceShip targeting: aTarget in: aGame [
 
-	| aCard |
-	aCard := lastCardPlay changeTo: anInicialization.
 
-	spaceShip equipWith: aCard.
-	aBoard with: spaceShip throws: aCard
-]
+anInicialization := aTarget.
+aGame playsRedoCard:aSpaceShip targeting:aTarget.
 
-{ #category : 'adding' }
-CardRedo >> appliedTo: targetSpaceship in: aGame [
-
-aGame redoLastCardWith:anInicialization targeting:targetSpaceship.
-
-]
-
-{ #category : 'initialization' }
-CardRedo >> initializationFor: aSpaceShip [
-
-	anInicialization := aSpaceShip
 ]

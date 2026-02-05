@@ -11,18 +11,6 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'instance creation' }
-CancellationCard class >> for: aCard [
-
-^self new initializationFor:aCard.
-]
-
-{ #category : 'action' }
-CancellationCard >> appliedTo: targetSpaceship in: aGame [
-
-aGame playsInstantaneousCard: self
-]
-
 { #category : 'action' }
 CancellationCard >> applyInstantaneousEffectIn:aGame [
 
@@ -35,13 +23,7 @@ CancellationCard >> canBePlayedIn:aGame [
 ]
 
 { #category : 'action' }
-CancellationCard >> changeTo: anImplementation [
-
-	^ self class for: anImplementation  
-]
-
-{ #category : 'initialization' }
-CancellationCard >> initializationFor: aCard [
-
-	cardToCancel := aCard
+CancellationCard >> playedBy:aSpaceShip targeting: aCard in: aGame [
+cardToCancel:=aCard .
+aGame playsInstantaneousCard: self
 ]

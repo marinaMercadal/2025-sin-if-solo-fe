@@ -12,19 +12,6 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'initialization' }
-CardAlly class >> teamsUpWith: aSpaceShip [
-
-	^ self new initializeAllyCardTeamsUpWith: aSpaceShip
-]
-
-{ #category : 'action' }
-CardAlly >> appliedTo: targetSpaceship in: aGame [
-
-    aGame playsPermanentCard: self 
- 
-]
-
 { #category : 'action' }
 CardAlly >> applyInstantaneousEffectIn:aGame [
 
@@ -33,15 +20,11 @@ CardAlly >> applyInstantaneousEffectIn:aGame [
 ]
 
 { #category : 'action' }
-CardAlly >> changeTo: anImplementation [
+CardAlly >> playedBy:aSpaceShip targeting: targetSpaceship in: aGame [
 
-	^ self class teamsUpWith: anImplementation
-]
-
-{ #category : 'initialization' }
-CardAlly >> initializeAllyCardTeamsUpWith: aSpaceShip [
-
-	spaceShipToTeamUp := aSpaceShip
+spaceShipToTeamUp := targetSpaceship.
+    aGame playsPermanentCard: self 
+ 
 ]
 
 { #category : 'action' }
