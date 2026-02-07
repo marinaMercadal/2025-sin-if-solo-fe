@@ -19,6 +19,7 @@ CardOverLoad >> applyInstantaneousEffectIn:aGame [
 
 { #category : 'action' }
 CardOverLoad >> playedBy:aSpaceShip targeting: targetSpaceship in: aGame [
+
 spaceShipToOverLoad:=targetSpaceship.
 aGame playsPermanentCard: self
 ]

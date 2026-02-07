@@ -157,7 +157,7 @@ DeckOfCardsTest >> test10WhenASecondSpaceShipUsesAnAllyCardThenItApplysTheirConc
 	aBoard := aGameSetUp board.
 
 	aBoard playNextTurn.
-	aBoard playCard: anAllyCard by:aPlayer1 targeting: aPlayer2 .
+	aBoard playCard: anAllyCard by:aPlayer2 targeting: aPlayer2 .
 	aBoard playNextTurn.
 	aBoard playNextTurn.
 	aBoard playNextTurn.
@@ -230,7 +230,7 @@ DeckOfCardsTest >> test11WhenASpaceShipFormsANewAllyOldAllianceIsBroken [
 
 	self assert: (aBoard currentFuleOf: aPlayer2) equals: 3.
 
-	aBoard playCard: anAllyCard  by:aPlayer2 targeting: aPlayer1.
+	aBoard playCard: anAllyCard  by:aPlayer3 targeting: aPlayer1.
 
 	aBoard playNextTurn."juega 3"
 	
@@ -310,9 +310,7 @@ DeckOfCardsTest >> test1WhenASpaceShipGetsCreatedThenItGetsAssignedTwoCardsAtRan
 	aBoard := aGameSetUp board.
 
 	self
-		assert: (aBoard cardsOf: aPlayer1)
-		equals:
-		(OrderedCollection with: CardAcceleration with: CardAcceleration)
+		assert: (aBoard cardsOf: aPlayer1) size equals:(2)
 ]
 
 { #category : 'tests' }

@@ -27,12 +27,6 @@ TurnManager >> initializeTurnManager: aOrderOfSpaceShips [
 	nextSpaceShip := spaceShipsInOrder at: 1
 ]
 
-{ #category : 'testing' }
-TurnManager >> isAboutToPlay: aSpaceshipToThrowCard [
-
-	^ aSpaceshipToThrowCard = (spaceShipsInOrder at: 1)
-]
-
 { #category : 'accessing' }
 TurnManager >> spaceShipWhoseTurnItIsFrom: spaceShips [
 

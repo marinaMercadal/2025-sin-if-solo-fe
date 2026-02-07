@@ -103,8 +103,7 @@ FiniteDeckTest >> test3WhenNoSpaceShipPlaysACardThenDeckRemainsUnchanged [
 { #category : 'tests' }
 FiniteDeckTest >> test4WhenGameStartsEachSpaceShipReceivesTwoCardsAndDeckReducesByFour [
 
-	| aGameSetUp aDeckDistribution deckSize aPlayer1 aPlayer2 aDice initialCards  aTurnManager aDeck |
-
+	| aGameSetUp aDeckDistribution deckSize aPlayer1 aPlayer2 aDice initialCards aTurnManager aDeck aBoard |
 	deckSize := 10.
 	aDeckDistribution := DeckDistribution new.
 
@@ -117,16 +116,18 @@ FiniteDeckTest >> test4WhenGameStartsEachSpaceShipReceivesTwoCardsAndDeckReduces
 
 	aGameSetUp := GameSetup new.
 
-	initialCards:=aDeckDistribution build: deckSize.
+	initialCards := aDeckDistribution build: deckSize.
 
-	aDeck:=Deck withCards: initialCards.
-	aGameSetUp assignsRandomly: aDeck .
-	
-	
+	aDeck := Deck withCards: initialCards.
+	aGameSetUp assignsRandomly: aDeck.
+
+
 	aPlayer1 := SpaceShip named: 'Juan'.
 	aPlayer2 := SpaceShip named: 'Martin'.
 
-	aGameSetUp withPlayers: { aPlayer1. aPlayer2 }.
+	aGameSetUp withPlayers: {
+			aPlayer1.
+			aPlayer2 }.
 
 	aDice := RiggedDice withNumberOfFaces: 6.
 	aDice setNumbersProvider: { 1 }.
@@ -134,16 +135,20 @@ FiniteDeckTest >> test4WhenGameStartsEachSpaceShipReceivesTwoCardsAndDeckReduces
 	aGameSetUp withDices: { aDice }.
 	aTurnManager := TurnManager withOrder: { aPlayer1 }.
 	aGameSetUp withABoardNumberOfSquares: 6 andTurnManager: aTurnManager.
-	
-	self assert: initialCards size equals:10.
+
+
 	aGameSetUp createGameInstance.
 
-	self assert: aPlayer1 cardsInHand size equals: 2.
-	self assert: aPlayer2 cardsInHand size equals: 2.
-	self assert: initialCards size equals:6
-	
-	
-
+	aBoard := aGameSetUp board.
+	self assert: aBoard deckOfCards equals: (Deck withCards: {
+				 CardOverLoad new.
+				 CardOverLoad new.
+				 CardOverLoad new.
+				 CardOverLoad new.
+				 CardOverLoad new.
+				 CardOverLoad new } asOrderedCollection).
+	self assert: (aBoard cardsOf: aPlayer1) size equals: 2.
+	self assert: (aBoard cardsOf: aPlayer2) size equals: 2
 ]
 
 { #category : 'tests' }
@@ -181,13 +186,13 @@ FiniteDeckTest >> test5WhenThereIsNoCardPlayedThenTheDiscardDeckIsEmpty [
 	aTurnManager := TurnManager withOrder: { aPlayer1 }.
 	aGameSetUp withABoardNumberOfSquares: 6 andTurnManager: aTurnManager.
 	
-	self assert: initialCards size equals:10.
+	
 	aGameSetUp createGameInstance.
 	aBoard:=aGameSetUp board .
 	
 	self assert: (aBoard cardsOf:aPlayer1) size equals: 2.
 	self assert: (aBoard cardsOf:aPlayer2) size equals: 2.
-	self assert: initialCards size equals:6.
+
 	self assert: (aBoard discardDeck) equals: (Deck withCards:{}asOrderedCollection ).
 	
 	
@@ -240,9 +245,187 @@ FiniteDeckTest >> test6WhenACardIsPlayedThenItGoesToTheDiscardDeck [
 	aBoard playCard: anAcelerationCard by:aPlayer1 targeting: NoTarget new. 
 	self assert: (aBoard cardsOf:aPlayer1) size equals: 2.
 	self assert: (aBoard cardsOf:aPlayer2) size equals: 2.
-	self assert: initialCards size equals:6.
+	
 	self assert: (aBoard discardDeck) equals: (Deck withCards:{CardAcceleration new}asOrderedCollection ).
 	
 	
+
+]
+
+{ #category : 'tests' }
+FiniteDeckTest >> test7WhenACardCannotBePlayedThenItIsNotDiscarded [
+
+
+
+	| aGameSetUp aDeckDistribution deckSize aPlayer1 aPlayer2 aDice initialCards  aTurnManager aDeck aBoard  anOverload |
+
+	deckSize := 10.
+	aDeckDistribution := DeckDistribution new .
+
+	aDeckDistribution forOverload: 1.
+	aDeckDistribution forAlly: 0.
+	aDeckDistribution forAcceleration: 0.
+	aDeckDistribution forCancellation: 0.
+	aDeckDistribution forRepeat: 0.
+	aDeckDistribution forRedo: 0.
+
+	aGameSetUp := GameSetup new.
+
+	initialCards:=aDeckDistribution build: deckSize.
+
+	aDeck:=Deck withCards: initialCards.
+	aGameSetUp assignsRandomly: aDeck .
+	
+	
+	aPlayer1 := SpaceShip named: 'Juan'.
+	aPlayer2 := SpaceShip named: 'Martin'.
+
+	aGameSetUp withPlayers: { aPlayer1. aPlayer2 }.
+
+	aDice := RiggedDice withNumberOfFaces: 6.
+	aDice setNumbersProvider: { 1 }.
+
+	aGameSetUp withDices: { aDice }.
+	aTurnManager := TurnManager withOrder: { aPlayer1. aPlayer2 }.
+	aGameSetUp withABoardNumberOfSquares: 6 andTurnManager: aTurnManager.
+	
+	self assert: initialCards size equals:10.
+	aGameSetUp createGameInstance.
+	aBoard:=aGameSetUp board .
+	anOverload:=CardOverLoad new.
+	
+	aBoard playNextTurn.
+	self assert: (aBoard cardsOf:aPlayer1) size equals: 2.
+	self should: [  aBoard playCard: anOverload by:aPlayer1 targeting: NoTarget new. ] raise: Error  withMessegeText:'Its not the spaceship turn'. 
+	
+	
+	
+	
+	self assert: (aBoard cardsOf:aPlayer1) size equals: 2.
+	self assert: (aBoard cardsOf:aPlayer2) size equals: 2.
+	
+	self assert: (aBoard discardDeck) equals: (Deck withCards:{}asOrderedCollection ) .
+	
+	
+
+]
+
+{ #category : 'tests' }
+FiniteDeckTest >> test8WhenSpaceShipFallsInBonusCardThenItTakesOneFromTheDeck [
+
+	| aGameSetUp aDeckDistribution deckSize aPlayer1 aPlayer2 aDice initialCards aTurnManager aDeck aBoard aRepeat |
+	deckSize := 10.
+	aDeckDistribution := DeckDistribution new.
+
+	aDeckDistribution forOverload: 0.
+	aDeckDistribution forAlly: 0.
+	aDeckDistribution forAcceleration: 0.
+	aDeckDistribution forCancellation: 0.
+	aDeckDistribution forRepeat: 1.
+	aDeckDistribution forRedo: 0.
+
+	aGameSetUp := GameSetup new.
+
+	initialCards := aDeckDistribution build: deckSize.
+
+	aDeck := Deck withCards: initialCards.
+	aGameSetUp assignsRandomly: aDeck.
+
+
+	aPlayer1 := SpaceShip named: 'Juan'.
+	aPlayer2 := SpaceShip named: 'Martin'.
+
+	aGameSetUp withPlayers: {
+			aPlayer1.
+			aPlayer2 }.
+
+	aDice := RiggedDice withNumberOfFaces: 6.
+	aDice setNumbersProvider: { 1 }.
+
+	aGameSetUp withDices: { aDice }.
+	aTurnManager := TurnManager withOrder: {
+			                aPlayer1.
+			                aPlayer2 }.
+	aGameSetUp withABoardNumberOfSquares: 6 andTurnManager: aTurnManager.
+	aGameSetUp withTiles: { (BonusCard in: 1) }.
+	self assert: initialCards size equals: 10.
+	aGameSetUp createGameInstance.
+	aBoard := aGameSetUp board.
+	aRepeat := CardRepeat new.
+	aBoard playNextTurn.
+	self assert: (aBoard cardsOf: aPlayer1) size equals: 3.
+	aBoard deckOfCards add:aRepeat.
+	aBoard deckOfCards add:aRepeat.
+	self assert: aBoard deckOfCards equals: (Deck withCards: {
+				 CardRepeat new.
+				 CardRepeat new.
+				 CardRepeat new.
+				 CardRepeat new.
+				 CardRepeat new } asOrderedCollection).
+
+]
+
+{ #category : 'tests' }
+FiniteDeckTest >> test9TheDeckCanNotBeAddedCardsDoringGame [
+
+	| aGameSetUp aDeckDistribution deckSize aPlayer1 aPlayer2 aDice initialCards aTurnManager aDeck aBoard aRepeat |
+	deckSize := 10.
+	aDeckDistribution := DeckDistribution new.
+
+	aDeckDistribution forOverload: 0.
+	aDeckDistribution forAlly: 0.
+	aDeckDistribution forAcceleration: 0.
+	aDeckDistribution forCancellation: 0.
+	aDeckDistribution forRepeat: 1.
+	aDeckDistribution forRedo: 0.
+
+	aGameSetUp := GameSetup new.
+
+	initialCards := aDeckDistribution build: deckSize.
+
+	aDeck := Deck withCards: initialCards.
+	aGameSetUp assignsRandomly: aDeck.
+
+
+	aPlayer1 := SpaceShip named: 'Juan'.
+	aPlayer2 := SpaceShip named: 'Martin'.
+
+	aGameSetUp withPlayers: {
+			aPlayer1.
+			aPlayer2 }.
+
+	aDice := RiggedDice withNumberOfFaces: 6.
+	aDice setNumbersProvider: { 1 }.
+
+	aGameSetUp withDices: { aDice }.
+	aTurnManager := TurnManager withOrder: {
+			                aPlayer1.
+			                aPlayer2 }.
+	aGameSetUp withABoardNumberOfSquares: 6 andTurnManager: aTurnManager.
+	aGameSetUp withTiles: { (BonusCard in: 1) }.
+	self assert: initialCards size equals: 10.
+	aGameSetUp createGameInstance.
+	aBoard := aGameSetUp board.
+	aRepeat := CardRepeat new.
+	aBoard playNextTurn.
+	
+	self assert: aBoard deckOfCards equals: (Deck withCards: {
+				 CardRepeat new.
+				 CardRepeat new.
+				 CardRepeat new.
+				 CardRepeat new.
+				 CardRepeat new } asOrderedCollection).
+
+	aBoard deckOfCards add:aRepeat.
+	aBoard deckOfCards add:aRepeat.
+	aBoard deckOfCards add:aRepeat.
+	aBoard deckOfCards add:aRepeat.
+	
+	self assert: aBoard deckOfCards equals: (Deck withCards: {
+				 CardRepeat new.
+				 CardRepeat new.
+				 CardRepeat new.
+				 CardRepeat new.
+				 CardRepeat new } asOrderedCollection).
 
 ]

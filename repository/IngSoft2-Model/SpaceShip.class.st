@@ -146,12 +146,6 @@ SpaceShip >> has: fuel [
 ]
 
 { #category : 'testing' }
-SpaceShip >> hasCard:aCard [
-
-(cardsInHand anySatisfy: [:card| card=aCard])ifFalse:[Error signal:'The spaceship doesnt have that card']. 
-]
-
-{ #category : 'testing' }
 SpaceShip >> hasFule [
 
 	^ fuelSistem validateCurrentFuleOf: self
@@ -174,6 +168,12 @@ SpaceShip >> initializeWtihAName: aName [
 	lostTurns := 0.
 	laps := 0.
 	minimumRollRequired := 0
+]
+
+{ #category : 'testing' }
+SpaceShip >> isEquipWith:aCard [
+
+(cardsInHand anySatisfy: [:card| card=aCard])ifFalse:[Error signal:'The spaceship doesnt have that card']. 
 ]
 
 { #category : 'action' }

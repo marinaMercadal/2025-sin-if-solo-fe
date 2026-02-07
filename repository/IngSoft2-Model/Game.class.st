@@ -45,6 +45,11 @@ Game >> applyRepeatEffectWith: aSpaceship [
 	board applyEffectOfLastTileTo: spaceShipMoving on: self
 ]
 
+{ #category : 'testing' }
+Game >> canBePlayed [
+(spaceShipMoving =spaceShipPlayingCard )ifFalse: [Error signal: 'Its not the spaceship turn' ].
+]
+
 { #category : 'action' }
 Game >> cardsEffectsArePlayed [
 
@@ -73,7 +78,7 @@ Game >> currentFuleOf: aSpaceShip [
 
 { #category : 'action' }
 Game >> discardDeck [
-	^board discardDeck 
+	^board discardDeck deepCopy 
 ]
 
 { #category : 'testing' }
@@ -139,11 +144,13 @@ Game >> move: aSpaceShip with: dices [
 { #category : 'action' }
 Game >> playCard: aCard by: aSpaceShip targeting: aTarget [
 
-   aSpaceShip hasCard:aCard.
+   aSpaceShip isEquipWith:aCard.
+
    spaceShipMoving := turnManager spaceShipWhoseTurnItIsFrom: spaceShips.
 	spaceShipPlayingCard:=aSpaceShip .
- 
+ 	
 	aCard playedBy:aSpaceShip targeting: aTarget in: self.
+	
 	spaceShipPlayingCard removeFromHand:aCard.
 	board cardWasPlayed:aCard.
 	
@@ -182,7 +189,8 @@ Game >> playsInstantaneousCard: aCard [
 { #category : 'action' }
 Game >> playsPermanentCard: aCard [ 
 	
-	turnManager isAboutToPlay: spaceShipMoving .
+	
+	self canBePlayed.
 	cardsInGame add: aCard.
 	lastCardPlayed := aCard.
 	

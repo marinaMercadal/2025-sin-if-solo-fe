@@ -48,7 +48,7 @@ RedoCardTest >> test1WhenARedoCardIsUsedAfterAccelerationThenItCopysTheImplement
 	aBoard playCard: anAccelerationCard by:aPlayer1 targeting: NoTarget new.
 	aBoard playNextTurn. "player1 2 player2 0"
 	self assert: (aBoard positionOf: aPlayer1) equals: 2. "1+1"
-	aBoard playCard: aRedoCard by:aPlayer1 targeting: NoTarget new.
+	aBoard playCard: aRedoCard by:aPlayer2 targeting: NoTarget new.
 	aBoard playNextTurn. "player1 2 player2 3"
 	self assert: (aBoard positionOf: aPlayer2) equals: 3. "1+1+2=4"
 
@@ -276,7 +276,7 @@ RedoCardTest >> test6WhenARedoCardIsUsedAfterOverLoadThenItCopysTheImplementions
 	self assert: (aBoard positionOf: aPlayer1) equals: 10.
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer2) equals: 8.
-	aBoard playCard: aRedoCard by:aPlayer2 targeting: aPlayer1 .
+	aBoard playCard: aRedoCard by:aPlayer1 targeting: aPlayer1 .
 	aBoard playNextTurn.
 
 	self assert: (aBoard positionOf: aPlayer1) equals: 14.
@@ -334,7 +334,7 @@ RedoCardTest >> test7WhenARedoCardIsUsedAfterARedoThenItCopysTheImplementionsOfi
 	self assert: (aBoard positionOf: aPlayer1) equals: 10.
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer2) equals: 8.
-	aBoard playCard: aRedoCard  by:aPlayer2 targeting: aPlayer1 .
+	aBoard playCard: aRedoCard  by:aPlayer1 targeting: aPlayer1 .
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer1) equals: 14.
 	aBoard playCard: aRedoCard1 by:aPlayer2 targeting: aPlayer2 .

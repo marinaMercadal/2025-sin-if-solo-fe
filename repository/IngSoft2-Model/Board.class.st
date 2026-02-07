@@ -61,6 +61,11 @@ discardDeck add:aCard
 ]
 
 { #category : 'accessing' }
+Board >> deckOfCards [
+	^ deckOfCards
+]
+
+{ #category : 'accessing' }
 Board >> discardDeck [
 	^ discardDeck
 ]

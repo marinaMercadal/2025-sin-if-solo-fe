@@ -25,14 +25,14 @@ Class {
 { #category : 'testing' }
 GameSetup >> assignsInOrder: aDeckOfCards [
 
-	deckOfCards := aDeckOfCards copy
+	deckOfCards := aDeckOfCards deepCopy
 ]
 
 { #category : 'testing' }
 GameSetup >> assignsRandomly: aDeckOfCards [
 
 	aDeckOfCards shuffle.
-	deckOfCards := aDeckOfCards copy
+	deckOfCards := aDeckOfCards deepCopy
 ]
 
 { #category : 'accessing' }
@@ -95,21 +95,6 @@ GameSetup >> createSpaceShipsInstance [
 		spaceShip has: (Fuel withAnAmount: maximumRolledNumber * 2) ]
 
 
-"
-	deckOfCards ifNotNil: [
-		spaceShips do: [ :spaceShip |
-			| card1 card2 |
-			card1 := deckOfCards first.
-			deckOfCards remove: card1.
-
-			card2 := deckOfCards first.
-			deckOfCards remove: card2.
-
-			spaceShip equipWith: card1.
-			spaceShip equipWith: card2 ] ].
-
-	spaceShips do: [ :spaceShip |
-		spaceShip has: (Fuel withAnAmount: maximumRolledNumber * 2) ]"
 ]
 
 { #category : 'action' }
