@@ -39,7 +39,7 @@ InstantCardTest >> test0WhenItsNotTheSpaceShipTurnitCanStillThrowAInatantaniousC
 		                anAccelerationCard.
 		                aCancellationCard.
 		                aRedoCard } asOrderedCollection.
-	aGameSetUp assignsInOrder: aDeckOfCards.
+	aGameSetUp assignsInOrder: (Deck withCards: (aDeckOfCards)).
 
 
 	aGameSetUp withDices: { aDice }.
@@ -58,14 +58,14 @@ InstantCardTest >> test0WhenItsNotTheSpaceShipTurnitCanStillThrowAInatantaniousC
 
 	aGameSetUp createGameInstance.
 	aBoard := aGameSetUp board.
-	aBoard playCard: anAccelerationCard  targeting: NoTarget new.
-	aBoard playCard: anAccelerationCard  targeting: NoTarget new.
-	aBoard playCard: aCancellationCard targeting: anAccelerationCard.
+	aBoard playCard: anAccelerationCard  by:aPlayer1 targeting: NoTarget new.
+	aBoard playCard: anAccelerationCard by:aPlayer1 targeting: NoTarget new.
+	aBoard playCard: aCancellationCard by:aPlayer2 targeting: anAccelerationCard.
 
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer1) equals: 2.
 
-	aBoard playCard: aRedoCard targeting: anAccelerationCard .
+	aBoard playCard: aRedoCard by:aPlayer2 targeting: anAccelerationCard .
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer2) equals: 1.
 	aBoard playNextTurn.
@@ -73,7 +73,7 @@ InstantCardTest >> test0WhenItsNotTheSpaceShipTurnitCanStillThrowAInatantaniousC
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer2) equals: 2.
 
-	aBoard playCard: anAccelerationCard  targeting: NoTarget new.
+	aBoard playCard: anAccelerationCard by:aPlayer1 targeting: NoTarget new.
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer1) equals: 5
 ]
@@ -98,7 +98,7 @@ InstantCardTest >> test12WhenACancellationCardIsUsedThenItCancelsTheEffectOfAPre
 		                anAccelerationCard.
 		                anAccelerationCard.
 		                anAccelerationCard } asOrderedCollection.
-	aGameSetUp assignsRandomly: aDeckOfCards.
+	aGameSetUp assignsRandomly: (Deck withCards: (aDeckOfCards)).
 	aGameSetUp equip: aPlayer2 with: aCancellationCard.
 
 	aGameSetUp withDices: { aDice }.
@@ -118,11 +118,11 @@ InstantCardTest >> test12WhenACancellationCardIsUsedThenItCancelsTheEffectOfAPre
 	aGameSetUp createGameInstance.
 	aBoard := aGameSetUp board.
 
-	aBoard playCard: anAccelerationCard  targeting: NoTarget new.
+	aBoard playCard: anAccelerationCard by:aPlayer1 targeting: NoTarget new.
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer1) equals: 2.
 
-	aBoard playCard: aCancellationCard  targeting: anAccelerationCard .
+	aBoard playCard: aCancellationCard by:aPlayer2 targeting: anAccelerationCard .
 	aBoard playNextTurn.
 
 
@@ -149,7 +149,7 @@ InstantCardTest >> test13WhenThePermanentCardIWhichWantsToGetCancelledIsntBeingP
 		                anAccelerationCard.
 		                anAccelerationCard.
 		                anAccelerationCard } asOrderedCollection.
-	aGameSetUp assignsRandomly: aDeckOfCards.
+	aGameSetUp assignsRandomly: (Deck withCards: (aDeckOfCards)).
 
 	aGameSetUp withDices: { aDice }.
 	aGameSetUp withPlayers: {
@@ -160,7 +160,7 @@ InstantCardTest >> test13WhenThePermanentCardIWhichWantsToGetCancelledIsntBeingP
 			                aPlayer1.
 			                aPlayer2 }.
 
-
+	aPlayer2 equipWith: aCancellationCard.
 	aGameSetUp
 		withABoardNumberOfSquares: 100
 		andTurnManager: aTurnManager.
@@ -173,7 +173,7 @@ InstantCardTest >> test13WhenThePermanentCardIWhichWantsToGetCancelledIsntBeingP
 
 
 	self
-		should: [ aBoard playCard: aCancellationCard  targeting: anAccelerationCard ]
+		should: [ aBoard playCard: aCancellationCard by:aPlayer2  targeting: anAccelerationCard ]
 		raise: Error
 		withMessageText: 'That card is not being played'
 	"aBoard playNextTurn.
@@ -206,7 +206,7 @@ InstantCardTest >> test1ARepeatCardIsUsedAfterFallinginABonusTileThenTheAssigned
 		                anAccelerationCard.
 		                anAccelerationCard.
 		                anAccelerationCard } asOrderedCollection.
-	aGameSetUp assignsInOrder: aDeckOfCards.
+	aGameSetUp assignsInOrder: (Deck withCards: (aDeckOfCards)).
 
 	aGameSetUp withTiles: { (BonusCard in: 1) }.
 
@@ -235,7 +235,7 @@ InstantCardTest >> test1ARepeatCardIsUsedAfterFallinginABonusTileThenTheAssigned
 			 with: aRepeat
 			 with: anAccelerationCard
 			 with: anAccelerationCard).
-	aBoard playCard: aRepeat targeting: NoTarget new.
+	aBoard playCard: aRepeat by:aPlayer1 targeting: NoTarget new.
 
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer2) equals: 2.
@@ -267,8 +267,7 @@ InstantCardTest >> test2ARepeatCardIsUsedAfterFallinginAAtomicBombTheTheSpaeShip
 		                anAccelerationCard.
 		                anAccelerationCard.
 		                anAccelerationCard } asOrderedCollection.
-	aGameSetUp assignsInOrder: aDeckOfCards.
-
+	aGameSetUp assignsInOrder: (Deck withCards: (aDeckOfCards)).
 	aGameSetUp withTiles: { (AtomicBomb in: 2) }.
 
 
@@ -296,7 +295,7 @@ InstantCardTest >> test2ARepeatCardIsUsedAfterFallinginAAtomicBombTheTheSpaeShip
 
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer1) equals: 0.
-	aBoard playCard: aRepeat  targeting: aPlayer2 .
+	aBoard playCard: aRepeat by:aPlayer1 targeting: aPlayer2 .
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer2) equals: 0
 ]
@@ -319,7 +318,7 @@ InstantCardTest >> test3ARepeatCardIsUsedAfterFallinginABlackHole [
 		                aRepeat.
 		                aRepeat.
 		                aRepeat } asOrderedCollection.
-	aGameSetUp assignsInOrder: aDeckOfCards.
+	aGameSetUp assignsInOrder: (Deck withCards: (aDeckOfCards)).
 
 	aGameSetUp withTiles: { (BlackHole in: 5) }.
 
@@ -345,7 +344,7 @@ InstantCardTest >> test3ARepeatCardIsUsedAfterFallinginABlackHole [
 	self assert: (aBoard positionOf: aPlayer2) equals: 4.
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer1) equals: 1.
-	aBoard playCard: aRepeat  targeting: aPlayer2 .
+	aBoard playCard: aRepeat by:aPlayer1 targeting: aPlayer2 .
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer2) equals: 6
 ]
@@ -368,7 +367,7 @@ InstantCardTest >> test4ARepeatCardIsUsedAfterFallinginAHyperGravity [
 		                aRepeat.
 		                aRepeat.
 		                aRepeat } asOrderedCollection.
-	aGameSetUp assignsInOrder: aDeckOfCards.
+	aGameSetUp assignsInOrder: (Deck withCards: (aDeckOfCards)).
 
 	aGameSetUp withTiles:
 		{ (HyperGravity in: 3 requiringMinimumRoll: 3) }.
@@ -391,7 +390,7 @@ InstantCardTest >> test4ARepeatCardIsUsedAfterFallinginAHyperGravity [
 
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer1) equals: 3.
-	aBoard playCard: aRepeat  targeting: aPlayer2 .
+	aBoard playCard: aRepeat by:aPlayer1 targeting: aPlayer2 .
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer2) equals: 0.
 	aBoard playNextTurn.
@@ -419,7 +418,7 @@ InstantCardTest >> test5ARepeatCardIsUsedAfterFallinginAHyperJump [
 		                aRepeat.
 		                aRepeat } asOrderedCollection.
 
-	aGameSetUp assignsInOrder: aDeckOfCards.
+	aGameSetUp assignsInOrder: (Deck withCards: (aDeckOfCards)).
 	aGameSetUp withDices: { aDice }.
 	aGameSetUp withPlayers: {
 			aPlayer1.
@@ -444,7 +443,7 @@ InstantCardTest >> test5ARepeatCardIsUsedAfterFallinginAHyperJump [
 
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer1) equals: 12.
-	aBoard playCard: aRepeat  targeting: aPlayer2.
+	aBoard playCard: aRepeat  by:aPlayer1 targeting: aPlayer2.
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer2) equals: 5
 ]
@@ -467,7 +466,7 @@ InstantCardTest >> test6ARepeatCardIsUsedAfterFallinginMoonWalk [
 		                aRepeat.
 		                aRepeat } asOrderedCollection.
 
-	aGameSetUp assignsInOrder: aDeckOfCards.
+	aGameSetUp assignsInOrder: (Deck withCards: (aDeckOfCards)).
 
 	aGameSetUp withPlayers: {
 			aPlayer1.
@@ -498,7 +497,7 @@ InstantCardTest >> test6ARepeatCardIsUsedAfterFallinginMoonWalk [
 
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer1) equals: 10.
-	aBoard playCard: aRepeat  targeting: aPlayer2 .
+	aBoard playCard: aRepeat by:aPlayer1 targeting: aPlayer2 .
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer2) equals: 5
 ]
@@ -521,7 +520,7 @@ InstantCardTest >> test7ARepeatCardIsUsedAfterFallinginWormHole [
 		                aRepeat.
 		                aRepeat } asOrderedCollection.
 
-	aGameSetUp assignsInOrder: aDeckOfCards.
+	aGameSetUp assignsInOrder: (Deck withCards: (aDeckOfCards)).
 
 	aGameSetUp withPlayers: {
 			aPlayer1.
@@ -544,7 +543,7 @@ InstantCardTest >> test7ARepeatCardIsUsedAfterFallinginWormHole [
 	aWinnerSystem := aGameSetUp winnerSystem.
 
 	aBoard playNextTurn.
-	aBoard playCard: aRepeat  targeting: aPlayer2.
+	aBoard playCard: aRepeat by:aPlayer1 targeting: aPlayer2.
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer1) equals: 3.
 	self assert: (aBoard positionOf: aPlayer2) equals: 8
@@ -568,7 +567,7 @@ InstantCardTest >> test8ARepeatCardIsUsedAfterFallinginNormalTile [
 		                aRepeat.
 		                aRepeat } asOrderedCollection.
 
-	aGameSetUp assignsInOrder: aDeckOfCards.
+	aGameSetUp assignsInOrder: (Deck withCards: (aDeckOfCards)).
 
 	aGameSetUp withPlayers: {
 			aPlayer1.
@@ -592,7 +591,7 @@ InstantCardTest >> test8ARepeatCardIsUsedAfterFallinginNormalTile [
 
 	aBoard playNextTurn.
 	aBoard playNextTurn.
-	aBoard playCard: aRepeat targeting: aPlayer2 .
+	aBoard playCard: aRepeat by:aPlayer1 targeting: aPlayer2 .
 	self assert: (aBoard positionOf: aPlayer1) equals: 3.
 	self assert: (aBoard positionOf: aPlayer2) equals: 5.
 
@@ -620,7 +619,7 @@ InstantCardTest >> test9ARepeatCardIsUsedButNoDiceWasRolledThenItDosentHaveAEfec
 		                aRepeat.
 		                aRepeat } asOrderedCollection.
 
-	aGameSetUp assignsInOrder: aDeckOfCards.
+	aGameSetUp assignsInOrder: (Deck withCards: (aDeckOfCards)).
 
 	aGameSetUp withPlayers: {
 			aPlayer1.
@@ -642,7 +641,7 @@ InstantCardTest >> test9ARepeatCardIsUsedButNoDiceWasRolledThenItDosentHaveAEfec
 	aBoard := aGameSetUp board.
 	aWinnerSystem := aGameSetUp winnerSystem.
 
-	aBoard playCard: aRepeat  targeting: aPlayer2 .
+	aBoard playCard: aRepeat by:aPlayer1 targeting: aPlayer2 .
 	aBoard playNextTurn.
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer1) equals: 4.

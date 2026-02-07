@@ -24,6 +24,8 @@ CancellationCard >> canBePlayedIn:aGame [
 
 { #category : 'action' }
 CancellationCard >> playedBy:aSpaceShip targeting: aCard in: aGame [
+
+
 cardToCancel:=aCard .
 aGame playsInstantaneousCard: self
 ]

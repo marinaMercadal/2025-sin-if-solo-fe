@@ -88,6 +88,16 @@ GameSetup >> createSpaceShipsInstance [
 
 	deckOfCards ifNotNil: [
 		spaceShips do: [ :spaceShip |
+			spaceShip equipWith: deckOfCards draw.
+			spaceShip equipWith: deckOfCards draw ] ].
+
+	spaceShips do: [ :spaceShip |
+		spaceShip has: (Fuel withAnAmount: maximumRolledNumber * 2) ]
+
+
+"
+	deckOfCards ifNotNil: [
+		spaceShips do: [ :spaceShip |
 			| card1 card2 |
 			card1 := deckOfCards first.
 			deckOfCards remove: card1.
@@ -99,7 +109,7 @@ GameSetup >> createSpaceShipsInstance [
 			spaceShip equipWith: card2 ] ].
 
 	spaceShips do: [ :spaceShip |
-		spaceShip has: (Fuel withAnAmount: maximumRolledNumber * 2) ]
+		spaceShip has: (Fuel withAnAmount: maximumRolledNumber * 2) ]"
 ]
 
 { #category : 'action' }

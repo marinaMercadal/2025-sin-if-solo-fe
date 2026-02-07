@@ -118,7 +118,7 @@ DistributionOfTilesTest >> test4WhenATileDistributionIsSetThenTheBoardIsCreatedW
 	aTileDistribution forHyperJump: 0.08.
 	aTileDistribution forAtomicBomb: 0.02.
 
-	tiles := aTileDistribution build:boardSize.
+	tiles := aTileDistribution build: boardSize.
 
 	self assert:
 		((aTileDistribution percentageOf: NoEffect) between: 0.27 and: 0.33).

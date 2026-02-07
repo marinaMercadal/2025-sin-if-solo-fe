@@ -9,7 +9,8 @@ Class {
 		'sizeInParsec',
 		'specialTiles',
 		'lastSpecialTileEffect',
-		'deckOfCards'
+		'deckOfCards',
+		'discardDeck'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -53,6 +54,17 @@ Board >> applySpecialTiletoA: spaceShip ofAll: spaceShips [
 		onBoardOfSize: self
 ]
 
+{ #category : 'accessing' }
+Board >> cardWasPlayed:aCard [
+
+discardDeck add:aCard 
+]
+
+{ #category : 'accessing' }
+Board >> discardDeck [
+	^ discardDeck
+]
+
 { #category : 'action' }
 Board >> distanceFrom: origin to: destination [
 
@@ -61,11 +73,12 @@ Board >> distanceFrom: origin to: destination [
 
 { #category : 'action' }
 Board >> givesACardTo: aSpaceShip [
+	aSpaceShip equipWith: deckOfCards draw
 
-	| assignedCard |
+	"| assignedCard |
 	assignedCard := deckOfCards atRandom.
 	deckOfCards remove: assignedCard.
-	aSpaceShip equipWith: assignedCard
+	aSpaceShip equipWith: assignedCard"
 ]
 
 { #category : 'initialization' }
@@ -73,6 +86,7 @@ Board >> initializeWithNumberOfSquares: aNumberOfSquares sizeInParsec: aSizeInPa
 	maximumSquares := aNumberOfSquares.
 	sizeInParsec := aSizeInParsec.
 	deckOfCards := aDeck.
+	discardDeck := Deck withCards: { }asOrderedCollection .
 	specialTiles := OrderedCollection new.
 	lastSpecialTileEffect := NoEffect new.
 	specialTiles := someSpecialTiles

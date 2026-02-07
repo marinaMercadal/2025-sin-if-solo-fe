@@ -16,7 +16,7 @@ ProbabilityDistribution >> build: aSampleSize [
     generatedElements := (1 to: aSampleSize) collect: [ :i |
         self elementFor: Random new next
     ].
-    ^ generatedElements
+    ^ generatedElements asOrderedCollection 
 
 ]
 

@@ -13,7 +13,8 @@ Class {
 		'spaceShipMoving',
 		'dicesInGameBoard',
 		'spaceShips',
-		'winnerSystem'
+		'winnerSystem',
+		'spaceShipPlayingCard'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -40,9 +41,8 @@ rewards: aRewardDistribution [
 { #category : 'action' }
 Game >> applyRepeatEffectWith: aSpaceship [
 
-	| spaceShip |
-	spaceShip := spaceShips detect: [ :each | each = aSpaceship ].
-	board applyEffectOfLastTileTo: spaceShip on: self
+	
+	board applyEffectOfLastTileTo: spaceShipMoving on: self
 ]
 
 { #category : 'action' }
@@ -71,6 +71,11 @@ Game >> currentFuleOf: aSpaceShip [
 	^ (self spaceShipMatching: aSpaceShip) currentFule
 ]
 
+{ #category : 'action' }
+Game >> discardDeck [
+	^board discardDeck 
+]
+
 { #category : 'testing' }
 Game >> formsAlianceWith:anotherSpaceShip [
 
@@ -79,10 +84,6 @@ Game >> formsAlianceWith:anotherSpaceShip [
 	spaceShipMoving formAllyWith: spaceShipToTeamUp.
 	spaceShipMoving sharesFuelWithAlly.
 	
-	"spaceShipMoving formsAllyWith:spaceShipToTeamUp."
-	"
-	spaceShipMoving sharesFuleWith: spaceShipToTeamUp.
-	spaceShipToTeamUp sharesFuleWith: spaceShipMoving"
 ]
 
 { #category : 'testing' }
@@ -136,13 +137,17 @@ Game >> move: aSpaceShip with: dices [
 ]
 
 { #category : 'action' }
-Game >> playCard: aCard targeting: aTarget [
+Game >> playCard: aCard by: aSpaceShip targeting: aTarget [
 
-    
+   aSpaceShip hasCard:aCard.
    spaceShipMoving := turnManager spaceShipWhoseTurnItIsFrom: spaceShips.
+	spaceShipPlayingCard:=aSpaceShip .
  
-	aCard playedBy:spaceShipMoving targeting: aTarget in: self.
-
+	aCard playedBy:aSpaceShip targeting: aTarget in: self.
+	spaceShipPlayingCard removeFromHand:aCard.
+	board cardWasPlayed:aCard.
+	
+	
 ]
 
 { #category : 'action' }
@@ -165,7 +170,7 @@ Game >> playsInstantaneousCard: aCard [
 
 	aCard canBePlayedIn:self.
 	aCard applyInstantaneousEffectIn:self.
-
+	
 	lastCardPlayed := aCard
 
 	
@@ -176,24 +181,26 @@ Game >> playsInstantaneousCard: aCard [
 
 { #category : 'action' }
 Game >> playsPermanentCard: aCard [ 
-
+	
 	turnManager isAboutToPlay: spaceShipMoving .
 	cardsInGame add: aCard.
-	lastCardPlayed := aCard
+	lastCardPlayed := aCard.
+	
 
 ]
 
 { #category : 'action' }
-Game >> playsRedoCard:anInicialization targeting:targetSpaceship [
+Game >> playsRedoCard: anInicialization targeting: targetSpaceship [
 
-|newCardToRedo|
-
-newCardToRedo:=  (lastCardPlayed copy).
-
+	| newCardToRedo |
+	newCardToRedo := lastCardPlayed copy.
 
 
-newCardToRedo playedBy: anInicialization targeting: targetSpaceship in: self
 
+	newCardToRedo
+		playedBy: anInicialization
+		targeting: targetSpaceship
+		in: self
 ]
 
 { #category : 'accessing' }

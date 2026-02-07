@@ -11,7 +11,6 @@ Class {
 		'moonWalkProbabilty',
 		'hyperJumpProbability',
 		'atomicBombProability',
-		'numberOfTiles',
 		'bonusCardProbability'
 	],
 	#category : 'IngSoft2-Model',
@@ -82,7 +81,7 @@ TileDistribution >> forNoEffect: aProbability [
 { #category : 'initialization' }
 TileDistribution >> initializeWithABoardSize: aNumberOfTiles [
 
-	numberOfTiles := aNumberOfTiles.
+	
 	noEffectProbability := 0.
 	blackHoleProbability := 0.
 	hyperGravityProbability := 0.

@@ -13,8 +13,8 @@ Class {
 		'fuelSistem',
 		'name',
 		'lostTurns',
-		'cardsInHand',
 		'aPositionToMove',
+		'cardsInHand',
 		'allyShip'
 	],
 	#category : 'IngSoft2-Model',
@@ -146,6 +146,12 @@ SpaceShip >> has: fuel [
 ]
 
 { #category : 'testing' }
+SpaceShip >> hasCard:aCard [
+
+(cardsInHand anySatisfy: [:card| card=aCard])ifFalse:[Error signal:'The spaceship doesnt have that card']. 
+]
+
+{ #category : 'testing' }
 SpaceShip >> hasFule [
 
 	^ fuelSistem validateCurrentFuleOf: self
@@ -219,9 +225,9 @@ SpaceShip >> rechargeFule [
 ]
 
 { #category : 'removing' }
-SpaceShip >> removeCard: aCard [
+SpaceShip >> removeFromHand:aCard [
 
-	cardsInHand remove: aCard
+cardsInHand remove:aCard 
 ]
 
 { #category : 'action' }
