@@ -76,6 +76,11 @@ Game >> currentFuleOf: aSpaceShip [
 	^ (self spaceShipMatching: aSpaceShip) currentFule
 ]
 
+{ #category : 'accessing' }
+Game >> deckOfCards [
+	^board deckOfCards  deepCopy 
+]
+
 { #category : 'action' }
 Game >> discardDeck [
 	^board discardDeck deepCopy 
