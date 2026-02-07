@@ -193,7 +193,7 @@ FiniteDeckTest >> test5WhenThereIsNoCardPlayedThenTheDiscardDeckIsEmpty [
 	self assert: (aBoard cardsOf:aPlayer1) size equals: 2.
 	self assert: (aBoard cardsOf:aPlayer2) size equals: 2.
 
-	self assert: (aBoard discardDeck) equals: (Deck withCards:{}asOrderedCollection ).
+	self assert: (aBoard discardDeck) equals: ({}asOrderedCollection ).
 	
 	
 
@@ -246,7 +246,7 @@ FiniteDeckTest >> test6WhenACardIsPlayedThenItGoesToTheDiscardDeck [
 	self assert: (aBoard cardsOf:aPlayer1) size equals: 2.
 	self assert: (aBoard cardsOf:aPlayer2) size equals: 2.
 	
-	self assert: (aBoard discardDeck) equals: (Deck withCards:{CardAcceleration new}asOrderedCollection ).
+	self assert: (aBoard discardDeck) equals: ({CardAcceleration new}asOrderedCollection ).
 	
 	
 
@@ -304,7 +304,7 @@ FiniteDeckTest >> test7WhenACardCannotBePlayedThenItIsNotDiscarded [
 	self assert: (aBoard cardsOf:aPlayer1) size equals: 2.
 	self assert: (aBoard cardsOf:aPlayer2) size equals: 2.
 	
-	self assert: (aBoard discardDeck) equals: (Deck withCards:{}asOrderedCollection ) .
+	self assert: (aBoard discardDeck) equals: ({}asOrderedCollection ) .
 	
 	
 
@@ -354,8 +354,7 @@ FiniteDeckTest >> test8WhenSpaceShipFallsInBonusCardThenItTakesOneFromTheDeck [
 	aRepeat := CardRepeat new.
 	aBoard playNextTurn.
 	self assert: (aBoard cardsOf: aPlayer1) size equals: 3.
-	aBoard deckOfCards add:aRepeat.
-	aBoard deckOfCards add:aRepeat.
+
 	self assert: aBoard deckOfCards equals: (Deck withCards: {
 				 CardRepeat new.
 				 CardRepeat new.
@@ -366,10 +365,10 @@ FiniteDeckTest >> test8WhenSpaceShipFallsInBonusCardThenItTakesOneFromTheDeck [
 ]
 
 { #category : 'tests' }
-FiniteDeckTest >> test9TheDeckCanNotBeAddedCardsDoringGame [
+FiniteDeckTest >> test9WhenDeckIsEmptyThenDiscardDeckIsShuffledAndBecomesTheDeck [
 
 	| aGameSetUp aDeckDistribution deckSize aPlayer1 aPlayer2 aDice initialCards aTurnManager aDeck aBoard aRepeat |
-	deckSize := 10.
+	deckSize := 4.
 	aDeckDistribution := DeckDistribution new.
 
 	aDeckDistribution forOverload: 0.
@@ -403,29 +402,22 @@ FiniteDeckTest >> test9TheDeckCanNotBeAddedCardsDoringGame [
 			                aPlayer2 }.
 	aGameSetUp withABoardNumberOfSquares: 6 andTurnManager: aTurnManager.
 	aGameSetUp withTiles: { (BonusCard in: 1) }.
-	self assert: initialCards size equals: 10.
+	
 	aGameSetUp createGameInstance.
 	aBoard := aGameSetUp board.
 	aRepeat := CardRepeat new.
-	aBoard playNextTurn.
 	
-	self assert: aBoard deckOfCards equals: (Deck withCards: {
-				 CardRepeat new.
-				 CardRepeat new.
-				 CardRepeat new.
-				 CardRepeat new.
-				 CardRepeat new } asOrderedCollection).
+	aBoard playCard: aRepeat by:aPlayer2 targeting: NoTarget new.
+	aBoard playCard: aRepeat by:aPlayer2 targeting: NoTarget new.
+	
+	self assert: aBoard deckOfCards size equals:0.
+	self assert: aBoard discardDeck size equals:2.
+	aBoard playNextTurn .
+	self assert: aBoard deckOfCards size equals:1.
+	self assert: aBoard discardDeck size equals:0.
+	
+	
 
-	aBoard deckOfCards add:aRepeat.
-	aBoard deckOfCards add:aRepeat.
-	aBoard deckOfCards add:aRepeat.
-	aBoard deckOfCards add:aRepeat.
 	
-	self assert: aBoard deckOfCards equals: (Deck withCards: {
-				 CardRepeat new.
-				 CardRepeat new.
-				 CardRepeat new.
-				 CardRepeat new.
-				 CardRepeat new } asOrderedCollection).
 
 ]

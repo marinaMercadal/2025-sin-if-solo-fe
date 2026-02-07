@@ -5,7 +5,8 @@ Class {
 	#name : 'Deck',
 	#superclass : 'Object',
 	#instVars : [
-		'cardsInDeck'
+		'cardsInDeck',
+		'discardDeck'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -28,28 +29,56 @@ cardsInDeck size = anotherDeck cards size ifFalse: [ ^ false ].
 	^ true
 ]
 
-{ #category : 'adding' }
-Deck >> add:aCard [
-cardsInDeck add:aCard 
-
-]
-
 { #category : 'intention revealing' }
 Deck >> cards [
 	^cardsInDeck 
 ]
 
+{ #category : 'accessing' }
+Deck >> discarded [
+^discardDeck 
+]
+
 { #category : 'drawing' }
 Deck >> draw [
+self ensureThereIsAtLeastOneCard.
+
+
 ^ cardsInDeck removeFirst
+]
+
+{ #category : 'drawing' }
+Deck >> ensureThereIsAtLeastOneCard [
+(cardsInDeck isEmpty) ifTrue:[self refillFromDiscard].
 ]
 
 { #category : 'initial' }
 Deck >> initialzeDeckWith: cards [ 
-	cardsInDeck:=cards
+	cardsInDeck:=cards.
+	discardDeck:= {}asOrderedCollection 
+]
+
+{ #category : 'action' }
+Deck >> refillFromDiscard [
+
+	cardsInDeck := discardDeck deepCopy.
+	cardsInDeck shuffle.
+	discardDeck :={}asOrderedCollection 
 ]
 
 { #category : 'action' }
 Deck >> shuffle [
 cardsInDeck:=cardsInDeck shuffle 
+]
+
+{ #category : 'accessing' }
+Deck >> size [
+^cardsInDeck size
+]
+
+{ #category : 'adding' }
+Deck >> usesCard:aCard [
+
+
+discardDeck add:aCard.
 ]
