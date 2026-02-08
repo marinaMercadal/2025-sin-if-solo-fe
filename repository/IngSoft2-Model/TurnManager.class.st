@@ -27,6 +27,12 @@ TurnManager >> initializeTurnManager: aOrderOfSpaceShips [
 	nextSpaceShip := spaceShipsInOrder first
 ]
 
+{ #category : 'testing' }
+TurnManager >> isMoving: aSpaceShip [
+
+	^ aSpaceShip = spaceShipsInOrder first
+]
+
 { #category : 'accessing' }
 TurnManager >> spaceShipWhoseTurnItIsFrom: spaceShips [
 
