@@ -23,6 +23,7 @@ CardAlly >> applyInstantaneousEffectIn:aGame [
 CardAlly >> playedBy:aSpaceShip targeting: targetSpaceship in: aGame [
 
 spaceShipToTeamUp := targetSpaceship.
+	aGame validateCanBePlayed.
     aGame playsPermanentCard: self 
  
 ]

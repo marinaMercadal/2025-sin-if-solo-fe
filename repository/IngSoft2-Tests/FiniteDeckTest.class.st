@@ -16,6 +16,78 @@ self
 ]
 
 { #category : 'tests' }
+FiniteDeckTest >> test10GameWaitsUntilThereAreCardsToDraw [
+
+	| aGameSetUp aDeckDistribution deckSize aPlayer1  aDice initialCards aTurnManager aDeck aBoard  |
+	deckSize := 3.
+	aDeckDistribution := DeckDistribution new.
+
+	aDeckDistribution forOverload: 1.
+	aDeckDistribution forAlly: 0.
+	aDeckDistribution forAcceleration: 0.
+	aDeckDistribution forCancellation: 0.
+	aDeckDistribution forRepeat: 0.
+	aDeckDistribution forRedo: 0.
+
+	aGameSetUp := GameSetup new.
+
+	initialCards := aDeckDistribution build: deckSize.
+
+	aDeck := Deck withCards: initialCards.
+	aGameSetUp assignsRandomly: aDeck.
+
+
+	aPlayer1 := SpaceShip named: 'Juan'.
+
+	aGameSetUp withPlayers: {
+			aPlayer1.
+			 }.
+
+	aDice := RiggedDice withNumberOfFaces: 6.
+	aDice setNumbersProvider: { 1 }.
+
+	aGameSetUp withDices: { aDice }.
+	aTurnManager := TurnManager withOrder: {
+			                aPlayer1.
+			               }.
+	aGameSetUp withABoardNumberOfSquares: 6 andTurnManager: aTurnManager.
+	aGameSetUp withTiles: { (BonusCard in: 1).(BonusCard in: 2) .(BonusCard in: 3)}.
+	
+	aGameSetUp createGameInstance.
+	aBoard := aGameSetUp board.
+	
+	
+	
+	
+	self assert: aBoard deckOfCards size equals:1.
+	self assert: aBoard discardDeck size equals:0.
+	aBoard playNextTurn .
+	self assert: aBoard deckOfCards size equals:0.
+	self assert: aBoard discardDeck size equals:0.
+
+	
+	self should: [aBoard playNextTurn ] raise: Error withMessegeText: 'There are no aveilable cards to draw'.
+	self assert: aBoard deckOfCards size equals:0.
+	self assert: aBoard discardDeck size equals:0.
+	aBoard playCard:  (CardOverLoad new )by:aPlayer1  targeting: (SpaceShip named: 'Maria').
+	aBoard playCard:  (CardOverLoad new )by:aPlayer1  targeting: (SpaceShip named: 'Maria').
+	
+	self assert: aBoard deckOfCards size equals:0.
+	self assert: aBoard discardDeck size equals:2. 
+	
+	aBoard playNextTurn .
+	self assert: aBoard deckOfCards size equals:1. "esta es 1 porque caigo en bonus card. entonces como pido una carta el deck se 'resetea' de 2 cartas originales 1 para el maso queda y otra a la spaceship se va'"
+	self assert: aBoard discardDeck size equals:0.
+	
+	
+	
+	
+
+	
+
+]
+
+{ #category : 'tests' }
 FiniteDeckTest >> test1WhenADeckDistributionIsBuiltThenCardsFollowTheConfiguredProbabilities [
 
 	| deckSize aDeckDistribution  |
@@ -28,6 +100,7 @@ FiniteDeckTest >> test1WhenADeckDistributionIsBuiltThenCardsFollowTheConfiguredP
 	aDeckDistribution forCancellation: 0.20.
 	aDeckDistribution forRepeat: 0.15.
 	aDeckDistribution forRedo: 0.15.
+	aDeckDistribution forNitro: 0.
 
 	aDeckDistribution build: deckSize.
 

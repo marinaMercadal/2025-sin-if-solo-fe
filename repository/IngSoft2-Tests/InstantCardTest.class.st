@@ -182,6 +182,159 @@ InstantCardTest >> test13WhenThePermanentCardIWhichWantsToGetCancelledIsntBeingP
 ]
 
 { #category : 'tests' }
+InstantCardTest >> test14NitroIncreasesOnlyTargetSpaceShipRoll [
+
+
+	| aGameSetUp aDice aBoard aPlayer1 aPlayer2 aWinnerSystem aTurnManager aDeckOfCards aNitro |
+	aGameSetUp := GameSetup new.
+	aDice := RiggedDice withNumberOfFaces: 8.
+	aDice setNumbersProvider: { 1 }.
+	aPlayer1 := SpaceShip named: 'Fran'.
+	aPlayer2 := SpaceShip named: 'Agustin'.
+
+	aNitro := CardNitro new.
+
+	aDeckOfCards := {
+		                aNitro.
+		                aNitro.
+		                aNitro.
+		                aNitro } asOrderedCollection.
+
+	aGameSetUp assignsInOrder: (Deck withCards: (aDeckOfCards)).
+
+	aGameSetUp withPlayers: {
+			aPlayer1.
+			aPlayer2 }.
+
+	aGameSetUp withDices: { aDice }.
+	aTurnManager := TurnManager withOrder: {
+			                aPlayer1.
+			                aPlayer2 }.
+
+	aGameSetUp
+		withABoardNumberOfSquares: 100
+		andTurnManager: aTurnManager.
+	aGameSetUp withMaximumLapsToWin: 3.
+	aGameSetUp withTiles: { }.
+	aGameSetUp createGameInstance.
+
+
+	aBoard := aGameSetUp board.
+	aWinnerSystem := aGameSetUp winnerSystem.
+
+	aBoard playCard: aNitro by:aPlayer1 targeting: aPlayer2.
+	aBoard playNextTurn.
+	aBoard playNextTurn.
+	self assert: (aBoard positionOf: aPlayer1) equals: 1.
+	self assert: (aBoard positionOf: aPlayer2) equals: 4.
+]
+
+{ #category : 'tests' }
+InstantCardTest >> test15NitroAffectsTheTargetedSpaceshipOnlyFor3Turns [
+
+
+	| aGameSetUp aDice aBoard aPlayer1 aPlayer2 aWinnerSystem aTurnManager aDeckOfCards aNitro |
+	aGameSetUp := GameSetup new.
+	aDice := RiggedDice withNumberOfFaces: 100.
+	aDice setNumbersProvider: { 1 }.
+	aPlayer1 := SpaceShip named: 'Fran'.
+	aPlayer2 := SpaceShip named: 'Agustin'.
+
+	aNitro := CardNitro new.
+
+	aDeckOfCards := {
+		                aNitro.
+		                aNitro.
+		                aNitro.
+		                aNitro } asOrderedCollection.
+
+	aGameSetUp assignsInOrder: (Deck withCards: (aDeckOfCards)).
+
+	aGameSetUp withPlayers: {
+			aPlayer1.
+			aPlayer2 }.
+
+	aGameSetUp withDices: { aDice }.
+	aTurnManager := TurnManager withOrder: {
+			                aPlayer1.
+			                aPlayer2 }.
+
+	aGameSetUp
+		withABoardNumberOfSquares: 100
+		andTurnManager: aTurnManager.
+	aGameSetUp withMaximumLapsToWin: 3.
+	aGameSetUp withTiles: { }.
+	aGameSetUp createGameInstance.
+
+
+	aBoard := aGameSetUp board.
+	aWinnerSystem := aGameSetUp winnerSystem.
+
+	aBoard playCard: aNitro by:aPlayer1 targeting: aPlayer2.
+	aBoard playNextTurn.
+	aBoard playNextTurn.
+	self assert: (aBoard positionOf: aPlayer2) equals: 4.
+	aBoard playNextTurn.
+	aBoard playNextTurn.
+	self assert: (aBoard positionOf: aPlayer2) equals: 8.
+	aBoard playNextTurn.
+	aBoard playNextTurn.
+	self assert: (aBoard positionOf: aPlayer2) equals: 12.
+	aBoard playNextTurn.
+	aBoard playNextTurn.
+	self assert: (aBoard positionOf: aPlayer2) equals: 13.
+]
+
+{ #category : 'tests' }
+InstantCardTest >> test16NitroCardCanBePlayedAtAnyTimeBecauseItsAnInstantaniousCard [
+
+
+	| aGameSetUp aDice aBoard aPlayer1 aPlayer2 aWinnerSystem aTurnManager aDeckOfCards aNitro |
+	aGameSetUp := GameSetup new.
+	aDice := RiggedDice withNumberOfFaces: 100.
+	aDice setNumbersProvider: { 1 }.
+	aPlayer1 := SpaceShip named: 'Fran'.
+	aPlayer2 := SpaceShip named: 'Agustin'.
+
+	aNitro := CardNitro new.
+
+	aDeckOfCards := {
+		                aNitro.
+		                aNitro.
+		                aNitro.
+		                aNitro } asOrderedCollection.
+
+	aGameSetUp assignsInOrder: (Deck withCards: (aDeckOfCards)).
+
+	aGameSetUp withPlayers: {
+			aPlayer1.
+			aPlayer2 }.
+
+	aGameSetUp withDices: { aDice }.
+	aTurnManager := TurnManager withOrder: {
+			                aPlayer1.
+			                aPlayer2 }.
+
+	aGameSetUp
+		withABoardNumberOfSquares: 100
+		andTurnManager: aTurnManager.
+	aGameSetUp withMaximumLapsToWin: 3.
+	aGameSetUp withTiles: { }.
+	aGameSetUp createGameInstance.
+
+
+	aBoard := aGameSetUp board.
+	aWinnerSystem := aGameSetUp winnerSystem.
+
+	
+	aBoard playNextTurn.
+	aBoard playCard: aNitro by:aPlayer1 targeting: aPlayer2.
+	aBoard playNextTurn.
+	self assert: (aBoard positionOf: aPlayer2) equals: 4.
+	
+]
+
+{ #category : 'tests' }
 InstantCardTest >> test1ARepeatCardIsUsedAfterFallinginABonusTileThenTheAssignedSpaceshipGetsAnotherCard [
 
 	| aGameSetUp aDice aBoard aPlayer1 aPlayer2 aTurnManager aDeckOfCards anAccelerationCard aCancellationCard aRepeat |

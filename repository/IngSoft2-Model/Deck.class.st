@@ -42,14 +42,20 @@ Deck >> discarded [
 { #category : 'drawing' }
 Deck >> draw [
 self ensureThereIsAtLeastOneCard.
-
+cardsInDeck isEmpty ifTrue: [ self error: 'There are no aveilable cards to draw'].
 
 ^ cardsInDeck removeFirst
 ]
 
 { #category : 'drawing' }
 Deck >> ensureThereIsAtLeastOneCard [
-(cardsInDeck isEmpty) ifTrue:[self refillFromDiscard].
+"(cardsInDeck isEmpty) ifTrue:[self refillFromDiscard]."
+
+    cardsInDeck isEmpty ifTrue: [
+        discardDeck isEmpty
+            ifFalse: [ self refillFromDiscard ]
+    ].
+
 ]
 
 { #category : 'initial' }
@@ -60,10 +66,13 @@ Deck >> initialzeDeckWith: cards [
 
 { #category : 'action' }
 Deck >> refillFromDiscard [
+	cardsInDeck addAll: discardDeck.
+    cardsInDeck shuffle.
+    discardDeck removeAll.
 
-	cardsInDeck := discardDeck deepCopy.
+	" cardsInDeck addAll: discardDeck.
 	cardsInDeck shuffle.
-	discardDeck :={}asOrderedCollection 
+	discardDeck :={}asOrderedCollection "
 ]
 
 { #category : 'action' }

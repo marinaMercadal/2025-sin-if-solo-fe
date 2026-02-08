@@ -11,7 +11,8 @@ Class {
 		'accelerationProbability',
 		'cancellationProbability',
 		'repeatProbability',
-		'redoProbability'
+		'redoProbability',
+		'nitroProbability'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'

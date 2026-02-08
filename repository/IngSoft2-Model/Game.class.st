@@ -45,11 +45,6 @@ Game >> applyRepeatEffectWith: aSpaceship [
 	board applyEffectOfLastTileTo: spaceShipMoving on: self
 ]
 
-{ #category : 'testing' }
-Game >> canBePlayed [
-(spaceShipMoving =spaceShipPlayingCard )ifFalse: [Error signal: 'Its not the spaceship turn' ].
-]
-
 { #category : 'action' }
 Game >> cardsEffectsArePlayed [
 
@@ -138,6 +133,7 @@ Game >> move: aSpaceShip with: dices [
 	spaceShipMoving := aSpaceShip.
 	(aSpaceShip canMoveWith: rolledNumber) ifFalse: [ ^ self ].
 	self move: aSpaceShip forwardBy: (rolledNumber + (self rollAdjustmentFor: aSpaceShip)).
+	
 	board applySpecialTiletoA: aSpaceShip ofAll: spaceShips.
 	self cardsEffectsArePlayed.
 	rewardAsignation for: aSpaceShip with: dices
@@ -154,6 +150,7 @@ Game >> playCard: aCard by: aSpaceShip targeting: aTarget [
    spaceShipMoving := turnManager spaceShipWhoseTurnItIsFrom: spaceShips.
 	spaceShipPlayingCard:=aSpaceShip .
  	
+	
 	aCard playedBy:aSpaceShip targeting: aTarget in: self.
 	
 	spaceShipPlayingCard removeFromHand:aCard.
@@ -195,7 +192,7 @@ Game >> playsInstantaneousCard: aCard [
 Game >> playsPermanentCard: aCard [ 
 	
 	
-	self canBePlayed.
+	"self canBePlayed."
 	cardsInGame add: aCard.
 	lastCardPlayed := aCard.
 	
@@ -234,6 +231,7 @@ Game >> rollAdjustmentFor: aSpaceship [
         card rollAdjustmentFor: aSpaceship
     ]
 
+
 ]
 
 { #category : 'accessing' }
@@ -256,4 +254,9 @@ Game >> skipNextTurn [
 Game >> spaceShipMatching: aSpaceShip [
 
 	^ spaceShips detect: [ :each | each = aSpaceShip ]
+]
+
+{ #category : 'testing' }
+Game >> validateCanBePlayed [
+(spaceShipMoving =spaceShipPlayingCard )ifFalse: [Error signal: 'Its not the spaceship turn' ].
 ]
