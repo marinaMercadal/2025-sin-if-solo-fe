@@ -2,49 +2,53 @@
 Class: ActiveCards
 "
 Class {
-	#name : 'ActiveCards',
+	#name : 'CardEffects',
 	#superclass : 'Object',
 	#instVars : [
-		'cards'
+		'cards',
+		'lastCardPlayed'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
 { #category : 'initialization' }
-ActiveCards >> add:aCard [
-cards add:aCard 
+CardEffects >> add:aCard [
+cards add:aCard .
+self registerPlayedCard: aCard .
 ]
 
 { #category : 'action' }
-ActiveCards >> applyIEffectIn: aGame to: aSpaceShip [ 
+CardEffects >> applyIEffectIn: aGame to: aSpaceShip [ 
 	
 	cards do: [ :card |
 		card applyIEffectIn:aGame to:aSpaceShip  ].
 ]
 
 { #category : 'action' }
-ActiveCards >> handleRunOutOfFuleOf: aSpaceShip in: aGame [ 
+CardEffects >> handleRunOutOfFuleOf: aSpaceShip in: aGame [ 
 	cards do:[:card|card handleRunOutOfFuleOf:aSpaceShip in:aGame ].
 ]
 
 { #category : 'testing' }
-ActiveCards >> includes: aCard [
+CardEffects >> includes: aCard [
 ^cards includes: aCard
 ]
 
 { #category : 'initialization' }
-ActiveCards >> initialize [ 
-cards:={}asOrderedCollection 
+CardEffects >> initialize [ 
+super initialize.
+cards:={}asOrderedCollection .
+
 ]
 
 { #category : 'removing' }
-ActiveCards >> remove: aCard [ 
+CardEffects >> remove: aCard [ 
 	cards remove:aCard 
 ]
 
 { #category : 'action' }
-ActiveCards >> rollAdjustmentFor: aSpaceShip [ 
+CardEffects >> rollAdjustmentFor: aSpaceShip [ 
 	^cards sum: [ :card |
         card rollAdjustmentFor: aSpaceShip
     ]

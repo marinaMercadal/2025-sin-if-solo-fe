@@ -7,14 +7,13 @@ Class {
 	#instVars : [
 		'board',
 		'turnManager',
-		'cardsInGame',
 		'rewardAsignation',
-		'lastCardPlayed',
 		'dicesInGameBoard',
 		'spaceShips',
 		'winnerSystem',
 		'spaceShipPlayingCard',
-		'spaceShipMoving'
+		'spaceShipMoving',
+		'cardEffects'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -85,14 +84,14 @@ Game >> formsAlianceWith:anotherSpaceShip [
 { #category : 'action' }
 Game >> handleRunOutOfFuleOf:spaceShip [
 
-cardsInGame handleRunOutOfFuleOf:spaceShip in:self.
+cardEffects handleRunOutOfFuleOf:spaceShip in:self.
 
 ]
 
 { #category : 'testing' }
 Game >> hasActiveCard: cardToCancel [
 
-(cardsInGame includes:cardToCancel )ifFalse: [ 
+(cardEffects includes:cardToCancel )ifFalse: [ 
         Error signal: 'That card is not being played'].
 ]
 
@@ -102,7 +101,7 @@ Game >> initializeWithBoard: aBoard dices: someDices spaceships: someSpaceShips 
 	turnManager := aTurnManager.
 	dicesInGameBoard := someDices.
 	"cardsInGame := OrderedCollection new."
-	cardsInGame :=ActiveCards new.
+	cardEffects :=CardEffects new.
 	rewardAsignation := aRewardDistribution.
 	spaceShips := someSpaceShips.
 	winnerSystem := aWinnerSystem.
@@ -131,10 +130,10 @@ Game >> move: aSpaceShip with: dices [
 	rolledNumber := (self rolledNumberSumOf: dices ).
 	spaceShipMoving := aSpaceShip.
 	(aSpaceShip canMoveWith: rolledNumber) ifFalse: [ ^ self ].
-	self move: aSpaceShip forwardBy: (rolledNumber + (cardsInGame rollAdjustmentFor: aSpaceShip)).
+	self move: aSpaceShip forwardBy: (rolledNumber + (cardEffects rollAdjustmentFor: aSpaceShip)).
 	
 	board applySpecialTiletoA: aSpaceShip ofAll: spaceShips.
-	cardsInGame applyIEffectIn:self to:spaceShipMoving.
+	cardEffects applyIEffectIn:self to:spaceShipMoving.
 	"self cardsEffectsArePlayed."
 	rewardAsignation for: aSpaceShip with: dices
 
@@ -184,8 +183,8 @@ Game >> playsInstantaneousCard: aCard [
 
 	aCard canBePlayedIn:self.
 	aCard applyIEffectIn:self to:spaceShipMoving .
-	
-	lastCardPlayed := aCard
+	cardEffects registerPlayedCard:aCard .
+	"lastCardPlayed := aCard"
 
 	
 
@@ -197,8 +196,8 @@ Game >> playsInstantaneousCard: aCard [
 Game >> playsPermanentCard: aCard [ 
 	
 
-	cardsInGame add: aCard.
-	lastCardPlayed := aCard.
+	cardEffects add: aCard.
+	"lastCardPlayed := aCard."
 	
 
 ]
@@ -206,6 +205,8 @@ Game >> playsPermanentCard: aCard [
 { #category : 'action' }
 Game >> playsRedoCard: anInicialization targeting: targetSpaceship [
 
+	cardEffects redoLastCardPlayedBy: anInicialization targeting: targetSpaceship in: self.
+"
 	| newCardToRedo |
 	newCardToRedo := lastCardPlayed copy.
 
@@ -214,7 +215,7 @@ Game >> playsRedoCard: anInicialization targeting: targetSpaceship [
 	newCardToRedo
 		playedBy: anInicialization
 		targeting: targetSpaceship
-		in: self
+		in: self"
 ]
 
 { #category : 'accessing' }
@@ -226,7 +227,7 @@ Game >> positionOf: aSpaceShip [
 { #category : 'removing' }
 Game >> remove: cardToCancel [
 
-	cardsInGame remove: cardToCancel
+	cardEffects remove: cardToCancel
 ]
 
 { #category : 'accessing' }
