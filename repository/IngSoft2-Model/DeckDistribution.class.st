@@ -67,6 +67,11 @@ DeckDistribution >> forCancellation: aProbability [
 ]
 
 { #category : 'initialization' }
+DeckDistribution >> forNitro: aProbability [
+nitroProbability:=aProbability.
+]
+
+{ #category : 'initialization' }
 DeckDistribution >> forOverload: aProbability [ 
 	overloadProbability:=aProbability
 ]
