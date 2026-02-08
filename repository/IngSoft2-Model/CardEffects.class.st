@@ -42,6 +42,22 @@ cards:={}asOrderedCollection .
 
 ]
 
+{ #category : 'action' }
+CardEffects >> redoLastCardPlayedBy: anInicialization targeting: targetSpaceship in: aGame [ 
+	| newCardToRedo |
+	newCardToRedo := lastCardPlayed copy.
+
+	newCardToRedo
+		playedBy: anInicialization
+		targeting: targetSpaceship
+		in: aGame
+]
+
+{ #category : 'action' }
+CardEffects >> registerPlayedCard:aCard [
+lastCardPlayed :=aCard .
+]
+
 { #category : 'removing' }
 CardEffects >> remove: aCard [ 
 	cards remove:aCard 
