@@ -44,14 +44,6 @@ Game >> applyRepeatEffectWith: aSpaceship [
 	board applyEffectOfLastTileTo: aSpaceship on: self
 ]
 
-{ #category : 'action' }
-Game >> cardsEffectsArePlayed [
-
-		
-	cardsInGame do: [ :card |
-		card applyIEffectIn:self to:spaceShipMoving ]
-]
-
 { #category : 'accessing' }
 Game >> cardsOf: aSpaceShip [
 
@@ -93,7 +85,8 @@ Game >> formsAlianceWith:anotherSpaceShip [
 { #category : 'action' }
 Game >> handleRunOutOfFuleOf:spaceShip [
 
-cardsInGame do:[:card|card handleRunOutOfFuleOf:spaceShip in:self].
+cardsInGame handleRunOutOfFuleOf:spaceShip in:self.
+
 ]
 
 { #category : 'testing' }
@@ -108,7 +101,8 @@ Game >> initializeWithBoard: aBoard dices: someDices spaceships: someSpaceShips 
 	board := aBoard.
 	turnManager := aTurnManager.
 	dicesInGameBoard := someDices.
-	cardsInGame := OrderedCollection new.
+	"cardsInGame := OrderedCollection new."
+	cardsInGame :=ActiveCards new.
 	rewardAsignation := aRewardDistribution.
 	spaceShips := someSpaceShips.
 	winnerSystem := aWinnerSystem.
@@ -137,10 +131,11 @@ Game >> move: aSpaceShip with: dices [
 	rolledNumber := (self rolledNumberSumOf: dices ).
 	spaceShipMoving := aSpaceShip.
 	(aSpaceShip canMoveWith: rolledNumber) ifFalse: [ ^ self ].
-	self move: aSpaceShip forwardBy: (rolledNumber + (self rollAdjustmentFor: aSpaceShip)).
+	self move: aSpaceShip forwardBy: (rolledNumber + (cardsInGame rollAdjustmentFor: aSpaceShip)).
 	
 	board applySpecialTiletoA: aSpaceShip ofAll: spaceShips.
-	self cardsEffectsArePlayed.
+	cardsInGame applyIEffectIn:self to:spaceShipMoving.
+	"self cardsEffectsArePlayed."
 	rewardAsignation for: aSpaceShip with: dices
 
    
@@ -201,8 +196,7 @@ Game >> playsInstantaneousCard: aCard [
 { #category : 'action' }
 Game >> playsPermanentCard: aCard [ 
 	
-	
-	"self canBePlayed."
+
 	cardsInGame add: aCard.
 	lastCardPlayed := aCard.
 	
@@ -233,15 +227,6 @@ Game >> positionOf: aSpaceShip [
 Game >> remove: cardToCancel [
 
 	cardsInGame remove: cardToCancel
-]
-
-{ #category : 'action' }
-Game >> rollAdjustmentFor: aSpaceship [
-  ^ cardsInGame sum: [ :card |
-        card rollAdjustmentFor: aSpaceship
-    ]
-
-
 ]
 
 { #category : 'accessing' }
