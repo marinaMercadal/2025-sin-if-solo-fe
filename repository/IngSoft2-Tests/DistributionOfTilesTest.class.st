@@ -30,7 +30,7 @@ DistributionOfTilesTest >> test1WhenATileDistributionIsSetThenBoardIsCreatedWith
 	aTileDistribution forHyperJump: 0.08.
 	aTileDistribution forAtomicBomb: 0.02.
 
-	tiles := aTileDistribution build.
+	tiles := aTileDistribution build:boardSize.
 
 	self assert:
 		((aTileDistribution percentageOf: NoEffect) between: 0.37 and: 0.43).
@@ -64,7 +64,7 @@ DistributionOfTilesTest >> test2WhenATileDistributionIsSetThenTheBoardCanHaveOne
 	aTileDistribution forHyperJump: 0.
 	aTileDistribution forAtomicBomb: 0.
 
-	tiles := aTileDistribution build.
+	tiles := aTileDistribution build:boardSize.
 
 	self assert:
 		((aTileDistribution percentageOf: NoEffect) between: 0 and: 0).
@@ -97,7 +97,7 @@ DistributionOfTilesTest >> test3WhenTheSumOfProbabilitiesIsntOneThenTheCreationF
 
 
 	self
-		should: [ aTileDistribution build ]
+		should: [ aTileDistribution build:boardSize ]
 		raise: Error
 		withMessegeText: 'The Sum Of All Probabilities should be 1'
 ]
@@ -118,7 +118,7 @@ DistributionOfTilesTest >> test4WhenATileDistributionIsSetThenTheBoardIsCreatedW
 	aTileDistribution forHyperJump: 0.08.
 	aTileDistribution forAtomicBomb: 0.02.
 
-	tiles := aTileDistribution build.
+	tiles := aTileDistribution build: boardSize.
 
 	self assert:
 		((aTileDistribution percentageOf: NoEffect) between: 0.27 and: 0.33).

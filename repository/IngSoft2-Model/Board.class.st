@@ -9,7 +9,7 @@ Class {
 		'sizeInParsec',
 		'specialTiles',
 		'lastSpecialTileEffect',
-		'deckOfCards'
+		'deck'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -21,14 +21,20 @@ Board class >> hasTheMinimumAmountOfSquares: aNumber [
 	aNumber < 3 ifTrue: [ Error signal: 'Should have at least 3 squares' ]
 ]
 
-{ #category : 'initialization' }
-Board class >> withNumberOfSquares: aNumberOfSquares withSizeInParsec: aSizeInParsec andA: aDeck [
+{ #category : 'creation' }
+Board class >> withNumberOfSquares: aNumberOfSquares
+sizeInParsec: aSizeInParsec
+deck: aDeck
+tiles: someTiles [
 
-	self hasTheMinimumAmountOfSquares: aNumberOfSquares.
-	^ self new
-		  initializeWithNumberOfSquares: aNumberOfSquares
-		  andSizeInParsec: aSizeInParsec
-		  andADeckOfCards: aDeck
+    self hasTheMinimumAmountOfSquares: aNumberOfSquares.
+
+    ^ self new
+        initializeWithNumberOfSquares: aNumberOfSquares
+        sizeInParsec: aSizeInParsec
+        deck: aDeck
+        tiles: someTiles
+
 ]
 
 { #category : 'action' }
@@ -47,10 +53,21 @@ Board >> applySpecialTiletoA: spaceShip ofAll: spaceShips [
 		onBoardOfSize: self
 ]
 
-{ #category : 'comparing' }
-Board >> contains: aSpecialTiles [
+{ #category : 'accessing' }
+Board >> cardWasPlayed:aCard [
 
-	specialTiles := aSpecialTiles
+deck usesCard:aCard  .
+
+]
+
+{ #category : 'accessing' }
+Board >> deckOfCards [
+	^ deck
+]
+
+{ #category : 'accessing' }
+Board >> discardDeck [
+	^ deck discarded 
 ]
 
 { #category : 'action' }
@@ -61,21 +78,23 @@ Board >> distanceFrom: origin to: destination [
 
 { #category : 'action' }
 Board >> givesACardTo: aSpaceShip [
+	aSpaceShip equipWith: deck draw
 
-	| assignedCard |
+	"| assignedCard |
 	assignedCard := deckOfCards atRandom.
 	deckOfCards remove: assignedCard.
-	aSpaceShip equipWith: assignedCard
+	aSpaceShip equipWith: assignedCard"
 ]
 
 { #category : 'initialization' }
-Board >> initializeWithNumberOfSquares: aNumberOfSquares andSizeInParsec: aSizeInParsec andADeckOfCards: aDeck [
-
+Board >> initializeWithNumberOfSquares: aNumberOfSquares sizeInParsec: aSizeInParsec deck: aDeck tiles: someSpecialTiles [ 
 	maximumSquares := aNumberOfSquares.
 	sizeInParsec := aSizeInParsec.
-	deckOfCards := aDeck.
+	deck := aDeck.
+	"discardDeck := Deck withCards: { }asOrderedCollection ."
 	specialTiles := OrderedCollection new.
-	lastSpecialTileEffect := NoEffect new
+	lastSpecialTileEffect := NoEffect new.
+	specialTiles := someSpecialTiles
 ]
 
 { #category : 'accessing' }

@@ -3,25 +3,19 @@ Reward Distribution
 "
 Class {
 	#name : 'RewardDistribution',
-	#superclass : 'Object',
+	#superclass : 'ProbabilityDistribution',
 	#instVars : [
 		'maximumFuelProbability',
-		'decreaseFuelProbability',
-		'rewards',
-		'sample'
+		'decreaseFuelProbability'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'building' }
-RewardDistribution >> buidFor: probabilitySampling [
+{ #category : 'accessing' }
+RewardDistribution >> elementFor: aRandomProbability [
+    ^ self rewardFor: aRandomProbability
 
-	sample := probabilitySampling.
-
-	rewards := (1 to: sample) collect: [ :i |
-		           self rewardFor: Random new next ].
-	^ rewards
 ]
 
 { #category : 'instance creation' }
@@ -49,18 +43,11 @@ RewardDistribution >> forRestartFuel: aProbability [
 	maximumFuelProbability := aProbability
 ]
 
-{ #category : 'accessing' }
-RewardDistribution >> percentageOf: aReward [
-
-	^ (rewards count: [ :element | element isKindOf: aReward ])
-	  / rewards size asFloat
-]
-
 { #category : 'action' }
 RewardDistribution >> rewardFor: aRandomProbability [
 
 	aRandomProbability < maximumFuelProbability ifTrue: [
-		^ RestartFuelReward new ].
+		^ RechargeFuelReward new ].
 	aRandomProbability
 	< (maximumFuelProbability + decreaseFuelProbability) ifTrue: [
 		^ DecreaseFuelReward new ].

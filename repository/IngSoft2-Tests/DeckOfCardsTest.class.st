@@ -26,18 +26,18 @@ DeckOfCardsTest >> test01WhenItsNotTheSpaceShipTurnThenItCantThrowAPermanentCard
 
 	aPlayer1 := SpaceShip named: 'Juan'.
 	aPlayer2 := SpaceShip named: 'Martin'.
-
-	anAccelerationCard := CardAcceleration withIncrement: 1.
+	aRedoCard := CardRedo new.
+	anAccelerationCard := CardAcceleration new.
 	aGameSetUp equip: aPlayer1 with: anAccelerationCard.
-	aRedoCard := CardRedo for: anAccelerationCard.
-	aCancellationCard := CancellationCard for: anAccelerationCard.
+
+	aCancellationCard := CancellationCard new.
 
 	aDeckOfCards := {
 		                anAccelerationCard.
 		                anAccelerationCard.
 		                aCancellationCard.
 		                aRedoCard } asOrderedCollection.
-	aGameSetUp assignsInOrder: aDeckOfCards.
+	aGameSetUp assignsInOrder: (Deck withCards: (aDeckOfCards)).
 
 
 	aGameSetUp withDices: { aDice }.
@@ -56,14 +56,18 @@ DeckOfCardsTest >> test01WhenItsNotTheSpaceShipTurnThenItCantThrowAPermanentCard
 
 	aGameSetUp createGameInstance.
 	aBoard := aGameSetUp board.
-	aBoard with: aPlayer1 throws: anAccelerationCard.
-	aBoard with: aPlayer1 throws: anAccelerationCard.
-	aBoard with: aPlayer2 throws: aCancellationCard.
-
+	aBoard playCard: anAccelerationCard by:aPlayer1 targeting: NoTarget new.
+	aBoard playCard: anAccelerationCard by: aPlayer1 targeting: NoTarget new.
+	aBoard playCard: aCancellationCard by:aPlayer2 targeting: anAccelerationCard .
+	
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer1) equals: 2.
+	
+	
+	aBoard playCard: aRedoCard by:aPlayer2 targeting: anAccelerationCard.
+		
 
-	aBoard with: aPlayer2 throws: aRedoCard.
+	
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer2) equals: 1.
 	aBoard playNextTurn.
@@ -71,7 +75,7 @@ DeckOfCardsTest >> test01WhenItsNotTheSpaceShipTurnThenItCantThrowAPermanentCard
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer2) equals: 2.
 
-	aBoard with: aPlayer1 throws: anAccelerationCard.
+	aBoard playCard: anAccelerationCard by:aPlayer1 targeting: NoTarget new.
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer1) equals: 5
 ]
@@ -88,7 +92,7 @@ DeckOfCardsTest >> test0WhenASpaceShipGetsCreatedItHasAnInitialAmountOfCards [
 	aPlayer1 := SpaceShip named: 'Juan'.
 	aPlayer2 := SpaceShip named: 'Martin'.
 
-	anAccelerationCard := CardAcceleration withIncrement: 1.
+	anAccelerationCard := CardAcceleration new.
 
 	aDeckOfCards := {
 		                anAccelerationCard.
@@ -96,7 +100,7 @@ DeckOfCardsTest >> test0WhenASpaceShipGetsCreatedItHasAnInitialAmountOfCards [
 		                anAccelerationCard.
 		                anAccelerationCard.
 		                anAccelerationCard } asOrderedCollection.
-	aGameSetUp assignsInOrder: aDeckOfCards.
+	aGameSetUp assignsInOrder: (Deck withCards: (aDeckOfCards)).
 
 	aGameSetUp withDices: { aDice }.
 	aGameSetUp withPlayers: {
@@ -139,7 +143,7 @@ DeckOfCardsTest >> test10WhenASecondSpaceShipUsesAnAllyCardThenItApplysTheirConc
 		withABoardNumberOfSquares: 100
 		andTurnManager: aTurnManager.
 
-	anAllyCard := CardAlly teamsUpWith: aPlayer2.
+	anAllyCard := CardAlly new.
 
 	aDeckOfCards := {
 		                anAllyCard.
@@ -147,13 +151,13 @@ DeckOfCardsTest >> test10WhenASecondSpaceShipUsesAnAllyCardThenItApplysTheirConc
 		                anAllyCard.
 		                anAllyCard } asOrderedCollection.
 
-	aGameSetUp assignsRandomly: aDeckOfCards.
+	aGameSetUp assignsInOrder: (Deck withCards: (aDeckOfCards)).
 
 	aGameSetUp createGameInstance.
 	aBoard := aGameSetUp board.
 
 	aBoard playNextTurn.
-	aBoard with: aPlayer2 throws: anAllyCard.
+	aBoard playCard: anAllyCard by:aPlayer2 targeting: aPlayer2 .
 	aBoard playNextTurn.
 	aBoard playNextTurn.
 	aBoard playNextTurn.
@@ -177,9 +181,73 @@ DeckOfCardsTest >> test10WhenASecondSpaceShipUsesAnAllyCardThenItApplysTheirConc
 ]
 
 { #category : 'tests' }
-DeckOfCardsTest >> test11WhenTestingADeterministicMethodForCardsIsUsed [
+DeckOfCardsTest >> test11WhenASpaceShipFormsANewAllyOldAllianceIsBroken [
 
-	| aGameSetUp aDice aBoard aPlayer1 aPlayer2 aTurnManager aDeckOfCards anAccelerationCard |
+	| aGameSetUp aDice aBoard aPlayer1 aPlayer2 aPlayer3 aTurnManager aDeckOfCards anAllyCard |
+	aGameSetUp := GameSetup new.
+	aPlayer1 := SpaceShip named: 'Juan'.
+	aPlayer2 := SpaceShip named: 'Pedro'.
+	aPlayer3 := SpaceShip named: 'Marina'.
+	aDice := RiggedDice withNumberOfFaces: 2.
+	aDice setNumbersProvider: { 3. 1. 0. 2. 0. 0 }.
+	aGameSetUp withDices: { aDice }.
+	aGameSetUp withPlayers: {
+			aPlayer1.
+			aPlayer2.
+			aPlayer3 }.
+
+	aTurnManager := TurnManager withOrder: {
+			                aPlayer1.
+			                aPlayer2.
+			                aPlayer3 }.
+	aGameSetUp
+		withABoardNumberOfSquares: 100
+		andTurnManager: aTurnManager.
+
+	anAllyCard := CardAlly new.
+
+	aDeckOfCards := {
+		                anAllyCard.
+		                anAllyCard.
+		                anAllyCard.
+		                anAllyCard.
+		                anAllyCard.
+		                anAllyCard } asOrderedCollection.
+
+	aGameSetUp assignsRandomly: (Deck withCards: (aDeckOfCards)).
+
+	aGameSetUp createGameInstance.
+	aBoard := aGameSetUp board.
+
+
+	aBoard playCard: anAllyCard by:aPlayer1 targeting: aPlayer2.
+
+	aBoard playNextTurn. "juega 1"
+
+	aBoard playNextTurn."juega 2"
+
+	self assert: (aBoard currentFuleOf: aPlayer1) equals: 1.
+
+	self assert: (aBoard currentFuleOf: aPlayer2) equals: 3.
+
+	aBoard playCard: anAllyCard  by:aPlayer3 targeting: aPlayer1.
+
+	aBoard playNextTurn."juega 3"
+	
+	self assert: (aBoard currentFuleOf: aPlayer2) equals: 3.
+	self assert: (aBoard positionOf: aPlayer1) equals: 3.
+	aBoard playNextTurn."juega 1"
+	self assert: (aBoard currentFuleOf: aPlayer2) equals: 3.
+	self assert: (aBoard currentFuleOf: aPlayer1) equals: 0.
+
+	self assert: (aBoard currentFuleOf: aPlayer3) equals: 3. "auqneu no se movio 3 su fule bajo porque el 1 se lo estaba robando. "
+	self assert: (aBoard positionOf: aPlayer1) equals: 5
+]
+
+{ #category : 'tests' }
+DeckOfCardsTest >> test12WhenTestingADeterministicMethodForCardsIsUsed [
+
+	| aGameSetUp aDice aBoard aPlayer1 aCancelationCard  aPlayer2 aTurnManager aDeckOfCards anAccelerationCard |
 	aGameSetUp := GameSetup new.
 
 	aDice := RiggedDice withNumberOfFaces: 6.
@@ -188,14 +256,14 @@ DeckOfCardsTest >> test11WhenTestingADeterministicMethodForCardsIsUsed [
 	aPlayer1 := SpaceShip named: 'Juan'.
 	aPlayer2 := SpaceShip named: 'Martin'.
 
-	anAccelerationCard := CardAcceleration withIncrement: 1.
-
+	anAccelerationCard := CardAcceleration new.
+	aCancelationCard:=CancellationCard new.
 	aDeckOfCards := {
 		                anAccelerationCard.
 		                anAccelerationCard.
 		                anAccelerationCard.
 		                anAccelerationCard } asOrderedCollection.
-	aGameSetUp assignsRandomly: aDeckOfCards.
+	aGameSetUp assignsRandomly: (Deck withCards: (aDeckOfCards)).
 
 	aGameSetUp withDices: { aDice }.
 	aGameSetUp withPlayers: {
@@ -229,7 +297,8 @@ DeckOfCardsTest >> test1WhenASpaceShipGetsCreatedThenItGetsAssignedTwoCardsAtRan
 	aDeckOfCards := {
 		                CardAcceleration.
 		                CardAcceleration } asOrderedCollection.
-	aGameSetUp assignsRandomly: aDeckOfCards.
+	
+	aGameSetUp assignsRandomly: (Deck withCards: (aDeckOfCards)).
 
 	aGameSetUp withDices: { aDice }.
 	aGameSetUp withPlayers: { aPlayer1 }.
@@ -241,9 +310,7 @@ DeckOfCardsTest >> test1WhenASpaceShipGetsCreatedThenItGetsAssignedTwoCardsAtRan
 	aBoard := aGameSetUp board.
 
 	self
-		assert: (aBoard cardsOf: aPlayer1)
-		equals:
-		(OrderedCollection with: CardAcceleration with: CardAcceleration)
+		assert: (aBoard cardsOf: aPlayer1) size equals:(2)
 ]
 
 { #category : 'tests' }
@@ -264,7 +331,7 @@ DeckOfCardsTest >> test2WhenASpaceShipFallsIntoASpecialCardTileThenItHasOneMoreC
 		                CardAcceleration.
 		                CardAcceleration.
 		                CardAcceleration } asOrderedCollection.
-	aGameSetUp assignsRandomly: aDeckOfCards.
+	aGameSetUp assignsRandomly: (Deck withCards: (aDeckOfCards)).
 
 	aGameSetUp withDices: { aDice }.
 	aGameSetUp withPlayers: {
@@ -296,7 +363,7 @@ DeckOfCardsTest >> test3WhenAcceleratorCardIsUsedThenItRemainsOnGameUntilRemoved
 	aPlayer1 := SpaceShip named: 'Juan'.
 	aPlayer2 := SpaceShip named: 'Martin'.
 
-	anAccelerationCard := CardAcceleration withIncrement: 1.
+	anAccelerationCard := CardAcceleration new.
 
 	aDeckOfCards := {
 		                anAccelerationCard.
@@ -304,7 +371,7 @@ DeckOfCardsTest >> test3WhenAcceleratorCardIsUsedThenItRemainsOnGameUntilRemoved
 		                anAccelerationCard.
 		                anAccelerationCard.
 		                anAccelerationCard } asOrderedCollection.
-	aGameSetUp assignsInOrder: aDeckOfCards.
+	aGameSetUp assignsInOrder: (Deck withCards: (aDeckOfCards)).
 
 	aGameSetUp withDices: { aDice }.
 	aGameSetUp withPlayers: {
@@ -323,10 +390,10 @@ DeckOfCardsTest >> test3WhenAcceleratorCardIsUsedThenItRemainsOnGameUntilRemoved
 	aBoard := aGameSetUp board.
 
 
-	aBoard with: aPlayer1 throws: anAccelerationCard.
+	aBoard playCard: anAccelerationCard by:aPlayer1 targeting: NoTarget new.
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer1) equals: 7.
-	aBoard with: aPlayer2 throws: anAccelerationCard.
+	aBoard playCard: anAccelerationCard  by:aPlayer2 targeting: NoTarget new.
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer2) equals: 5
 ]
@@ -343,14 +410,14 @@ DeckOfCardsTest >> test4WhenAAceleratorCardIsUsedThenItAffectsTheFinalRolledNumb
 	aPlayer1 := SpaceShip named: 'Juan'.
 
 
-	anAccelerationCard := CardAcceleration withIncrement: 1.
+	anAccelerationCard := CardAcceleration new.
 
 	aDeckOfCards := {
 		                anAccelerationCard.
 		                anAccelerationCard.
 		                anAccelerationCard.
 		                anAccelerationCard } asOrderedCollection.
-	aGameSetUp assignsRandomly: aDeckOfCards.
+	aGameSetUp assignsRandomly: (Deck withCards: (aDeckOfCards)).
 
 	aGameSetUp withDices: {
 			aDice.
@@ -365,7 +432,7 @@ DeckOfCardsTest >> test4WhenAAceleratorCardIsUsedThenItAffectsTheFinalRolledNumb
 	aBoard := aGameSetUp board.
 
 
-	aBoard with: aPlayer1 throws: anAccelerationCard.
+	aBoard playCard: anAccelerationCard by:aPlayer1  targeting: NoTarget new.
 	aBoard playNextTurn.
 
 
@@ -398,19 +465,21 @@ DeckOfCardsTest >> test5WhenAOverLoadCardIsUsedThenTheEffectIsApplyToASpecificSp
 			                aPlayer2 }.
 	aGameSetUp withABoardNumberOfSquares: 10 andTurnManager: aTurnManager.
 	aGameSetUp withTiles: { (BonusCard in: 6) }.
-	anOverLoadCard := CardOverLoad for: aPlayer2.
+	"anOverLoadCard := CardOverLoad for: aPlayer2."
+	anOverLoadCard := CardOverLoad new.
 
 	aDeckOfCards := {
 		                anOverLoadCard.
 		                anOverLoadCard.
 		                anOverLoadCard.
 		                anOverLoadCard } asOrderedCollection.
-	aGameSetUp assignsRandomly: aDeckOfCards.
+	aGameSetUp assignsRandomly: (Deck withCards: (aDeckOfCards)).
 
 	aGameSetUp createGameInstance.
 	aBoard := aGameSetUp board.
 
-	aBoard with: aPlayer1 throws: anOverLoadCard.
+"	aBoard playCard: anOverLoadCard by: aPlayer1."
+	aBoard playCard: anOverLoadCard by:aPlayer1 targeting: aPlayer2 .
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer1) equals: 10.
 	aBoard playNextTurn.
@@ -445,7 +514,8 @@ DeckOfCardsTest >> test6WhenAOverLoadCardIsUsedAndTheRolledNumberIsNegativeThenI
 		withABoardNumberOfSquares: 100
 		andTurnManager: aTurnManager.
 
-	anOverLoadCard := CardOverLoad for: aPlayer2.
+	"anOverLoadCard := CardOverLoad for: aPlayer2."
+	anOverLoadCard := CardOverLoad new.
 
 	aDeckOfCards := {
 		                anOverLoadCard.
@@ -453,7 +523,7 @@ DeckOfCardsTest >> test6WhenAOverLoadCardIsUsedAndTheRolledNumberIsNegativeThenI
 		                anOverLoadCard.
 		                anOverLoadCard } asOrderedCollection.
 
-	aGameSetUp assignsRandomly: aDeckOfCards.
+	aGameSetUp assignsRandomly: (Deck withCards: (aDeckOfCards)).
 
 	aGameSetUp createGameInstance.
 	aBoard := aGameSetUp board.
@@ -463,7 +533,7 @@ DeckOfCardsTest >> test6WhenAOverLoadCardIsUsedAndTheRolledNumberIsNegativeThenI
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer2) equals: 2.
 
-	aBoard with: aPlayer1 throws: anOverLoadCard.
+	aBoard playCard: anOverLoadCard by:aPlayer1  targeting: aPlayer2 .
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer1) equals: 4.
 	aBoard playNextTurn.
@@ -489,13 +559,14 @@ DeckOfCardsTest >> test7WhenAOverLoadCardIsUsedThenTheSpaceShipCouldGoBackALap [
 			                aPlayer2 }.
 	aGameSetUp withABoardNumberOfSquares: 5 andTurnManager: aTurnManager.
 
-	anOverLoadCard := CardOverLoad for: aPlayer2.
+	anOverLoadCard := CardOverLoad new.
+	"anOverLoadCard := CardOverLoad new."
 	aDeckOfCards := {
 		                anOverLoadCard.
 		                anOverLoadCard.
 		                anOverLoadCard.
 		                anOverLoadCard } asOrderedCollection.
-	aGameSetUp assignsRandomly: aDeckOfCards.
+	aGameSetUp assignsRandomly: (Deck withCards: (aDeckOfCards)).
 	aGameSetUp createGameInstance.
 	aBoard := aGameSetUp board.
 
@@ -505,7 +576,8 @@ DeckOfCardsTest >> test7WhenAOverLoadCardIsUsedThenTheSpaceShipCouldGoBackALap [
 	aBoard playNextTurn.
 	self assert: (aBoard positionOf: aPlayer2) equals: 5.
 	self assert: (aBoard completedLapsBy: aPlayer2) equals: 1.
-	aBoard with: aPlayer1 throws: anOverLoadCard.
+	aBoard playCard: anOverLoadCard by:aPlayer1 targeting: aPlayer2.
+	"aBoard playCard: anOverLoadCard by: aPlayer1."
 
 
 	aBoard playNextTurn.
@@ -538,7 +610,8 @@ DeckOfCardsTest >> test8WhenAnAllyCardIsUsedThenTheSpaceShipsCanShareTheirFule [
 		withABoardNumberOfSquares: 100
 		andTurnManager: aTurnManager.
 
-	anAllyCard := CardAlly teamsUpWith: aPlayer2.
+	"anAllyCard := CardAlly teamsUpWith: aPlayer2."
+	anAllyCard := CardAlly new.
 
 	aDeckOfCards := {
 		                anAllyCard.
@@ -546,7 +619,7 @@ DeckOfCardsTest >> test8WhenAnAllyCardIsUsedThenTheSpaceShipsCanShareTheirFule [
 		                anAllyCard.
 		                anAllyCard } asOrderedCollection.
 
-	aGameSetUp assignsRandomly: aDeckOfCards.
+	aGameSetUp assignsRandomly: (Deck withCards: (aDeckOfCards)).
 
 	aGameSetUp createGameInstance.
 	aBoard := aGameSetUp board.
@@ -561,7 +634,7 @@ DeckOfCardsTest >> test8WhenAnAllyCardIsUsedThenTheSpaceShipsCanShareTheirFule [
 	self assert: (aBoard positionOf: aPlayer1) equals: 0.
 	self assert: (aBoard positionOf: aPlayer2) equals: 3.
 	self assert: (aBoard currentFuleOf: aPlayer2) equals: 1.
-	aBoard with: aPlayer1 throws: anAllyCard.
+	aBoard playCard: anAllyCard by:aPlayer1 targeting:aPlayer2 .
 	aBoard playNextTurn.
 
 
@@ -597,16 +670,14 @@ DeckOfCardsTest >> test9WhenAnAllyCardIsUsedAndNeitherOfTheSpaceShipsHaveFuleThe
 		withABoardNumberOfSquares: 100
 		andTurnManager: aTurnManager.
 
-	anAllyCard := CardAlly teamsUpWith: aPlayer2.
+	anAllyCard := CardAlly new.
 
 	aDeckOfCards := {
 		                anAllyCard.
 		                anAllyCard.
 		                anAllyCard.
 		                anAllyCard } asOrderedCollection.
-
-	aGameSetUp assignsRandomly: aDeckOfCards.
-
+aGameSetUp assignsRandomly: (Deck withCards: (aDeckOfCards)).
 	aGameSetUp createGameInstance.
 	aBoard := aGameSetUp board.
 	aBoard playNextTurn.
@@ -620,7 +691,7 @@ DeckOfCardsTest >> test9WhenAnAllyCardIsUsedAndNeitherOfTheSpaceShipsHaveFuleThe
 	self assert: (aBoard positionOf: aPlayer2) equals: 3.
 	self assert: (aBoard currentFuleOf: aPlayer2) equals: 1.
 
-	aBoard with: aPlayer1 throws: anAllyCard.
+	aBoard playCard: anAllyCard by:aPlayer1 targeting: aPlayer2 .
 	aBoard playNextTurn.
 	aBoard playNextTurn.
 
@@ -675,22 +746,48 @@ DeckOfCardsTest >> testF1WhenTheBonusCardPositionIsNegativeThenTheCreationFails 
 ]
 
 { #category : 'tests' }
-DeckOfCardsTest >> testF2WhenTheCardAccelerationHasANegativeIncrementThenTheCreationFails [
-
-	| aGameSetUp aDice aPlayer1 aPlayer2 anAccelerationCard |
+DeckOfCardsTest >> testF2WhenTheSpaceShipDoesntHaveACardThenItCantBeUsed [
+	| aGameSetUp aDice aBoard aPlayer1 aPlayer2 aTurnManager aDeckOfCards anAccelerationCard aCancellationCard  |
 	aGameSetUp := GameSetup new.
 
 	aDice := RiggedDice withNumberOfFaces: 6.
-	aDice setNumbersProvider: { 6. 3. 3. 4 }.
+	aDice setNumbersProvider: { 1. 1. 1. 1 }.
 
 	aPlayer1 := SpaceShip named: 'Juan'.
 	aPlayer2 := SpaceShip named: 'Martin'.
 
+	
+	anAccelerationCard:=CardAcceleration new.
+	aCancellationCard := CancellationCard new.
+
+	aDeckOfCards := {
+		                aCancellationCard.
+		                aCancellationCard.
+		                aCancellationCard.
+		                aCancellationCard } asOrderedCollection.
+	aGameSetUp assignsInOrder: (Deck withCards: (aDeckOfCards)).
 
 
+	aGameSetUp withDices: { aDice }.
+	aGameSetUp withPlayers: {
+			aPlayer1.
+			aPlayer2 }.
+
+	aTurnManager := TurnManager withOrder: {
+			                aPlayer1.
+			                aPlayer2 }.
+
+
+	aGameSetUp
+		withABoardNumberOfSquares: 100
+		andTurnManager: aTurnManager.
+
+	aGameSetUp createGameInstance.
+	aBoard := aGameSetUp board.
+	
 	self
-		should: [ anAccelerationCard := CardAcceleration withIncrement: -1 ]
+		should: [aBoard playCard: aCancellationCard by:aPlayer1 targeting: anAccelerationCard .]
 		raise: Error
-		withMessageText:
-		'A CardAcceleration has to have a positive increment'
+		withMessageText: 'That card is not being played'
+	
 ]

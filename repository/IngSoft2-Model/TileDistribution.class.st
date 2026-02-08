@@ -3,7 +3,7 @@ Class Tile Distribution
 "
 Class {
 	#name : 'TileDistribution',
-	#superclass : 'Object',
+	#superclass : 'ProbabilityDistribution',
 	#instVars : [
 		'noEffectProbability',
 		'blackHoleProbability',
@@ -11,8 +11,6 @@ Class {
 		'moonWalkProbabilty',
 		'hyperJumpProbability',
 		'atomicBombProability',
-		'numberOfTiles',
-		'tiles',
 		'bonusCardProbability'
 	],
 	#category : 'IngSoft2-Model',
@@ -25,13 +23,17 @@ TileDistribution class >> withABoardNumberOfSquares: aNumberOfTiles [
 ^self new initializeWithABoardSize: aNumberOfTiles.
 ]
 
-{ #category : 'building' }
-TileDistribution >> build [
+{ #category : 'accessing' }
+TileDistribution >> build: aSize [
+    self theSumIsOne.
+    ^ super build: aSize
 
-	self theSumIsOne.
-	tiles := (1 to: numberOfTiles) collect: [ :i |
-		         self tileFor: Random new next ].
-	^ tiles
+]
+
+{ #category : 'accessing' }
+TileDistribution >> elementFor: aRandomProbability [
+    ^ self tileFor: aRandomProbability
+
 ]
 
 { #category : 'initialization' }
@@ -79,7 +81,7 @@ TileDistribution >> forNoEffect: aProbability [
 { #category : 'initialization' }
 TileDistribution >> initializeWithABoardSize: aNumberOfTiles [
 
-	numberOfTiles := aNumberOfTiles.
+	
 	noEffectProbability := 0.
 	blackHoleProbability := 0.
 	hyperGravityProbability := 0.
@@ -87,12 +89,6 @@ TileDistribution >> initializeWithABoardSize: aNumberOfTiles [
 	hyperJumpProbability := 0.
 	atomicBombProability := 0.
 	bonusCardProbability := 0
-]
-
-{ #category : 'accessing' }
-TileDistribution >> percentageOf: tile [
-
-	^ (tiles count: [ :atile | atile class = tile ]) / tiles size asFloat
 ]
 
 { #category : 'verification' }

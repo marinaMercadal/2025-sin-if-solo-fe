@@ -3,7 +3,7 @@ ccccancellationnn
 "
 Class {
 	#name : 'CancellationCard',
-	#superclass : 'Object',
+	#superclass : 'Card',
 	#instVars : [
 		'cardToCancel'
 	],
@@ -11,50 +11,22 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'instance creation' }
-CancellationCard class >> for: aCard [
+{ #category : 'action' }
+CancellationCard >> applyIEffectIn:aGame to:spaceshipMoving [
+	self  canBePlayedIn:aGame.
+	aGame remove: cardToCancel
+]
 
-^self new initializationFor:aCard.
+{ #category : 'testing' }
+CancellationCard >> canBePlayedIn:aGame [
+^(aGame hasActiveCard: cardToCancel)
 ]
 
 { #category : 'action' }
-CancellationCard >> applyEffectTo: spaceShipMoving with: dicesInGameBoard inGame: game onABoard: aBoard [
+CancellationCard >> playedBy:aSpaceShip targeting: aCard in: aGame [
 
-	game remove: cardToCancel
-]
 
-{ #category : 'action' }
-CancellationCard >> changeTo: anImplementation [
+cardToCancel:=aCard .
+aGame playsInstantaneousCard: self
 
-	^ self class for: anImplementation
-]
-
-{ #category : 'verification' }
-CancellationCard >> chosenOnIsIn: cardsInGame [
-
-	^ cardsInGame includes: cardToCancel
-]
-
-{ #category : 'initialization' }
-CancellationCard >> initializationFor: aCard [
-
-	cardToCancel := aCard
-]
-
-{ #category : 'testing' }
-CancellationCard >> isInstantaneous [
-
-	^ true
-]
-
-{ #category : 'testing' }
-CancellationCard >> isLastBeingPlayedIn: aBoard [
-
-	aBoard upDateLastCardPlayed: self
-]
-
-{ #category : 'testing' }
-CancellationCard >> isPermanent [
-
-	^ false
 ]

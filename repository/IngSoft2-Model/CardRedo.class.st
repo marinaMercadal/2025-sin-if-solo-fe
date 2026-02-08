@@ -3,44 +3,15 @@ RedoCard
 "
 Class {
 	#name : 'CardRedo',
-	#superclass : 'Object',
-	#instVars : [
-		'anInicialization'
-	],
+	#superclass : 'Card',
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'instance creation' }
-CardRedo class >> for: aSpaceShip [
-
-	^ self new initializationFor: aSpaceShip
-]
-
 { #category : 'adding' }
-CardRedo >> addEffectRepetedTo: aBoard by: spaceShip the: lastCardPlay [
+CardRedo >> playedBy:aSpaceShip targeting: aTarget in: aGame [
 
-	| aCard |
-	aCard := lastCardPlay changeTo: anInicialization.
 
-	spaceShip equipWith: aCard.
-	aBoard with: spaceShip throws: aCard
-]
+aGame playsRedoCard:aSpaceShip targeting:aTarget.
 
-{ #category : 'initialization' }
-CardRedo >> initializationFor: aSpaceShip [
-
-	anInicialization := aSpaceShip
-]
-
-{ #category : 'testing' }
-CardRedo >> isInstantaneous [
-
-	^ false
-]
-
-{ #category : 'testing' }
-CardRedo >> isPermanent [
-
-	^ false
 ]

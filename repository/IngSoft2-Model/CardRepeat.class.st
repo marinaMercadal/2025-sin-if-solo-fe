@@ -4,55 +4,22 @@ Repeta Card
 "
 Class {
 	#name : 'CardRepeat',
-	#superclass : 'Object',
-	#instVars : [
-		'spaceship'
-	],
+	#superclass : 'Card',
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'instance creation' }
-CardRepeat class >> for: aSpaceShip [
-
-	^ self new initializationFor: aSpaceShip
-]
-
 { #category : 'action' }
-CardRepeat >> applyEffectTo: aSpaceShip with: dicesInGameBoard inGame: game onABoard: aBoard [
+CardRepeat >> applyIEffectIn:aGame to:spaceshipMoving [
 
-	game applyRepeatEffectWith: spaceship
+	aGame applyRepeatEffectWith: spaceshipMoving.
 
 
 	
 ]
 
-{ #category : 'verification' }
-CardRepeat >> chosenOnIsIn: cardsInGame [
-
-	^ true
-]
-
-{ #category : 'initialization' }
-CardRepeat >> initializationFor: aSpaceship [
-
-	spaceship := aSpaceship
-]
-
-{ #category : 'testing' }
-CardRepeat >> isInstantaneous [
-
-	^ true
-]
-
-{ #category : 'testing' }
-CardRepeat >> isLastBeingPlayedIn: aBoard [
-
-	aBoard upDateLastCardPlayed: self
-]
-
-{ #category : 'testing' }
-CardRepeat >> isPermanent [
-
-	^ false
+{ #category : 'action' }
+CardRepeat >> playedBy:aSpaceShip targeting: aTargetSpaceShip in: aGame [
+"self canBePlayedIn:self."
+aGame playsInstantaneousCard: self 
 ]
