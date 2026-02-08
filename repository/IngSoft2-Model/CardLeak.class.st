@@ -12,12 +12,11 @@ Class {
 }
 
 { #category : 'action' }
-CardLeak >> applyInstantaneousEffectIn: aGame [ 
-aGame applyLeakFrom:self to: spaceShipToAffect.
+CardLeak >> applyIEffectIn: aGame to: spaceshipMoving [
 
-"(spaceShipToAffect canPlay)ifFalse: [ aGame remove:self ]ifTrue:[aGame applyDoubleFuelConsumptionTo:spaceShipToAffect ]
-
-"
+	spaceshipMoving = spaceShipToAffect ifFalse: [ ^ self ].
+	spaceShipToAffect consumesFule.
+	spaceShipToAffect consumesFule
 ]
 
 { #category : 'action' }

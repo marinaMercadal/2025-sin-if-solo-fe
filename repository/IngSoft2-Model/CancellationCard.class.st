@@ -12,7 +12,7 @@ Class {
 }
 
 { #category : 'action' }
-CancellationCard >> applyInstantaneousEffectIn:aGame [
+CancellationCard >> applyIEffectIn:aGame to:spaceshipMoving [
 
 	aGame remove: cardToCancel
 ]

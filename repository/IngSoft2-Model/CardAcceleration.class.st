@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : 'action' }
-CardAcceleration >> applyInstantaneousEffectIn:aGame [
+CardAcceleration >> applyIEffectIn:aGame to:spaceshipMoving [
 
 	
 

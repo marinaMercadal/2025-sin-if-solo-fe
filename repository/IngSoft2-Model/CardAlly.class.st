@@ -13,7 +13,7 @@ Class {
 }
 
 { #category : 'action' }
-CardAlly >> applyInstantaneousEffectIn:aGame [
+CardAlly >> applyIEffectIn:aGame to:spaceshipMoving [
 
 	aGame formsAlianceWith:spaceShipToTeamUp.
 

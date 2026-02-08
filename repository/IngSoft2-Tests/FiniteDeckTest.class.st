@@ -91,7 +91,7 @@ FiniteDeckTest >> test10GameWaitsUntilThereAreCardsToDraw [
 FiniteDeckTest >> test1WhenADeckDistributionIsBuiltThenCardsFollowTheConfiguredProbabilities [
 
 	| deckSize aDeckDistribution  |
-	deckSize := 1000.
+	deckSize := 1600.
 	aDeckDistribution := DeckDistribution new.
 
 	aDeckDistribution forOverload: 0.20.

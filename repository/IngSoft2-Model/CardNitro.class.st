@@ -6,7 +6,6 @@ Class {
 	#superclass : 'Card',
 	#instVars : [
 		'aSpaceShipToEnhance',
-		'spaceShipMoving',
 		'remainingTurns'
 	],
 	#category : 'IngSoft2-Model',
@@ -14,9 +13,9 @@ Class {
 }
 
 { #category : 'action' }
-CardNitro >> applyInstantaneousEffectIn:aGame [
+CardNitro >> applyIEffectIn:aGame to:spaceshipMoving [
 
-(spaceShipMoving = aSpaceShipToEnhance) ifTrue: [
+(spaceshipMoving = aSpaceShipToEnhance) ifTrue: [
         remainingTurns := remainingTurns - 1
     ].
 (remainingTurns =0)ifTrue: [ aGame remove:self ]
@@ -40,7 +39,8 @@ aGame playsPermanentCard: self.
 
 { #category : 'action' }
 CardNitro >> rollAdjustmentFor: aSpaceShip [
-	spaceShipMoving :=aSpaceShip.
+
+	
 	(aSpaceShip = aSpaceShipToEnhance and: remainingTurns >= 0) ifTrue: [ ^ 3].
 ^ 0
 

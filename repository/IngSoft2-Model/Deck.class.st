@@ -49,13 +49,9 @@ cardsInDeck isEmpty ifTrue: [ self error: 'There are no aveilable cards to draw'
 
 { #category : 'drawing' }
 Deck >> ensureThereIsAtLeastOneCard [
-"(cardsInDeck isEmpty) ifTrue:[self refillFromDiscard]."
 
-    cardsInDeck isEmpty ifTrue: [
-        discardDeck isEmpty
-            ifFalse: [ self refillFromDiscard ]
-    ].
-
+	cardsInDeck isEmpty ifTrue: [
+		discardDeck isEmpty ifFalse: [ self refillFromDiscard ] ]
 ]
 
 { #category : 'initial' }
@@ -70,9 +66,7 @@ Deck >> refillFromDiscard [
     cardsInDeck shuffle.
     discardDeck removeAll.
 
-	" cardsInDeck addAll: discardDeck.
-	cardsInDeck shuffle.
-	discardDeck :={}asOrderedCollection "
+	
 ]
 
 { #category : 'action' }

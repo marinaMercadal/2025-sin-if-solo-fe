@@ -43,12 +43,12 @@ Game >> applyLeakFrom:aLeakCard to: spaceShipToAffect [
 
 
 	
-	spaceShipToAffect = spaceShipMoving ifFalse: [ ^ self ].
+	"spaceShipToAffect = spaceShipMoving ifFalse: [ ^ self ]."
 
-	
+"	
 	spaceShipToAffect consumesFule.
 	spaceShipToAffect consumesFule.
-	
+	"
 	
 ]
 
@@ -64,7 +64,7 @@ Game >> cardsEffectsArePlayed [
 
 		
 	cardsInGame do: [ :card |
-		card applyInstantaneousEffectIn:self ]
+		card applyIEffectIn:self to:spaceShipMoving ]
 ]
 
 { #category : 'accessing' }
@@ -171,6 +171,7 @@ Game >> playCard: aCard by: aSpaceShip targeting: aTarget [
 	spaceShipPlayingCard:=aSpaceShip .
  	
 	
+	
 	aCard playedBy:aSpaceShip targeting: aTarget in: self.
 	
 	spaceShipPlayingCard removeFromHand:aCard.
@@ -202,7 +203,7 @@ Game >> playsInstantaneousCard: aCard [
 
 
 	aCard canBePlayedIn:self.
-	aCard applyInstantaneousEffectIn:self.
+	aCard applyIEffectIn:self to:spaceShipMoving .
 	
 	lastCardPlayed := aCard
 

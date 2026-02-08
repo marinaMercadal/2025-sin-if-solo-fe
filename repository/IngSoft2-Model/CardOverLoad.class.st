@@ -13,7 +13,7 @@ Class {
 }
 
 { #category : 'action' }
-CardOverLoad >> applyInstantaneousEffectIn:aGame [
+CardOverLoad >> applyIEffectIn:aGame to:spaceshipMoving [
 
 ]
 

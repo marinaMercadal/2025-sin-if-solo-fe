@@ -5,17 +5,14 @@ Repeta Card
 Class {
 	#name : 'CardRepeat',
 	#superclass : 'Card',
-	#instVars : [
-		'spaceship'
-	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
 { #category : 'action' }
-CardRepeat >> applyInstantaneousEffectIn:aGame [
+CardRepeat >> applyIEffectIn:aGame to:spaceshipMoving [
 
-	aGame applyRepeatEffectWith: spaceship
+	aGame applyRepeatEffectWith: spaceshipMoving.
 
 
 	
@@ -28,7 +25,6 @@ CardRepeat >> canBePlayedIn:aGame [
 
 { #category : 'action' }
 CardRepeat >> playedBy:aSpaceShip targeting: aTargetSpaceShip in: aGame [
-spaceship := aSpaceShip.
 
 aGame playsInstantaneousCard: self 
 ]
