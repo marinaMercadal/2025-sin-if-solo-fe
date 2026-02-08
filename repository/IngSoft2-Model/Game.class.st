@@ -39,6 +39,20 @@ rewards: aRewardDistribution [
 ]
 
 { #category : 'action' }
+Game >> applyLeakFrom:aLeakCard to: spaceShipToAffect [
+
+
+	
+	spaceShipToAffect = spaceShipMoving ifFalse: [ ^ self ].
+
+	
+	spaceShipToAffect consumesFule.
+	spaceShipToAffect consumesFule.
+	
+	
+]
+
+{ #category : 'action' }
 Game >> applyRepeatEffectWith: aSpaceship [
 
 	
@@ -89,6 +103,12 @@ Game >> formsAlianceWith:anotherSpaceShip [
 	spaceShipMoving formAllyWith: spaceShipToTeamUp.
 	spaceShipMoving sharesFuelWithAlly.
 	
+]
+
+{ #category : 'action' }
+Game >> handleRunOutOfFuleOf:spaceShip [
+
+cardsInGame do:[:card|card handleRunOutOfFuleOf:spaceShip in:self].
 ]
 
 { #category : 'testing' }
@@ -169,8 +189,12 @@ Game >> playNextTurn [
 	spaceShip canPlay
 		ifTrue: [ self move: spaceShip with: dicesInGameBoard ]
 		ifFalse: [
+			
 			spaceShip losesTwoRounds.
-			spaceShip rechargeFule ]
+			spaceShip rechargeFule.
+			spaceShip moveTo:0 consuming:0. 
+			self handleRunOutOfFuleOf:spaceShip.
+			]
 ]
 
 { #category : 'action' }

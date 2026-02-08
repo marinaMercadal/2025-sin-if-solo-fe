@@ -185,7 +185,8 @@ SpaceShip >> losesOneRound [
 { #category : 'action' }
 SpaceShip >> losesTwoRounds [
 
-	lostTurns := lostTurns + 1
+	lostTurns := lostTurns + 1.
+	
 ]
 
 { #category : 'action' }

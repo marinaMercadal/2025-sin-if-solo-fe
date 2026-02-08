@@ -12,3 +12,8 @@ Class {
 Card >> = anotherCard [
  ^ self class = anotherCard class
 ]
+
+{ #category : 'action' }
+Card >> handleRunOutOfFuleOf:spaceShip in:aGame [
+
+]
