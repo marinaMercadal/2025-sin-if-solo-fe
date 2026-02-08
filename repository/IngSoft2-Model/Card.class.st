@@ -17,3 +17,8 @@ Card >> = anotherCard [
 Card >> handleRunOutOfFuleOf:spaceShip in:aGame [
 
 ]
+
+{ #category : 'action' }
+Card >> playedBy:aSpaceShip targeting: aCard in: aGame [
+self subclassResponsibility 
+]

@@ -21,7 +21,7 @@ CardOverLoad >> applyIEffectIn:aGame to:spaceshipMoving [
 CardOverLoad >> playedBy:aSpaceShip targeting: targetSpaceship in: aGame [
 
 spaceShipToOverLoad:=targetSpaceship.
-aGame validateCanBePlayed.
+aGame validateCanBePlayedBy:aSpaceShip.
 aGame playsPermanentCard: self
 ]
 

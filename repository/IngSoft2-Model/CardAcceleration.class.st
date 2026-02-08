@@ -25,7 +25,7 @@ CardAcceleration >> changeTo: anImplementation [
 { #category : 'action' }
 CardAcceleration >> playedBy:aSpaceShip targeting: aCard in: aGame [
 
-	aGame validateCanBePlayed.
+	aGame validateCanBePlayedBy:aSpaceShip.
    aGame playsPermanentCard: self
 
 ]

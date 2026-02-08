@@ -13,7 +13,7 @@ Class {
 
 { #category : 'action' }
 CancellationCard >> applyIEffectIn:aGame to:spaceshipMoving [
-
+	self  canBePlayedIn:aGame.
 	aGame remove: cardToCancel
 ]
 
@@ -28,4 +28,5 @@ CancellationCard >> playedBy:aSpaceShip targeting: aCard in: aGame [
 
 cardToCancel:=aCard .
 aGame playsInstantaneousCard: self
+
 ]

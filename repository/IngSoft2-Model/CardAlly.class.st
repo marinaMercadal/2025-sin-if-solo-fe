@@ -15,7 +15,9 @@ Class {
 { #category : 'action' }
 CardAlly >> applyIEffectIn:aGame to:spaceshipMoving [
 
-	aGame formsAlianceWith:spaceShipToTeamUp.
+	spaceshipMoving formAllyWith:spaceShipToTeamUp.
+	spaceshipMoving sharesFuelWithAlly.
+
 
 ]
 
@@ -23,7 +25,7 @@ CardAlly >> applyIEffectIn:aGame to:spaceshipMoving [
 CardAlly >> playedBy:aSpaceShip targeting: targetSpaceship in: aGame [
 
 spaceShipToTeamUp := targetSpaceship.
-	aGame validateCanBePlayed.
+	aGame validateCanBePlayedBy:aSpaceShip.
     aGame playsPermanentCard: self 
  
 ]

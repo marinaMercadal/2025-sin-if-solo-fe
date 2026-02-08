@@ -25,14 +25,21 @@ CardEffects >> applyIEffectIn: aGame to: aSpaceShip [
 		card applyIEffectIn:aGame to:aSpaceShip  ].
 ]
 
+{ #category : 'testing' }
+CardEffects >> borrarincludes: aCard [
+"^cards includes: aCard"
+]
+
 { #category : 'action' }
 CardEffects >> handleRunOutOfFuleOf: aSpaceShip in: aGame [ 
 	cards do:[:card|card handleRunOutOfFuleOf:aSpaceShip in:aGame ].
 ]
 
 { #category : 'testing' }
-CardEffects >> includes: aCard [
-^cards includes: aCard
+CardEffects >> hasActiveCard: aCard [
+
+(cards includes:aCard )ifFalse: [ 
+        Error signal: 'That card is not being played'].
 ]
 
 { #category : 'initialization' }

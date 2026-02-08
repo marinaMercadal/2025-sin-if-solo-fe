@@ -15,16 +15,11 @@ Class {
 { #category : 'action' }
 CardNitro >> applyIEffectIn:aGame to:spaceshipMoving [
 
+
 (spaceshipMoving = aSpaceShipToEnhance) ifTrue: [
         remainingTurns := remainingTurns - 1
     ].
 (remainingTurns =0)ifTrue: [ aGame remove:self ]
-]
-
-{ #category : 'testing' }
-CardNitro >> canBePlayedIn:aGame [
-^true
-
 ]
 
 { #category : 'action' }
