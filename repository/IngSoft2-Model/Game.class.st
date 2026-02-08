@@ -143,7 +143,7 @@ Game >> playCard: aCard by: aSpaceShip targeting: aTarget [
 Game >> playNextTurn [
 
 	| spaceShip |
-	spaceShip := turnManager spaceShipWhoseTurnItIsFrom: spaceShips.
+	spaceShip := self spaceShipMoving .
 	turnManager updateTurn: spaceShips.
 	spaceShip verifyCanPlayAgain.
 	spaceShip canPlay
@@ -160,8 +160,7 @@ Game >> playNextTurn [
 { #category : 'action' }
 Game >> playsInstantaneousCard: aCard [
 	|spaceShipMoving|
-	spaceShipMoving:=turnManager spaceShipWhoseTurnItIsFrom: spaceShips .
-	"aCard canBePlayedIn:self."
+	spaceShipMoving:=self spaceShipMoving .
 	aCard applyIEffectIn:self to:spaceShipMoving .
 	cardEffects registerPlayedCard:aCard .
 
@@ -211,7 +210,7 @@ Game >> rolledNumberSumOf: dices [
 Game >> skipNextTurn [
 
 	| spaceShip |
-	spaceShip := turnManager spaceShipWhoseTurnItIsFrom: spaceShips.
+	spaceShip := self spaceShipMoving .
 	turnManager updateTurn: spaceShips.
 	spaceShip losesOneRound.
 	spaceShip rechargeFule
@@ -223,9 +222,13 @@ Game >> spaceShipMatching: aSpaceShip [
 	^ spaceShips detect: [ :each | each = aSpaceShip ]
 ]
 
+{ #category : 'accessing' }
+Game >> spaceShipMoving [
+^ turnManager spaceShipWhoseTurnItIsFrom: spaceShips .
+]
+
 { #category : 'testing' }
 Game >> validateCanBePlayedBy:aSpaceShip [
-|spaceShipMoving|
-spaceShipMoving:=turnManager spaceShipWhoseTurnItIsFrom: spaceShips .
-(spaceShipMoving =aSpaceShip )ifFalse: [Error signal: 'Its not the spaceship turn' ].
+
+(turnManager isMoving:aSpaceShip )ifFalse: [Error signal: 'Its not the spaceship turn' ].
 ]
