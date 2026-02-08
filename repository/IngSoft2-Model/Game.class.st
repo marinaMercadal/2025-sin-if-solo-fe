@@ -10,11 +10,11 @@ Class {
 		'cardsInGame',
 		'rewardAsignation',
 		'lastCardPlayed',
-		'spaceShipMoving',
 		'dicesInGameBoard',
 		'spaceShips',
 		'winnerSystem',
-		'spaceShipPlayingCard'
+		'spaceShipPlayingCard',
+		'spaceShipMoving'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -39,24 +39,9 @@ rewards: aRewardDistribution [
 ]
 
 { #category : 'action' }
-Game >> applyLeakFrom:aLeakCard to: spaceShipToAffect [
-
-
-	
-	"spaceShipToAffect = spaceShipMoving ifFalse: [ ^ self ]."
-
-"	
-	spaceShipToAffect consumesFule.
-	spaceShipToAffect consumesFule.
-	"
-	
-]
-
-{ #category : 'action' }
 Game >> applyRepeatEffectWith: aSpaceship [
 
-	
-	board applyEffectOfLastTileTo: spaceShipMoving on: self
+	board applyEffectOfLastTileTo: aSpaceship on: self
 ]
 
 { #category : 'action' }
@@ -145,7 +130,7 @@ Game >> move: aSpaceShip forwardBy: rolledNumber [
 { #category : 'action' }
 Game >> move: aSpaceShip with: dices [
 
-	| rolledNumber |
+	| rolledNumber  |
 	winnerSystem thereIsAWinner ifTrue: [ ^ self ].
 
 	

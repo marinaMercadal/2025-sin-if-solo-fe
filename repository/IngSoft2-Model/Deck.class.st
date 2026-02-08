@@ -29,6 +29,12 @@ cardsInDeck size = anotherDeck cards size ifFalse: [ ^ false ].
 	^ true
 ]
 
+{ #category : 'testing' }
+Deck >> canRefillFromDiscard [
+	^ cardsInDeck isEmpty and: [ discardDeck isNotEmpty ]
+	
+]
+
 { #category : 'intention revealing' }
 Deck >> cards [
 	^cardsInDeck 
@@ -41,23 +47,25 @@ Deck >> discarded [
 
 { #category : 'drawing' }
 Deck >> draw [
-self ensureThereIsAtLeastOneCard.
+self prepareForDraw.
 cardsInDeck isEmpty ifTrue: [ self error: 'There are no aveilable cards to draw'].
 
 ^ cardsInDeck removeFirst
-]
-
-{ #category : 'drawing' }
-Deck >> ensureThereIsAtLeastOneCard [
-
-	cardsInDeck isEmpty ifTrue: [
-		discardDeck isEmpty ifFalse: [ self refillFromDiscard ] ]
 ]
 
 { #category : 'initial' }
 Deck >> initialzeDeckWith: cards [ 
 	cardsInDeck:=cards.
 	discardDeck:= {}asOrderedCollection 
+]
+
+{ #category : 'drawing' }
+Deck >> prepareForDraw [
+
+self canRefillFromDiscard ifTrue: [
+		self refillFromDiscard ]
+
+
 ]
 
 { #category : 'action' }
