@@ -21,8 +21,8 @@ Class {
 
 { #category : 'accessing' }
 DeckDistribution >> cardFor: aRandomProbability [
-	| accumulated |
 
+	| accumulated |
 	accumulated := overloadProbability.
 	aRandomProbability < accumulated ifTrue: [ ^ CardOverLoad new ].
 
@@ -40,57 +40,63 @@ DeckDistribution >> cardFor: aRandomProbability [
 
 	accumulated := accumulated + redoProbability.
 	aRandomProbability < accumulated ifTrue: [ ^ CardRedo new ].
-	
-	accumulated :=accumulated + lakeProbability .
-	aRandomProbability <accumulated ifTrue:[^CardLeak ].
+
+	accumulated := accumulated + lakeProbability.
+	aRandomProbability < accumulated ifTrue: [ ^ CardLeak ].
 
 	self error: 'Deck probabilities do not sum to 1'
-
 ]
 
 { #category : 'accessing' }
 DeckDistribution >> elementFor: aRandomProbability [
+
 	^ self cardFor: aRandomProbability
-
-
 ]
 
 { #category : 'initialization' }
-DeckDistribution >> forAcceleration: aProbability [ 
-	accelerationProbability:=aProbability
+DeckDistribution >> forAcceleration: aProbability [
+
+	accelerationProbability := aProbability
 ]
 
 { #category : 'initialization' }
-DeckDistribution >> forAlly: aProbability [ 
-	allyProbability:=aProbability
+DeckDistribution >> forAlly: aProbability [
+
+	allyProbability := aProbability
 ]
 
 { #category : 'initialization' }
-DeckDistribution >> forCancellation: aProbability [ 
-	cancellationProbability:=aProbability
+DeckDistribution >> forCancellation: aProbability [
+
+	cancellationProbability := aProbability
 ]
 
 { #category : 'initialization' }
-DeckDistribution >> forLake: aProbability [ 
-	lakeProbability:=aProbability.
+DeckDistribution >> forLake: aProbability [
+
+	lakeProbability := aProbability
 ]
 
 { #category : 'initialization' }
 DeckDistribution >> forNitro: aProbability [
-nitroProbability:=aProbability.
+
+	nitroProbability := aProbability
 ]
 
 { #category : 'initialization' }
-DeckDistribution >> forOverload: aProbability [ 
-	overloadProbability:=aProbability
+DeckDistribution >> forOverload: aProbability [
+
+	overloadProbability := aProbability
 ]
 
 { #category : 'initialization' }
-DeckDistribution >> forRedo: aProbability [ 
-	redoProbability:=aProbability
+DeckDistribution >> forRedo: aProbability [
+
+	redoProbability := aProbability
 ]
 
 { #category : 'initialization' }
-DeckDistribution >> forRepeat: aProbability [ 
-	repeatProbability:=aProbability
+DeckDistribution >> forRepeat: aProbability [
+
+	repeatProbability := aProbability
 ]

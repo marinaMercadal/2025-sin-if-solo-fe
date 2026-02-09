@@ -12,21 +12,21 @@ Class {
 }
 
 { #category : 'action' }
-CancellationCard >> applyIEffectIn:aGame to:spaceshipMoving [
-	self  canBePlayedIn:aGame.
+CancellationCard >> applyIEffectIn: aGame to: spaceshipMoving [
+
+	self canBePlayedIn: aGame.
 	aGame remove: cardToCancel
 ]
 
 { #category : 'testing' }
-CancellationCard >> canBePlayedIn:aGame [
-^(aGame hasActiveCard: cardToCancel)
+CancellationCard >> canBePlayedIn: aGame [
+
+	^ aGame hasActiveCard: cardToCancel
 ]
 
 { #category : 'action' }
-CancellationCard >> playedBy:aSpaceShip targeting: aCard in: aGame [
+CancellationCard >> playedBy: aSpaceShip targeting: aCard in: aGame [
 
-
-cardToCancel:=aCard .
-aGame playsInstantaneousCard: self
-
+	cardToCancel := aCard.
+	aGame playsInstantaneousCard: self
 ]

@@ -54,20 +54,21 @@ Board >> applySpecialTiletoA: spaceShip ofAll: spaceShips [
 ]
 
 { #category : 'accessing' }
-Board >> cardWasPlayed:aCard [
+Board >> cardWasPlayed: aCard [
 
-deck usesCard:aCard  .
-
+	deck usesCard: aCard
 ]
 
 { #category : 'accessing' }
 Board >> deckOfCards [
+
 	^ deck
 ]
 
 { #category : 'accessing' }
 Board >> discardDeck [
-	^ deck discarded 
+
+	^ deck discarded
 ]
 
 { #category : 'action' }
@@ -78,17 +79,17 @@ Board >> distanceFrom: origin to: destination [
 
 { #category : 'action' }
 Board >> givesACardTo: aSpaceShip [
+
 	aSpaceShip equipWith: deck draw
-
-
 ]
 
 { #category : 'initialization' }
-Board >> initializeWithNumberOfSquares: aNumberOfSquares sizeInParsec: aSizeInParsec deck: aDeck tiles: someSpecialTiles [ 
+Board >> initializeWithNumberOfSquares: aNumberOfSquares sizeInParsec: aSizeInParsec deck: aDeck tiles: someSpecialTiles [
+
 	maximumSquares := aNumberOfSquares.
 	sizeInParsec := aSizeInParsec.
 	deck := aDeck.
-	
+
 	specialTiles := OrderedCollection new.
 	lastSpecialTileEffect := NoEffect new.
 	specialTiles := someSpecialTiles
@@ -113,9 +114,7 @@ Board >> setLapsAndGetNewPositionFrom: totalPosition for: aSpaceShip [
 { #category : 'accessing' }
 Board >> specialTileAt: position [
 
-	^ specialTiles
-		  detect: [ :tile | tile includesA: position ]
-		  
+	^ specialTiles detect: [ :tile | tile includesA: position ]
 ]
 
 { #category : 'action' }

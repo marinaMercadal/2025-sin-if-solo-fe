@@ -13,21 +13,23 @@ Class {
 }
 
 { #category : 'action' }
-CardOverLoad >> applyIEffectIn:aGame to:spaceshipMoving [
+CardOverLoad >> applyIEffectIn: aGame to: spaceshipMoving [
 
+	
 ]
 
 { #category : 'action' }
-CardOverLoad >> playedBy:aSpaceShip targeting: targetSpaceship in: aGame [
+CardOverLoad >> playedBy: aSpaceShip targeting: targetSpaceship in: aGame [
 
-spaceShipToOverLoad:=targetSpaceship.
-aGame validateCanBePlayedBy:aSpaceShip.
-aGame playsPermanentCard: self
+	spaceShipToOverLoad := targetSpaceship.
+	aGame validateCanBePlayedBy: aSpaceShip.
+	aGame playsPermanentCard: self
 ]
 
 { #category : 'action' }
 CardOverLoad >> rollAdjustmentFor: aSpaceship [
-^ aSpaceship = spaceShipToOverLoad
-        ifTrue: [ -2 ]
-        ifFalse: [ 0 ]
+
+	^ aSpaceship = spaceShipToOverLoad
+		  ifTrue: [ -2 ]
+		  ifFalse: [ 0 ]
 ]

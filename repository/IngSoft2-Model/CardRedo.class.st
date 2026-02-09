@@ -8,10 +8,8 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'adding' }
-CardRedo >> playedBy:aSpaceShip targeting: aTarget in: aGame [
+{ #category : 'action' }
+CardRedo >> playedBy: aSpaceShip targeting: aTarget in: aGame [
 
-
-aGame playsRedoCard:aSpaceShip targeting:aTarget.
-
+	aGame playsRedoCard: aSpaceShip targeting: aTarget
 ]

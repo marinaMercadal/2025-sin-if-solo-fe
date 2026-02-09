@@ -24,13 +24,13 @@ WormHole >> applyConsequenceTo: allSpaceShips onBoardOfSize: aBoard [
 
 	| aSpaceShip originalPosition |
 	aSpaceShip := allSpaceShips detect: [ :spaceShip |
-		              spaceShip currentPosition = wormHoleEntrance or:
-			              spaceShip currentPosition = wormHoleExit ].
+			              spaceShip currentPosition = wormHoleEntrance or:
+				              spaceShip currentPosition = wormHoleExit ].
 	originalPosition := aSpaceShip currentPosition.
 	originalPosition = wormHoleEntrance ifTrue: [
-		destination := wormHoleExit.
-		distance := aBoard distanceFrom: originalPosition to: destination.
-		aSpaceShip moveTo: destination consuming: distance ].
+			destination := wormHoleExit.
+			distance := aBoard distanceFrom: originalPosition to: destination.
+			aSpaceShip moveTo: destination consuming: distance ].
 
 	originalPosition = wormHoleExit ifFalse: [ ^ self ].
 	destination := wormHoleEntrance.
@@ -64,8 +64,8 @@ WormHole >> validateCreationIn: boardSize and: maximumRolledNumber [
 	(wormHoleEntrance > boardSize or: wormHoleExit > boardSize) ifTrue: [
 		Error signal: 'Tile position is out of board bounds.' ].
 	wormHoleEntrance > wormHoleExit ifTrue: [
-		Error signal:
-			'The worm hole exit must be smaller than the number of squares' ].
+			Error signal:
+				'The worm hole exit must be smaller than the number of squares' ].
 
 	(wormHoleEntrance < 0 or: wormHoleExit < 0) ifTrue: [
 		Error signal: 'Should be a positive number' ]

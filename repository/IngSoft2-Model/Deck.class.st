@@ -20,76 +20,78 @@ Deck class >> withCards: cards [
 { #category : 'comparing' }
 Deck >> = anotherDeck [
 
-cardsInDeck size = anotherDeck cards size ifFalse: [ ^ false ].
+	cardsInDeck size = anotherDeck cards size ifFalse: [ ^ false ].
 
-1 to: cardsInDeck size do: [ :i |
-		((cardsInDeck at: i) class = (anotherDeck cards at: i) class)
-			ifFalse: [ ^ false ] ].
+	1 to: cardsInDeck size do: [ :i |
+			(cardsInDeck at: i) class = (anotherDeck cards at: i) class
+				ifFalse: [ ^ false ] ].
 
 	^ true
 ]
 
 { #category : 'testing' }
 Deck >> canRefillFromDiscard [
+
 	^ cardsInDeck isEmpty and: [ discardDeck isNotEmpty ]
-	
 ]
 
 { #category : 'intention revealing' }
 Deck >> cards [
-	^cardsInDeck 
+
+	^ cardsInDeck
 ]
 
 { #category : 'accessing' }
 Deck >> discarded [
-^discardDeck 
+
+	^ discardDeck
 ]
 
 { #category : 'drawing' }
 Deck >> draw [
-self prepareForDraw.
-cardsInDeck isEmpty ifTrue: [ self error: 'There are no aveilable cards to draw'].
 
-^ cardsInDeck removeFirst
+	self prepareForDraw.
+	cardsInDeck isEmpty ifTrue: [
+		self error: 'There are no aveilable cards to draw' ].
+
+	^ cardsInDeck removeFirst
 ]
 
 { #category : 'initial' }
-Deck >> initialzeDeckWith: cards [ 
-	cardsInDeck:=cards.
-	discardDeck:= {}asOrderedCollection 
+Deck >> initialzeDeckWith: cards [
+
+	cardsInDeck := cards.
+	discardDeck := {  } asOrderedCollection
 ]
 
 { #category : 'drawing' }
 Deck >> prepareForDraw [
 
-self canRefillFromDiscard ifTrue: [
-		self refillFromDiscard ]
-
-
+	self canRefillFromDiscard ifTrue: [ self refillFromDiscard ]
 ]
 
 { #category : 'action' }
 Deck >> refillFromDiscard [
-	cardsInDeck addAll: discardDeck.
-    cardsInDeck shuffle.
-    discardDeck removeAll.
 
-	
+	cardsInDeck addAll: discardDeck.
+	cardsInDeck shuffle.
+	discardDeck removeAll
 ]
 
 { #category : 'action' }
 Deck >> shuffle [
-cardsInDeck:=cardsInDeck shuffle 
+
+	cardsInDeck := cardsInDeck shuffle
 ]
 
 { #category : 'accessing' }
 Deck >> size [
-^cardsInDeck size
+
+	^ cardsInDeck size
 ]
 
 { #category : 'adding' }
-Deck >> usesCard:aCard [
+Deck >> usesCard: aCard [
 
-
-discardDeck add:aCard.
+	discardDeck add: aCard
 ]

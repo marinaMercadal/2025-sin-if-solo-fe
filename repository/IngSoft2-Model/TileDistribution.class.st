@@ -25,15 +25,15 @@ TileDistribution class >> withABoardNumberOfSquares: aNumberOfTiles [
 
 { #category : 'accessing' }
 TileDistribution >> build: aSize [
-    self theSumIsOne.
-    ^ super build: aSize
 
+	self theSumIsOne.
+	^ super build: aSize
 ]
 
 { #category : 'accessing' }
 TileDistribution >> elementFor: aRandomProbability [
-    ^ self tileFor: aRandomProbability
 
+	^ self tileFor: aRandomProbability
 ]
 
 { #category : 'initialization' }
@@ -81,7 +81,6 @@ TileDistribution >> forNoEffect: aProbability [
 { #category : 'initialization' }
 TileDistribution >> initializeWithABoardSize: aNumberOfTiles [
 
-	
 	noEffectProbability := 0.
 	blackHoleProbability := 0.
 	hyperGravityProbability := 0.

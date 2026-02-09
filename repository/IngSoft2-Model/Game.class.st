@@ -61,35 +61,38 @@ Game >> currentFuleOf: aSpaceShip [
 
 { #category : 'accessing' }
 Game >> deckOfCards [
-	^board deckOfCards  deepCopy 
+
+	^ board deckOfCards deepCopy
 ]
 
 { #category : 'action' }
 Game >> discardDeck [
-	^board discardDeck deepCopy 
+
+	^ board discardDeck deepCopy
 ]
 
 { #category : 'action' }
-Game >> handleRunOutOfFuleOf:spaceShip [
+Game >> handleRunOutOfFuleOf: spaceShip [
 
-cardEffects handleRunOutOfFuleOf:spaceShip in:self.
-
+	spaceShip losesTwoRounds.
+	spaceShip rechargeFule.
+	spaceShip moveTo: 0 consuming: 0.
+	cardEffects handleRunOutOfFuleOf: spaceShip in: self
 ]
 
 { #category : 'testing' }
 Game >> hasActiveCard: aCard [
 
-cardEffects hasActiveCard: aCard.
-
+	cardEffects hasActiveCard: aCard
 ]
 
 { #category : 'initialization' }
-Game >> initializeWithBoard: aBoard dices: someDices spaceships: someSpaceShips rules: aWinnerSystem turnManager: aTurnManager rewards: aRewardDistribution [ 
+Game >> initializeWithBoard: aBoard dices: someDices spaceships: someSpaceShips rules: aWinnerSystem turnManager: aTurnManager rewards: aRewardDistribution [
+
 	board := aBoard.
 	turnManager := aTurnManager.
 	dicesInGameBoard := someDices.
-
-	cardEffects :=CardEffects new.
+	cardEffects := CardEffects new.
 	rewardAsignation := aRewardDistribution.
 	spaceShips := someSpaceShips.
 	winnerSystem := aWinnerSystem.
@@ -99,32 +102,31 @@ Game >> initializeWithBoard: aBoard dices: someDices spaceships: someSpaceShips 
 { #category : 'action' }
 Game >> move: aSpaceShip with: dices [
 
-	| rolledNumber  |
+	| rolledNumber |
 	winnerSystem thereIsAWinner ifTrue: [ ^ self ].
 
-	
-	rolledNumber := (self rolledNumberSumOf: dices ).
-	
+
+	rolledNumber := self rolledNumberSumOf: dices.
+
 	(aSpaceShip canMoveWith: rolledNumber) ifFalse: [ ^ self ].
-	
-	
 
-	aSpaceShip isFowardedBy:(rolledNumber + (cardEffects rollAdjustmentFor: aSpaceShip)) on:board .
-	
+
+
+	aSpaceShip
+		isFowardedBy:
+		rolledNumber + (cardEffects rollAdjustmentFor: aSpaceShip)
+		on: board.
+
 	board applySpecialTiletoA: aSpaceShip ofAll: spaceShips.
-	cardEffects applyIEffectIn:self to:aSpaceShip .
-	
+	cardEffects applyIEffectIn: self to: aSpaceShip.
+
 	rewardAsignation for: aSpaceShip with: dices
-
-   
-
 ]
 
 { #category : 'action' }
 Game >> playCard: aCard by: aSpaceShip targeting: aTarget [
 
 	aSpaceShip isEquipWith: aCard.
-
 	aCard playedBy: aSpaceShip targeting: aTarget in: self.
 	aSpaceShip removeFromHand: aCard.
 	board cardWasPlayed: aCard
@@ -134,49 +136,36 @@ Game >> playCard: aCard by: aSpaceShip targeting: aTarget [
 Game >> playNextTurn [
 
 	| spaceShip |
-	spaceShip := self spaceShipMoving .
+	spaceShip := self spaceShipMoving.
 	turnManager updateTurn: spaceShips.
 	spaceShip verifyCanPlayAgain.
-	spaceShip canPlay
+	spaceShip isAbleToTakeTurn
 		ifTrue: [ self move: spaceShip with: dicesInGameBoard ]
-		ifFalse: [
-			
-			spaceShip losesTwoRounds.
-			spaceShip rechargeFule.
-			spaceShip moveTo:0 consuming:0. 
-			self handleRunOutOfFuleOf:spaceShip.
-			]
+		ifFalse: [ self handleRunOutOfFuleOf: spaceShip ]
 ]
 
 { #category : 'action' }
 Game >> playsInstantaneousCard: aCard [
-	|spaceShipMoving|
-	spaceShipMoving:=self spaceShipMoving .
-	aCard applyIEffectIn:self to:spaceShipMoving .
-	cardEffects registerPlayedCard:aCard .
 
-
-	
-
-  
-
+	| spaceShipMoving |
+	spaceShipMoving := self spaceShipMoving.
+	aCard applyIEffectIn: self to: spaceShipMoving.
+	cardEffects registerPlayedCard: aCard
 ]
 
 { #category : 'action' }
-Game >> playsPermanentCard: aCard [ 
-	
+Game >> playsPermanentCard: aCard [
 
-	cardEffects add: aCard.
-	
-	
-
+	cardEffects add: aCard
 ]
 
 { #category : 'action' }
 Game >> playsRedoCard: anInicialization targeting: targetSpaceship [
 
-	cardEffects redoLastCardPlayedBy: anInicialization targeting: targetSpaceship in: self.
-
+	cardEffects
+		redoLastCardPlayedBy: anInicialization
+		targeting: targetSpaceship
+		in: self
 ]
 
 { #category : 'accessing' }
@@ -201,7 +190,7 @@ Game >> rolledNumberSumOf: dices [
 Game >> skipNextTurn [
 
 	| spaceShip |
-	spaceShip := self spaceShipMoving .
+	spaceShip := self spaceShipMoving.
 	turnManager updateTurn: spaceShips.
 	spaceShip losesOneRound.
 	spaceShip rechargeFule
@@ -215,11 +204,13 @@ Game >> spaceShipMatching: aSpaceShip [
 
 { #category : 'accessing' }
 Game >> spaceShipMoving [
-^ turnManager spaceShipWhoseTurnItIsFrom: spaceShips .
+
+	^ turnManager spaceShipWhoseTurnItIsFrom: spaceShips
 ]
 
 { #category : 'testing' }
-Game >> validateCanBePlayedBy:aSpaceShip [
+Game >> validateCanBePlayedBy: aSpaceShip [
 
-(turnManager isMoving:aSpaceShip )ifFalse: [Error signal: 'Its not the spaceship turn' ].
+	(turnManager isMoving: aSpaceShip) ifFalse: [
+		Error signal: 'Its not the spaceship turn' ]
 ]

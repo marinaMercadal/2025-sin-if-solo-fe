@@ -14,8 +14,8 @@ Class {
 
 { #category : 'accessing' }
 RewardDistribution >> elementFor: aRandomProbability [
-    ^ self rewardFor: aRandomProbability
 
+	^ self rewardFor: aRandomProbability
 ]
 
 { #category : 'instance creation' }

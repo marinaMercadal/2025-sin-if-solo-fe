@@ -45,6 +45,6 @@ HyperGravity >> validateCreationIn: boardSize and: maximumRolledNumber [
 	super validateCreationIn: boardSize and: maximumRolledNumber.
 
 	minimumRollValue > maximumRolledNumber ifTrue: [
-		Error signal:
-			'The Requiring Minimum Roll Must Be Less Than Maximum Rolled Number' ]
+			Error signal:
+				'The Requiring Minimum Roll Must Be Less Than Maximum Rolled Number' ]
 ]
