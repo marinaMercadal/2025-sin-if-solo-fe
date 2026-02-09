@@ -126,14 +126,14 @@ SpaceShip >> goBack: amountToMoveBack onBoardOfSize: maximumSquares [
 	aPositionToMove := self currentPosition - amountToMoveBack.
 
 	aPositionToMove < 0 ifTrue: [
-		aPositionToMove := maximumSquares - aPositionToMove abs.
-		self adjustLapBy: -1 ].
+			aPositionToMove := maximumSquares - aPositionToMove abs.
+			self adjustLapBy: -1 ].
 
 	self currentLap < 0 ifTrue: [
-		amountOfFuel := amountOfFuel
-		                + (self currentPosition - amountToMoveBack).
-		aPositionToMove := 0.
-		self adjustLapBy: 1 ].
+			amountOfFuel := amountOfFuel
+			                + (self currentPosition - amountToMoveBack).
+			aPositionToMove := 0.
+			self adjustLapBy: 1 ].
 
 	self moveTo: aPositionToMove consuming: amountOfFuel.
 	fuelSistem validateCurrentFuleOf: self
@@ -174,6 +174,17 @@ SpaceShip >> initializeWtihAName: aName [
 SpaceShip >> isEquipWith:aCard [
 
 (cardsInHand anySatisfy: [:card| card=aCard])ifFalse:[Error signal:'The spaceship doesnt have that card']. 
+]
+
+{ #category : 'testing' }
+SpaceShip >> isFowardedBy:rolledNumber on:board [ 
+| totalPosition newPosition |
+	totalPosition := self currentPosition + rolledNumber.
+	newPosition := board
+		               setLapsAndGetNewPositionFrom: totalPosition
+		               for: self.
+	self moveTo: newPosition consuming: rolledNumber.
+	self hasFule
 ]
 
 { #category : 'action' }

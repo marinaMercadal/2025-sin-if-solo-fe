@@ -101,6 +101,8 @@ FiniteDeckTest >> test1WhenADeckDistributionIsBuiltThenCardsFollowTheConfiguredP
 	aDeckDistribution forRepeat: 0.15.
 	aDeckDistribution forRedo: 0.15.
 	aDeckDistribution forNitro: 0.
+	aDeckDistribution forLake: 0.
+	
 
 	aDeckDistribution build: deckSize.
 
@@ -142,6 +144,9 @@ FiniteDeckTest >> test2TheSumOfTheProbabilitysShouldAlwaysBeOne [
 	aDeckDistribution forCancellation: 0.
 	aDeckDistribution forRepeat: 0.
 	aDeckDistribution forRedo: 0.
+	aDeckDistribution forLake: 0.
+	aDeckDistribution forNitro: 0.
+	
 
 	
 

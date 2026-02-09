@@ -12,7 +12,8 @@ Class {
 		'cancellationProbability',
 		'repeatProbability',
 		'redoProbability',
-		'nitroProbability'
+		'nitroProbability',
+		'lakeProbability'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -39,6 +40,9 @@ DeckDistribution >> cardFor: aRandomProbability [
 
 	accumulated := accumulated + redoProbability.
 	aRandomProbability < accumulated ifTrue: [ ^ CardRedo new ].
+	
+	accumulated :=accumulated + lakeProbability .
+	aRandomProbability <accumulated ifTrue:[^CardLeak ].
 
 	self error: 'Deck probabilities do not sum to 1'
 
@@ -64,6 +68,11 @@ DeckDistribution >> forAlly: aProbability [
 { #category : 'initialization' }
 DeckDistribution >> forCancellation: aProbability [ 
 	cancellationProbability:=aProbability
+]
+
+{ #category : 'initialization' }
+DeckDistribution >> forLake: aProbability [ 
+	lakeProbability:=aProbability.
 ]
 
 { #category : 'initialization' }
