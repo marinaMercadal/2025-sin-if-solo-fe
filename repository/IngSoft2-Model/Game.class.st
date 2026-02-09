@@ -138,10 +138,7 @@ Game >> playNextTurn [
 	| spaceShip |
 	spaceShip := self spaceShipMoving.
 	turnManager updateTurn: spaceShips.
-	spaceShip verifyCanPlayAgain.
-	spaceShip isAbleToTakeTurn
-		ifTrue: [ self move: spaceShip with: dicesInGameBoard ]
-		ifFalse: [ self handleRunOutOfFuleOf: spaceShip ]
+	spaceShip attemptsToTakeTurnIn: self with: dicesInGameBoard
 ]
 
 { #category : 'action' }

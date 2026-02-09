@@ -45,6 +45,15 @@ SpaceShip >> adjustLapBy: anAmount [
 ]
 
 { #category : 'action' }
+SpaceShip >> attemptsToTakeTurnIn: aGame with: dicesInGameBoard [
+
+	self verifyCanPlayAgain.
+	self isAbleToTakeTurn
+		ifTrue: [ aGame move: self with: dicesInGameBoard ]
+		ifFalse: [ aGame handleRunOutOfFuleOf: self ]
+]
+
+{ #category : 'action' }
 SpaceShip >> becomesAlliedWith: aShip [
 
 	allyShip := aShip
