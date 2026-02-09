@@ -12,5 +12,5 @@ Class {
 RechargeFuelReward >> applyTo: aSpaceShip [
 	
 	aSpaceShip increaseFuelCapacityBy:1.
-	"aSpaceShip rechargeFule"
+	
 ]

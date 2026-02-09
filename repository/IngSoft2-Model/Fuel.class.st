@@ -95,7 +95,7 @@ Fuel >> sharesFule:aFuleSystem [
 
 { #category : 'action' }
 Fuel >> sharesFuleWith: anotherSystem [
-	"self breakFuelPartner."
+	anotherSystem breakFuelPartner.
 	fuelPartner := anotherSystem.
 	anotherSystem sharesFule:self.
 ]

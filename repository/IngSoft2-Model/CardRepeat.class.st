@@ -20,6 +20,6 @@ CardRepeat >> applyIEffectIn:aGame to:spaceshipMoving [
 
 { #category : 'action' }
 CardRepeat >> playedBy:aSpaceShip targeting: aTargetSpaceShip in: aGame [
-"self canBePlayedIn:self."
+
 aGame playsInstantaneousCard: self 
 ]

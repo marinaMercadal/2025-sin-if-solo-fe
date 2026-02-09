@@ -157,7 +157,7 @@ DeckOfCardsTest >> test10WhenASecondSpaceShipUsesAnAllyCardThenItApplysTheirConc
 	aBoard := aGameSetUp board.
 
 	aBoard playNextTurn.
-	aBoard playCard: anAllyCard by:aPlayer2 targeting: aPlayer2 .
+	aBoard playCard: anAllyCard by:aPlayer2 targeting: aPlayer1 .
 	aBoard playNextTurn.
 	aBoard playNextTurn.
 	aBoard playNextTurn.

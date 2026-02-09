@@ -25,11 +25,6 @@ CardEffects >> applyIEffectIn: aGame to: aSpaceShip [
 		card applyIEffectIn:aGame to:aSpaceShip  ].
 ]
 
-{ #category : 'testing' }
-CardEffects >> borrarincludes: aCard [
-"^cards includes: aCard"
-]
-
 { #category : 'action' }
 CardEffects >> handleRunOutOfFuleOf: aSpaceShip in: aGame [ 
 	cards do:[:card|card handleRunOutOfFuleOf:aSpaceShip in:aGame ].

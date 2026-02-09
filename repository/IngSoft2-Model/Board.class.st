@@ -80,10 +80,7 @@ Board >> distanceFrom: origin to: destination [
 Board >> givesACardTo: aSpaceShip [
 	aSpaceShip equipWith: deck draw
 
-	"| assignedCard |
-	assignedCard := deckOfCards atRandom.
-	deckOfCards remove: assignedCard.
-	aSpaceShip equipWith: assignedCard"
+
 ]
 
 { #category : 'initialization' }
@@ -91,7 +88,7 @@ Board >> initializeWithNumberOfSquares: aNumberOfSquares sizeInParsec: aSizeInPa
 	maximumSquares := aNumberOfSquares.
 	sizeInParsec := aSizeInParsec.
 	deck := aDeck.
-	"discardDeck := Deck withCards: { }asOrderedCollection ."
+	
 	specialTiles := OrderedCollection new.
 	lastSpecialTileEffect := NoEffect new.
 	specialTiles := someSpecialTiles
