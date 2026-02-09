@@ -21,15 +21,6 @@ Fuel class >> withAnAmount: aFuelAmount [
 ]
 
 { #category : 'action' }
-Fuel >> breakFuelPartner [
-
- 
-        fuelPartner sharesFule: EmptyFule new.  
-        fuelPartner := EmptyFule new.              
-    
-]
-
-{ #category : 'action' }
 Fuel >> consume: aDistance [
 
 	| fuelNeeded |
@@ -95,7 +86,7 @@ Fuel >> sharesFule:aFuleSystem [
 
 { #category : 'action' }
 Fuel >> sharesFuleWith: anotherSystem [
-	anotherSystem breakFuelPartner.
+	
 	fuelPartner := anotherSystem.
 	anotherSystem sharesFule:self.
 ]

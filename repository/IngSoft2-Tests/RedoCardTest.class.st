@@ -150,8 +150,7 @@ RedoCardTest >> test5WhenARedoCardIsUsedAfterAnAllyCardThenItUsesTheLastImplemen
 		withABoardNumberOfSquares: 100
 		andTurnManager: aTurnManager.
 
-	"anAllyCard := CardAlly teamsUpWith: aPlayer2.
-	aRedoCard := CardRedo for: aPlayer4."
+	
 	anAllyCard := CardAlly new.
 	aRedoCard := CardRedo new.
 
