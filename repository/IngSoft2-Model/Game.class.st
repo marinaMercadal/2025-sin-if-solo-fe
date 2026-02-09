@@ -97,18 +97,6 @@ Game >> initializeWithBoard: aBoard dices: someDices spaceships: someSpaceShips 
 ]
 
 { #category : 'action' }
-Game >> move: aSpaceShip forwardBy: rolledNumber [
-
-	| totalPosition newPosition |
-	totalPosition := aSpaceShip currentPosition + rolledNumber.
-	newPosition := board
-		               setLapsAndGetNewPositionFrom: totalPosition
-		               for: aSpaceShip.
-	aSpaceShip moveTo: newPosition consuming: rolledNumber.
-	aSpaceShip hasFule
-]
-
-{ #category : 'action' }
 Game >> move: aSpaceShip with: dices [
 
 	| rolledNumber  |
@@ -118,7 +106,10 @@ Game >> move: aSpaceShip with: dices [
 	rolledNumber := (self rolledNumberSumOf: dices ).
 	
 	(aSpaceShip canMoveWith: rolledNumber) ifFalse: [ ^ self ].
-	self move: aSpaceShip forwardBy: (rolledNumber + (cardEffects rollAdjustmentFor: aSpaceShip)).
+	
+	
+
+	aSpaceShip isFowardedBy:(rolledNumber + (cardEffects rollAdjustmentFor: aSpaceShip)) on:board .
 	
 	board applySpecialTiletoA: aSpaceShip ofAll: spaceShips.
 	cardEffects applyIEffectIn:self to:aSpaceShip .
