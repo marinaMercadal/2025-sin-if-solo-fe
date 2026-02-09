@@ -20,21 +20,20 @@ CardLeak >> applyIEffectIn: aGame to: spaceshipMoving [
 ]
 
 { #category : 'action' }
-CardLeak >> handleRunOutOfFuleOf:spaceShip in:aGame [
+CardLeak >> handleRunOutOfFuleOf: spaceShip in: aGame [
 
-(spaceShip =spaceShipToAffect )ifTrue: [ aGame remove:self ].
+	spaceShip = spaceShipToAffect ifTrue: [ aGame remove: self ]
 ]
 
 { #category : 'action' }
-CardLeak >> playedBy: aSpaceShip targeting: aTarget in: aGame [ 
+CardLeak >> playedBy: aSpaceShip targeting: aTarget in: aGame [
 
-	spaceShipToAffect:=aTarget.
-	
-	
-	aGame playsPermanentCard: self 
+	spaceShipToAffect := aTarget.
+	aGame playsPermanentCard: self
 ]
 
 { #category : 'action' }
-CardLeak >> rollAdjustmentFor: aSpaceShip [ 
-	^0
+CardLeak >> rollAdjustmentFor: aSpaceShip [
+
+	^ 0
 ]

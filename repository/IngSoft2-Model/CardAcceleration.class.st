@@ -9,30 +9,26 @@ Class {
 }
 
 { #category : 'action' }
-CardAcceleration >> applyIEffectIn:aGame to:spaceshipMoving [
+CardAcceleration >> applyIEffectIn: aGame to: spaceshipMoving [
 
 	
-
 ]
 
 { #category : 'action' }
 CardAcceleration >> changeTo: anImplementation [
 
 	^ self
-
 ]
 
 { #category : 'action' }
-CardAcceleration >> playedBy:aSpaceShip targeting: aCard in: aGame [
+CardAcceleration >> playedBy: aSpaceShip targeting: aCard in: aGame [
 
-	aGame validateCanBePlayedBy:aSpaceShip.
-   aGame playsPermanentCard: self
-
+	aGame validateCanBePlayedBy: aSpaceShip.
+	aGame playsPermanentCard: self
 ]
 
 { #category : 'action' }
 CardAcceleration >> rollAdjustmentFor: aSpaceship [
-    ^ 1
 
-
+	^ 1
 ]

@@ -13,25 +13,21 @@ Class {
 }
 
 { #category : 'action' }
-CardAlly >> applyIEffectIn:aGame to:spaceshipMoving [
+CardAlly >> applyIEffectIn: aGame to: spaceshipMoving [
 
-	spaceshipMoving formAllyWith:spaceShipToTeamUp.
-	spaceshipMoving sharesFuelWithAlly.
-
-
+	spaceshipMoving formAllyWith: spaceShipToTeamUp
 ]
 
 { #category : 'action' }
-CardAlly >> playedBy:aSpaceShip targeting: targetSpaceship in: aGame [
+CardAlly >> playedBy: aSpaceShip targeting: targetSpaceship in: aGame [
 
-spaceShipToTeamUp := targetSpaceship.
-	aGame validateCanBePlayedBy:aSpaceShip.
-    aGame playsPermanentCard: self 
- 
+	spaceShipToTeamUp := targetSpaceship.
+	aGame validateCanBePlayedBy: aSpaceShip.
+	aGame playsPermanentCard: self
 ]
 
 { #category : 'action' }
 CardAlly >> rollAdjustmentFor: aSpaceship [
-    ^ 0
 
+	^ 0
 ]

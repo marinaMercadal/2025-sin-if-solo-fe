@@ -87,14 +87,12 @@ GameSetup >> createGameInstance [
 GameSetup >> createSpaceShipsInstance [
 
 	deckOfCards ifNotNil: [
-		spaceShips do: [ :spaceShip |
-			spaceShip equipWith: deckOfCards draw.
-			spaceShip equipWith: deckOfCards draw ] ].
+			spaceShips do: [ :spaceShip |
+					spaceShip equipWith: deckOfCards draw.
+					spaceShip equipWith: deckOfCards draw ] ].
 
 	spaceShips do: [ :spaceShip |
 		spaceShip has: (Fuel withAnAmount: maximumRolledNumber * 2) ]
-
-
 ]
 
 { #category : 'action' }
@@ -110,22 +108,21 @@ GameSetup >> fillEmptyPositionsWithNoEffectTile [
 	occupiedPositions := tiles collect: [ :tile | tile position ] as: Set.
 
 	0 to: boardSize do: [ :pos |
-		(occupiedPositions includes: pos) ifFalse: [
-			tiles add: (NoEffect in: pos) ] ]
+			(occupiedPositions includes: pos) ifFalse: [
+				tiles add: (NoEffect in: pos) ] ]
 ]
 
 { #category : 'initialization' }
 GameSetup >> initializeDefaults [
-	
-    boardSizeInParsec ifNil: [ boardSizeInParsec := boardSize ].
-    tiles ifNil: [ tiles := OrderedCollection new ].
-    deckOfCards ifNil: [ deckOfCards := OrderedCollection new ].
-    rewardDistribution ifNil: [
-        rewardDistribution := RewardDistribution new.
-        rewardDistribution forDecreaseFuel: 0.
-        rewardDistribution forRestartFuel: 0 ].
-	self fillEmptyPositionsWithNoEffectTile.
 
+	boardSizeInParsec ifNil: [ boardSizeInParsec := boardSize ].
+	tiles ifNil: [ tiles := OrderedCollection new ].
+	deckOfCards ifNil: [ deckOfCards := OrderedCollection new ].
+	rewardDistribution ifNil: [
+			rewardDistribution := RewardDistribution new.
+			rewardDistribution forDecreaseFuel: 0.
+			rewardDistribution forRestartFuel: 0 ].
+	self fillEmptyPositionsWithNoEffectTile
 ]
 
 { #category : 'accessing' }

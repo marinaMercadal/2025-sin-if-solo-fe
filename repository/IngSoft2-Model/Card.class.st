@@ -10,7 +10,8 @@ Class {
 
 { #category : 'comparing' }
 Card >> = anotherCard [
- ^ self class = anotherCard class
+
+	^ self class = anotherCard class
 ]
 
 { #category : 'action' }
@@ -19,6 +20,7 @@ Card >> handleRunOutOfFuleOf:spaceShip in:aGame [
 ]
 
 { #category : 'action' }
-Card >> playedBy:aSpaceShip targeting: aCard in: aGame [
-self subclassResponsibility 
+Card >> playedBy: aSpaceShip targeting: aCard in: aGame [
+
+	self subclassResponsibility
 ]

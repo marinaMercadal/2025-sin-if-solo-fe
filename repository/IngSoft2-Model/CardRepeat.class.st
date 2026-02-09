@@ -10,16 +10,13 @@ Class {
 }
 
 { #category : 'action' }
-CardRepeat >> applyIEffectIn:aGame to:spaceshipMoving [
+CardRepeat >> applyIEffectIn: aGame to: spaceshipMoving [
 
-	aGame applyRepeatEffectWith: spaceshipMoving.
-
-
-	
+	aGame applyRepeatEffectWith: spaceshipMoving
 ]
 
 { #category : 'action' }
-CardRepeat >> playedBy:aSpaceShip targeting: aTargetSpaceShip in: aGame [
+CardRepeat >> playedBy: aSpaceShip targeting: aTargetSpaceShip in: aGame [
 
-aGame playsInstantaneousCard: self 
+	aGame playsInstantaneousCard: self
 ]

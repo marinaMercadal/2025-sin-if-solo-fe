@@ -27,9 +27,9 @@ Fuel >> consume: aDistance [
 	currentFuel >= aDistance
 		ifTrue: [ currentFuel := currentFuel - aDistance ]
 		ifFalse: [
-			fuelNeeded := aDistance - currentFuel.
-			currentFuel := 0.
-			fuelPartner giveFuel: fuelNeeded ]
+				fuelNeeded := aDistance - currentFuel.
+				currentFuel := 0.
+				fuelPartner giveFuel: fuelNeeded ]
 ]
 
 { #category : 'accessing' }
@@ -51,10 +51,10 @@ Fuel >> hasFuelToPlay [
 ]
 
 { #category : 'action' }
-Fuel >> increaseFuelCapacityBy:anAmount [
+Fuel >> increaseFuelCapacityBy: anAmount [
 
-	initialFuel :=initialFuel+anAmount.
-	self recharge 
+	initialFuel := initialFuel + anAmount.
+	self recharge
 ]
 
 { #category : 'initialization' }
@@ -78,17 +78,16 @@ Fuel >> recharge [
 ]
 
 { #category : 'action' }
-Fuel >> sharesFule:aFuleSystem [
+Fuel >> sharesFule: aFuleSystem [
 
-	fuelPartner := aFuleSystem.
-	
+	fuelPartner := aFuleSystem
 ]
 
 { #category : 'action' }
 Fuel >> sharesFuleWith: anotherSystem [
-	
+
 	fuelPartner := anotherSystem.
-	anotherSystem sharesFule:self.
+	anotherSystem sharesFule: self
 ]
 
 { #category : 'validating' }

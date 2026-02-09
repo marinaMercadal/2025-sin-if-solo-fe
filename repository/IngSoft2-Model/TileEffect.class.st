@@ -12,29 +12,32 @@ Class {
 }
 
 { #category : 'action' }
-TileEffect >> applyConsequenceTo: allSpaceShips onBoardOfSize: aBoard [ 
+TileEffect >> applyConsequenceTo: allSpaceShips onBoardOfSize: aBoard [
+
 	^ self subclassResponsibility
 ]
 
 { #category : 'action' }
 TileEffect >> applyEffectToSpecific: spaceship on: board [
 
-^ self subclassResponsibility
+	^ self subclassResponsibility
 ]
 
 { #category : 'testing' }
-TileEffect >> includesA:position [
-^tilePosition =position.
+TileEffect >> includesA: position [
+
+	^ tilePosition = position
 ]
 
 { #category : 'accessing' }
 TileEffect >> position [
-^tilePosition .
+
+	^ tilePosition
 ]
 
 { #category : 'validating' }
-TileEffect >> validateCreationIn: boardSize and: maximumRolledNumber [ 
-	 tilePosition > boardSize ifTrue: [
-   Error signal: 'Tile position is out of board bounds.'.
-].
+TileEffect >> validateCreationIn: boardSize and: maximumRolledNumber [
+
+	tilePosition > boardSize ifTrue: [
+		Error signal: 'Tile position is out of board bounds.' ]
 ]

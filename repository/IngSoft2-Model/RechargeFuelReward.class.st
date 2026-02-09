@@ -10,7 +10,6 @@ Class {
 
 { #category : 'operations' }
 RechargeFuelReward >> applyTo: aSpaceShip [
-	
-	aSpaceShip increaseFuelCapacityBy:1.
-	
+
+	aSpaceShip increaseFuelCapacityBy: 1
 ]

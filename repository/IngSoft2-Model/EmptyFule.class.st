@@ -21,6 +21,7 @@ EmptyFule >> isBiggerThanCero [
 ]
 
 { #category : 'action' }
-EmptyFule >> sharesFule:aFule [
+EmptyFule >> sharesFule: aFule [
 
+	
 ]
